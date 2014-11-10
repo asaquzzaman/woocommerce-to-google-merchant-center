@@ -1,13 +1,11 @@
 === Woocommerce to Google merchant center ===
 
 Contributors: asaquzzaman
-Tags: hrm, human resource, human resource management, office management, industries management, organization management, population management, worker catalog, employee catalog, employer catalog, labour catalog.
+Tags: merchant center, google merchant center, woo merchant, woocommerce merchant
 Requires at least: 3.3
 Tested up to: 3.9.1
 Stable tag: trunk
 License: GPLv2 or later
-
-Organization, Industries and Office management
 
 == Description ==
 Submit your product woocommerce to google merchant center.
