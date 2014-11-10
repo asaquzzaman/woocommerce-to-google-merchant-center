@@ -8,6 +8,8 @@ Stable tag: trunk
 License: GPLv2 or later
 
 == Description ==
+[Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
+
 Submit your product woocommerce to google merchant center.
 
 = Features:  =
@@ -28,7 +30,7 @@ Browser Compatibility
 
 = Usage =
 
-[documentation](http://mishubd.com)
+[Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
 
 == Screenshots ==
 
