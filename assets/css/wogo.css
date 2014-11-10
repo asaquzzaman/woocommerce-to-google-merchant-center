@@ -1,0 +1,103 @@
+.wogo-form textarea,
+.wogo-form input,
+.wogo-form select
+{
+	float: left;
+	width: 30%;
+}
+.wogo-form label {
+	width: 24%;
+	float: left;
+}
+.wogo-clear {
+	clear: both;
+}
+.wogo-form .wogo-form-field {
+	display: inline-block;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+}
+.wogo-form .wogo-form-field input {
+	height: 34px;
+}
+.wogo-form .wogo-form-field label {
+	font-size: 15px;
+	font-weight: bold;
+}
+.wogo-form .description {
+	display: inline-block;
+	width: 70%;
+}
+.wogo-form .description {
+	margin-left: 24%;
+}
+.wogo-form input[type="submit"], .wogo-form input[type="checkbox"] {
+	width: auto;
+}
+.wogo-form input[type="submit"] {
+	float: none;
+	margin-top: 10px;
+}
+.wogo-form .wogo-more-field, .wogo-form .wogo-remove-more {
+	cursor: pointer;
+}
+.wogo-form em {
+	color: red;
+}
+.wogo-form .wogo-notification {
+	position: absolute;
+	left: 55%;
+	top: 6%;
+	color: red;
+}
+.wogo-form .wogo-more-field {
+	background: #2ea2cc;
+    color: #fff;
+    height: 16px;
+    margin-left: -16px;
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    width: 13px;
+}
+.wogo-form .wogo-remove-more {
+	background: #2ea2cc;
+    color: #fff;
+    height: 16px;
+    margin-left: -30px;
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    width: 13px;
+}
+.wogo-form-wrap {
+	background: #fff;
+	padding: 10px;
+}
+.wogo-form .wogo-product-field-child-wrap {
+	width: 98%;
+}
+.wogo-form .wogo-form-part, .wogo-form .wogo-product-field-child-wrap {
+	background: #f7f7f7;
+	padding: 10px;
+}
+.wogo-product-info {
+	margin-top: 9px;
+}
+.wogo-form .wogo-spinner {
+	background: url( 'images/loading.gif' ) no-repeat;
+	height: 16px;
+	width: 16px;
+	display: inline-block;
+	margin: 15px 0 0 15px;
+}
+.wogo-submit-notification {
+	padding: 7px !important;
+}
+.wogo-error-code {
+	color: red;
+}
+.wogo-nav-tab-wrap {
+	margin-bottom: 10px !important;
+}
