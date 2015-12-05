@@ -1,21 +1,29 @@
 === Woocommerce to Google merchant center ===
 
 Contributors: asaquzzaman
-Tags: merchant center, google merchant center, woo merchant, woocommerce merchant
+Tags: merchant center, google merchant center, woo merchant, woocommerce merchant, woocommerce product feed, google product feed, product feed, woocommerce feed, google feed
 Requires at least: 3.3
 Tested up to: 3.9.1
 Stable tag: trunk
 License: GPLv2 or later
 
 == Description ==
-[Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
 
 Submit your product woocommerce to google merchant center.
 
 = Features:  =
 
 Submit your product woocommerce to google merchant center.
-After google verification it will be appear in google shop
+After google verification it will be appear in google shop.
+
+This plugin has pro version you will get it from [here](http://mishubd.com/product/woogoo/)
+
+This free verision has product submission limited. Here is available pro version for unlimited product submission.
+You will get the por version from [here](http://mishubd.com/product/woogoo/)
+
+[Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
+
+[youtube https://www.youtube.com/watch?v=Fl9jqaKy6JY]
 
 [Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
 
@@ -48,8 +56,6 @@ Browser Compatibility
 =0.4=
 * Pull product information automatically at single product submit time.
 
-== Frequently Asked Questions ==
-
 You can contact with me joy.mishu@gmail.com with this email address. You can ask me any kinds of question about this plugin.
 
 == Upgrade Notice ==
@@ -57,6 +63,3 @@ You can contact with me joy.mishu@gmail.com with this email address. You can ask
 Nothing to say
 
 Thanks for beign with me.
-
-
-
