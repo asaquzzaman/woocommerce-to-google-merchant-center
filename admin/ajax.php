@@ -93,6 +93,9 @@ class WOGO_Admin_ajax {
 
         try {
 
+            $get_products = wogo_get_products_list(); 
+            $get_products = $get_products->getResources(); 
+
             if ( count( $get_products ) >= 5 ) { 
                 $url = 'http://mishubd.com/product/woogoo/'; 
                 $notice = sprintf( 'You have to purchase this plugin (woogoo) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url ); 

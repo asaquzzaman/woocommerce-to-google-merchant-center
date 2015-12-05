@@ -139,6 +139,30 @@ $shop_field['contentLanguage'] = array(
     'selected' => isset( $product['contentLanguage'] ) ? $product['contentLanguage'] : '',
 );
 
+$shop_field['price[currency]'] = array(
+    'type'  => 'text',
+    'desc'  => __( 'Currency of the price Should be according with your target country.', 'wogo' ),
+    'label' => __( 'Price Currency', 'wogo' ),
+    'extra' => array(
+        'data-wogo_validation'         => true,
+        'data-wogo_required'           => true,
+        'data-wogo_required_error_msg' => __( 'This field is required', 'wogo' ),
+    ),
+    'value' => $currency,
+);
+
+$shop_field['price[value]'] = array(
+    'type' => 'text',
+    'desc' => __( 'The price represented as a number.', 'wogo' ),
+    'label' => __( 'Price', 'wogo' ),
+    'extra' => array(
+        'data-wogo_validation' => true,
+        'data-wogo_required' => true,
+        'data-wogo_required_error_msg'=> __( 'This field is required', 'wogo' ),
+    ),
+    'value' => $product_price,
+);
+
 $shop_field['offerId'] = array(
     'type'  => 'text',
     'label' => __( 'Offer Id', 'wogo' ),
@@ -161,30 +185,6 @@ $shop_field['condition'] = array(
         'data-wogo_required_error_msg' => __( 'This field is required', 'wogo' ),
     ),
     'value' => isset( $product['condition'] ) ? $product['condition'] : 'new',
-);
-
-$shop_field['price[currency]'] = array(
-    'type'  => 'text',
-    'desc'  => __( 'The currency of the price.', 'wogo' ),
-    'label' => __( 'Price Currency', 'wogo' ),
-    'extra' => array(
-        'data-wogo_validation'         => true,
-        'data-wogo_required'           => true,
-        'data-wogo_required_error_msg' => __( 'This field is required', 'wogo' ),
-    ),
-    'value' => $currency,
-);
-
-$shop_field['price[value]'] = array(
-    'type' => 'text',
-    'desc' => __( 'The price represented as a number.', 'wogo' ),
-    'label' => __( 'Price', 'wogo' ),
-    'extra' => array(
-        'data-wogo_validation' => true,
-        'data-wogo_required' => true,
-        'data-wogo_required_error_msg'=> __( 'This field is required', 'wogo' ),
-    ),
-    'value' => $product_price,
 );
 
 $shop_field['brand'] = array(
