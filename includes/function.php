@@ -66,3 +66,150 @@ function wogo_get_currency( $currency = '' ) {
 
     return $symbol;
 }
+
+/**
+ * Google client class Instantiate
+ * @return object
+ */
+function wogo_google_class() {
+    static $client;
+    if ( !$client ) {
+        $plugin_path = WOOGOO_PATH . '/includes';
+        set_include_path( $plugin_path . PATH_SEPARATOR . get_include_path());
+
+        require_once WOOGOO_PATH . '/includes/Google/Client.php';
+        require_once WOOGOO_PATH . '/includes/Google/Service/ShoppingContent.php';
+
+        $client = new Google_Client();
+    }
+
+    return $client;
+}
+
+/**
+ * Check token validate
+ * @return string
+ */
+function wogo_get_access_token() {
+
+    $user_id = get_current_user_id();
+    $access_token = get_user_meta( $user_id, 'access_token', true );
+    if ( empty( $access_token ) ) {
+        return false;
+    }
+
+    $client = wogo_google_class();
+
+    $client->setAccessToken( $access_token );
+
+    if ( $client->isAccessTokenExpired() ) {
+        return false;
+    }
+    return $access_token;
+}
+
+/**
+ * Get client token
+ * @return string or boolen
+ */
+function wogo_get_client() {
+    $client = wogo_google_class();
+    $access_token = wogo_get_access_token();
+    if ( $access_token ) {
+        $client->setAccessToken( $access_token );
+        $client->getAccessToken();
+
+        return $client;
+    }
+    return false;
+}
+
+function wogo_get_products_list() {
+    $client         = wogo_get_client();
+    $shoppinContent = new Google_Service_ShoppingContent($client);
+    $merchant_id    = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
+    $products       = $shoppinContent->products->listProducts( $merchant_id );
+
+    return $products;
+}
+
+function wogo_get_product( $product_id ) {
+    $client         = wogo_get_client();
+    $shoppinContent = new Google_Service_ShoppingContent($client);
+    $merchant_id    = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
+    $products       = $shoppinContent->products->get( $merchant_id, $product_id );
+
+    return $products;
+}
+
+function wogo_get_google_product_type() {
+    $request = wp_remote_get( 'http://www.google.com/basepages/producttype/taxonomy.en-US.txt' );
+    if ( is_wp_error( $request ) || ! isset( $request['response']['code'] ) || '200' != $request['response']['code'] ) {
+        return array();
+    }
+    $taxonomies = explode( "\n", $request['body'] );
+    // Strip the comment at the top
+    array_shift( $taxonomies );
+    // Strip the extra newline at the end
+    array_pop( $taxonomies );
+    $taxonomies = array_merge( array( __( '-Select-', 'wogo' ) ), $taxonomies );
+    return $taxonomies;
+}
+
+function wogo_get_feeds() {
+
+    $args = array(
+        'posts_per_page'   => -1,
+        'post_type'        => 'woogoo_feed',
+        'post_status'      => 'publish',
+    );
+
+    return get_posts( $args );
+}
+
+function woogoo_get_minute_diff( $current_time, $request_time ) {
+    $current_time = new DateTime( $current_time );
+    $request_time = new DateTime( $request_time );
+    $interval     = $request_time->diff( $current_time );
+    $day          = $interval->d ? $interval->d * 24 * 60 : 0;
+    $hour         = $interval->h ? $interval->h * 60 : 0;
+    $minute       = $interval->i ? $interval->i : 0;
+    $total_minute = $day + $hour + $minute;
+
+    return $total_minute;
+}
+
+function wogo_is_product_attribute_taxonomy( $attr, $porduct_obj ) {
+
+    $attributes = $porduct_obj->get_attributes();
+
+    $attr = sanitize_title( $attr );
+
+    if ( isset( $attributes[ $attr ] ) || isset( $attributes[ 'pa_' . $attr ] ) ) {
+
+        $attribute = isset( $attributes[ $attr ] ) ? $attributes[ $attr ] : $attributes[ 'pa_' . $attr ];
+        if ( $attribute['is_taxonomy'] ) {
+            return true;
+        } else {
+         return false;
+        }
+    }
+    return false;
+}
+
+/**
+ * Get woocommerce all product
+ * @return array()
+*/
+function woogoo_get_products( $count = '-1', $offset = 0 ) {
+    $args = array(
+        'posts_per_page'   => $count,
+        'post_type'        => 'product',
+        'post_status'      => 'publish',
+        'offset'           => $offset
+    );
+
+    return get_posts( $args );
+}
+
+require_once dirname(__FILE__) . '/ISD-code.php';

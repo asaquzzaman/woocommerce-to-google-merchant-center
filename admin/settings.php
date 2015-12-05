@@ -92,7 +92,7 @@ class WOGO_Admin_Settings {
         $html = sprintf( '<label for="%1s">%2s<em>%3s</em></label>', $element['id'], $element['label'], $element['required'] );
         $html .= sprintf( '<select multiple class="%1$s" name="%2$s" id="%3$s" %4$s %5$s>', $element['class'], $name, $element['id'], $element['disabled'], $extra );
         foreach ( $element['option'] as $key => $label ) {
-            $html .= sprintf( '<option value="%1$s" %2$s >%3$s</option>', esc_attr( $key ), selected( $element['selected'], $key, false ), esc_attr( $label ) );
+            $html .= sprintf( '<option value="%1$s" %2$s >%3$s</option>', esc_attr( $key ), selected( in_array( $key, $element['selected'] ), true, false ), esc_attr( $label ) );
         }
 
         $html .= sprintf( '</select>' );
@@ -278,7 +278,7 @@ class WOGO_Admin_Settings {
 
         }
 
-        $desc = isset( $element['desc'] ) ? esc_attr( $element['desc'] ) : '';
+        $desc = isset( $element['desc'] ) ?  $element['desc'] : '';
         $html .= sprintf( '<span class="wogo-clear"></span><span class="description">%s</span>', $desc );
         ob_start();
         $this->wrap_start( $element );

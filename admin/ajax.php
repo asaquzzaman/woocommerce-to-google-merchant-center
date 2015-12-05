@@ -92,6 +92,13 @@ class WOGO_Admin_ajax {
         $shoppinContent = new Google_Service_ShoppingContent($client);
 
         try {
+
+            if ( count( $get_products ) >= 5 ) { 
+                $url = 'http://mishubd.com/product/woogoo/'; 
+                $notice = sprintf( 'You have to purchase this plugin (woogoo) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url ); 
+                wp_send_json_error( array( 'error_code' => 'unknown', 'error_msg' => $notice ) ); 
+            } 
+
             $merchant_id = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
             $product = $shoppinContent->products->insert( $merchant_id, new Google_Service_ShoppingContent_Product( $postdatas ) );
             if ( $product ) {

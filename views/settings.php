@@ -37,6 +37,10 @@ $settings['merchant_account_id'] = array(
 
 
 ?>
+<div class="postbox" style="padding: 10px;">
+<div class="wogo-warning">
+    <?php _e( 'Settings field are need for single product submission not for products feed', 'wogo' ); ?>
+</div>
 <form action="" method="post" class="wogo-form">
 	<?php echo WOGO_Admin_Settings::getInstance()->text_field( 'client_id', $settings['client_id'] ); ?>
 	<?php echo WOGO_Admin_Settings::getInstance()->text_field( 'client_secret', $settings['client_secret'] ); ?>
@@ -50,3 +54,4 @@ $settings['merchant_account_id'] = array(
     </p>
     <input type="submit" class="button button-primary" value="<?php _e( 'Save Settings', 'wogo'); ?>" name="wogo_settings">
 </form>
+</div>

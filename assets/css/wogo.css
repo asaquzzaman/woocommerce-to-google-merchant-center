@@ -1,3 +1,6 @@
+input[type="checkbox"], input[type="radio"] {
+	width: 16px !important;
+}
 .wogo-form textarea,
 .wogo-form input,
 .wogo-form select
@@ -32,8 +35,12 @@
 .wogo-form .description {
 	margin-left: 24%;
 }
-.wogo-form input[type="submit"], .wogo-form input[type="checkbox"] {
+.wogo-form input[type="submit"] {
 	width: auto;
+}
+.wogo-form input[type="checkbox"] {
+	width: 14px;
+	height: 14px;
 }
 .wogo-form input[type="submit"] {
 	float: none;
@@ -55,7 +62,7 @@
 	background: #2ea2cc;
     color: #fff;
     height: 16px;
-    margin-left: -16px;
+	left: 52.8%;
     position: absolute;
     text-align: center;
     top: 2px;
@@ -65,7 +72,7 @@
 	background: #2ea2cc;
     color: #fff;
     height: 16px;
-    margin-left: -30px;
+    left: 51.5%;
     position: absolute;
     text-align: center;
     top: 2px;
@@ -100,4 +107,51 @@
 }
 .wogo-nav-tab-wrap {
 	margin-bottom: 10px !important;
+}
+
+.postbox .postbox-title {
+	margin: 0;
+	padding: 8px 12px;
+	border-bottom: 1px solid #eee;
+}
+
+.wogo-feed-form-content {
+	padding: 8px 12px;
+}
+
+
+.wogo-feed-form-content .wogo-field
+{
+	float: left;
+	width: 30%;
+}
+.wogo-feed-form-content label  {
+	width: 24%;
+	float: left;
+}
+
+.wogo-feed-form-content .wogo-form-field {
+	display: inline-block;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.wogo-feed-form-content .description {
+	display: inline-block;
+	width: 70%;
+}
+.wogo-feed-form-content .description {
+	margin-left: 24%;
+}
+
+.wogo-warning {
+	border: 2px solid #7ad03a;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 2;
+    margin: 10px;
+    padding: 9px;
+    text-align: justify;
+    width: 56%;
 }

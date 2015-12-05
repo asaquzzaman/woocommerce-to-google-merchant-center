@@ -37,7 +37,9 @@ Browser Compatibility
 
 
 == Changelog ==
-Noting
+=0.4=
+* Pull product information automatically at single product submit time.
+
 == Frequently Asked Questions ==
 
 You can contact with me joy.mishu@gmail.com with this email address. You can ask me any kinds of question about this plugin.
