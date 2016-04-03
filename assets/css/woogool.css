@@ -1,0 +1,195 @@
+input[type="checkbox"], input[type="radio"] {
+	width: 16px !important;
+}
+.woogool-form textarea,
+.woogool-form input,
+.woogool-form select
+{
+	float: left;
+	width: 30%;
+}
+.woogool-form label {
+	width: 24%;
+	float: left;
+}
+.woogool-clear {
+	clear: both;
+}
+.woogool-form .woogool-form-field {
+	display: inline-block;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+}
+.woogool-form .woogool-form-field input {
+	height: 34px;
+}
+.woogool-form .woogool-form-field label {
+	font-size: 15px;
+	font-weight: bold;
+}
+.woogool-form .description {
+	display: inline-block;
+	width: 70%;
+}
+.woogool-form .description {
+	margin-left: 24%;
+}
+.woogool-form input[type="submit"] {
+	width: auto;
+}
+.woogool-form input[type="checkbox"] {
+	width: 14px;
+	height: 14px;
+}
+.woogool-form input[type="submit"] {
+	float: none;
+	margin-top: 10px;
+}
+.woogool-form .woogool-more-field, .woogool-form .woogool-remove-more {
+	cursor: pointer;
+}
+.woogool-form em, .woogool-feed-form em  {
+	color: red;
+}
+.woogool-form .woogool-notification {
+	position: absolute;
+	left: 55%;
+	top: 6%;
+	color: red;
+}
+.woogool-form .woogool-more-field {
+	background: #2ea2cc;
+    color: #fff;
+    height: 16px;
+	left: 52.8%;
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    width: 13px;
+}
+.woogool-form .woogool-remove-more {
+	background: #2ea2cc;
+    color: #fff;
+    height: 16px;
+    left: 51.5%;
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    width: 13px;
+}
+.woogool-form-wrap {
+	background: #fff;
+	padding: 10px;
+}
+.woogool-form .woogool-product-field-child-wrap {
+	width: 98%;
+}
+.woogool-form .woogool-form-part, .woogool-form .woogool-product-field-child-wrap {
+	background: #f7f7f7;
+	padding: 10px;
+}
+.woogool-product-info {
+	margin-top: 9px;
+}
+.woogool-form .woogool-spinner {
+	background: url( 'images/loading.gif' ) no-repeat;
+	height: 16px;
+	width: 16px;
+	display: inline-block;
+	margin: 15px 0 0 15px;
+}
+.woogool-submit-notification {
+	padding: 7px !important;
+}
+.woogool-error-code {
+	color: red;
+}
+.woogool-nav-tab-wrap {
+	margin-bottom: 10px !important;
+}
+
+.postbox .postbox-title {
+	margin: 0;
+	padding: 8px 12px;
+	border-bottom: 1px solid #eee;
+}
+
+.woogool-feed-form-content {
+	padding: 8px 12px;
+}
+
+
+.woogool-feed-form-content .woogool-field
+{
+	float: left;
+	width: 30%;
+}
+.woogool-feed-form-content label  {
+	width: 24%;
+	float: left;
+}
+
+.woogool-feed-form-content .woogool-form-field {
+	display: inline-block;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.woogool-feed-form-content .description {
+	display: inline-block;
+	width: 70%;
+}
+.woogool-feed-form-content .description {
+	margin-left: 24%;
+}
+
+.woogool-warning {
+	border: 2px solid #7ad03a;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 2;
+    margin: 10px;
+    padding: 9px;
+    text-align: justify;
+    width: 56%;
+}
+.woogool .woogool-sub-nav {
+	background: #FFFFFF;
+    border-color: #CCCCCC;
+    border-image: none;
+    border-right: 1px solid #CCCCCC;
+    border-style: none solid solid;
+    border-width: medium 1px 1px;
+    color: #898989;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    padding: 5px 20px;
+    position: relative;
+}
+.woogool .woogool-sub-nav .woogool-subsubsub {
+	margin: 0;
+	padding: 0;
+}
+.woogool .woogool-sub-nav .woogool-subsubsub li {
+	display: inline-block;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+.woogool .woogool-sub-nav .woogool-subsubsub li a {
+	text-decoration: none;
+	padding: 0 5px;
+}
+.woogool .woogool-sub-nav .woogool-subsubsub li:first-child a {
+	padding-left: 0;
+}
+.woogool .woogool-sub-nav .woogool-subsubsub li .woogool-sub-current {
+	font-weight: 600;
+    color: #000000;
+}
+.woogool-hidden {
+	display: none;
+}

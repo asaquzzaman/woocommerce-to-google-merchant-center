@@ -2,7 +2,7 @@
 /**
  * All kinds of form field are generator
  */
-class WOGO_Admin_Settings {
+class WooGool_Admin_Settings {
 	private static $_instance;
 
     /**
@@ -11,10 +11,63 @@ class WOGO_Admin_Settings {
      */
     public static function getInstance() {
         if ( !self::$_instance ) {
-            self::$_instance = new WOGO_Admin_Settings();
+            self::$_instance = new self();
         }
 
         return self::$_instance;
+    }
+
+    function show_tab_page( $page, $tab, $subtab, $nested_tab = '' ) {
+        if ( !$tab ) {
+            _e( 'Missing Tab Page!', 'hrm' );
+            return;
+        }
+
+        $menu = woogool_pages();
+        $tab = empty( $nested_tab ) ? $tab : $nested_tab;
+
+        $path = isset( $menu[$tab]['file_path'] ) ? $menu[$tab]['file_path'] : '';
+
+        if( file_exists( $path ) ) {
+            include_once $path;
+        } else {
+            _e('Page not found', 'hrm' );
+        }
+
+    }
+
+
+    function show_sub_tab_page( $page, $tab, $subtab ) {
+
+        $menu = woogool_pages();
+        if( !isset( $menu[$tab]['submenu'] ) ) {
+            return;
+        }
+
+        if( empty( $menu[$tab]['submenu'] ) && count( $menu[$tab]['submenu'] ) ) {
+
+            $subtab = key( $menu[$tab]['submenu'] );
+
+            $path = isset( $menu[$tab]['submenu'][$subtab]['file_path'] ) ? $menu[$tab]['submenu'][$subtab]['file_path'] : '';
+            $path = apply_filters( 'woogool_subtab_path', $path, $page, $tab, $subtab );
+
+            if( file_exists( $path ) ) {
+                include_once $path;
+            } else {
+                echo 'Page not found';
+            }
+        } else {
+
+            $path = isset( $menu[$tab]['submenu'][$subtab]['file_path'] ) ? $menu[$tab]['submenu'][$subtab]['file_path'] : '';
+
+            $path = apply_filters( 'woogool_subtab_path', $path, $page, $tab, $subtab );
+
+            if( file_exists( $path ) ) {
+                include_once $path;
+            } else {
+                echo 'Page not found';
+            }
+        }
     }
 
     /**
@@ -35,7 +88,7 @@ class WOGO_Admin_Settings {
         $element['selected']    = isset( $element['selected'] ) ? $element['selected'] : '';
         $element['desc']        = isset( $element['desc'] ) ? $element['desc'] : '';
         $element['action_hook'] = isset( $element['action_hook'] ) ? $element['action_hook'] : '';
-        $element['required']    = ( isset( $element['extra']['data-wogo_required'] ) &&  ( $element['extra']['data-wogo_required'] === true ) ) ? '*' : '';
+        $element['required']    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
 
         if( is_array( $element['extra'] ) && count( $element['extra'] ) ) {
             foreach( $element['extra'] as $key => $action ) {
@@ -50,16 +103,16 @@ class WOGO_Admin_Settings {
         }
 
         $html .= sprintf( '</select>' );
-        $html .= sprintf( '<span class="wogo-clear"></span><span class="description"> %s</span>', $element['desc'] );
+        $html .= sprintf( '<span class="woogool-clear"></span><span class="description"> %s</span>', $element['desc'] );
 
         ob_start();
-        $this->wrap_start( $element );
-       	echo '<div id="wogo-select" class="wogo-form-field">';
+        echo $this->wrap_start( $element ); 
+       	echo '<div id="woogool-select" class="woogool-form-field">';
         echo $html;
 
-        //do_action( 'wogo_select_' . $element['action_hook'] );
+        //do_action( 'woogool_select_' . $element['action_hook'] );
         echo '</div>';
-        $this->wrap_close( $element );
+        echo $this->wrap_close( $element );
         return ob_get_clean();
     }
 
@@ -81,7 +134,7 @@ class WOGO_Admin_Settings {
         $element['selected']    = isset( $element['selected'] ) ? $element['selected'] : '';
         $element['desc']        = isset( $element['desc'] ) ? $element['desc'] : '';
         $element['action_hook'] = isset( $element['action_hook'] ) ? $element['action_hook'] : '';
-        $element['required']    = ( isset( $element['extra']['data-wogo_required'] ) &&  ( $element['extra']['data-wogo_required'] === true ) ) ? '*' : '';
+        $element['required']    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
 
         if( is_array( $element['extra'] ) && count( $element['extra'] ) ) {
             foreach( $element['extra'] as $key => $action ) {
@@ -96,14 +149,14 @@ class WOGO_Admin_Settings {
         }
 
         $html .= sprintf( '</select>' );
-        $html .= sprintf( '<span class="wogo-clear"></span><span class="description"> %s</span>', $element['desc'] );
+        $html .= sprintf( '<span class="woogool-clear"></span><span class="description"> %s</span>', $element['desc'] );
 
         ob_start();
         $this->wrap_start( $element );
-        echo '<div id="wogo-multi-select" class="wogo-form-field">';
+        echo '<div id="woogool-multi-select" class="woogool-form-field">';
         echo $html;
 
-        //do_action( 'wogo_select_' . $element['action_hook'] );
+        //do_action( 'woogool_select_' . $element['action_hook'] );
         echo '</div>';
         $this->wrap_close( $element );
         return ob_get_clean();
@@ -130,7 +183,7 @@ class WOGO_Admin_Settings {
         $element_value       = isset( $element['value'] ) ? esc_attr( $element['value'] ) : '';
         $element_placeholder = isset( $element['placeholder'] ) ? esc_attr( $element['placeholder'] ) : '';
         $element_type        = isset( $element['type'] ) ? esc_attr( $element['type'] ) : 'text';
-        $element_required    = ( isset( $element['extra']['data-wogo_required'] ) &&  ( $element['extra']['data-wogo_required'] === true ) ) ? '*' : '';
+        $element_required    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
 
         if( is_array( $element_extra ) && count( $element_extra ) ) {
             foreach( $element_extra as $key => $action ) {
@@ -141,12 +194,12 @@ class WOGO_Admin_Settings {
         ob_start();
         $this->wrap_start( $element );
         ?>
-        <div class="wogo-form-field wogo-text">
+        <div class="woogool-form-field woogool-text">
 
             <label for="<?php echo $element_id; ?>"><?php echo $element_label; ?><em><?php echo $element_required; ?></em></label>
             <input type="text" name="<?php echo $name; ?>" value="<?php echo $element_value; ?>" placeholder="<?php echo $element_placeholder; ?>" class="<?php echo $element_class; ?>" id="<?php echo $element_id; ?>" <?php echo $element_disabled; ?> <?php echo $extra; ?> />
             <?php do_action( 'settings_text_field', $name, $element ); ?>
-            <span class="wogo-clear"></span><span class="description"><?php echo $element_desc; ?></span>
+            <span class="woogool-clear"></span><span class="description"><?php echo $element_desc; ?></span>
 
         </div>
         <?php
@@ -183,7 +236,7 @@ class WOGO_Admin_Settings {
 
         ob_start();
         $this->wrap_start( $element );
-        echo '<div id="wogo-hidden">';
+        echo '<div id="woogool-hidden">';
         echo $html;
 
         echo '</div>';
@@ -211,7 +264,7 @@ class WOGO_Admin_Settings {
         foreach( $fields as $field ) {
             $extra_attr = '';
             $value      = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-            $id         = isset( $field['id'] ) ? esc_attr( $field['id'] ) : 'wogo_' .$name .'_'. $value;
+            $id         = isset( $field['id'] ) ? esc_attr( $field['id'] ) : 'woogool_' .$name .'_'. $value;
             $class      = isset( $field['class'] ) ? esc_attr( $field['class'] ) : esc_attr( $name );
             $disabled   = isset( $field['disabled'] ) ? esc_attr( $field['disabled'] ) : '';
             $extra      = isset( $field['extra'] ) ? $field['extra'] : array();
@@ -225,15 +278,15 @@ class WOGO_Admin_Settings {
             }
 
             $html .= sprintf( '<input type="radio" name="%1$s" value="%2$s" class="%3$s" id="%4$s" %5$s %6$s %7$s />', $name, $value, $class, $id, $disabled, $extra_attr, checked( $value, $checked, false ) );
-            $html .= sprintf( '<label class="wogo-radio" for="%1s">%2s</label>', $id, $label );
+            $html .= sprintf( '<label class="woogool-radio" for="%1s">%2s</label>', $id, $label );
 
         }
 
         $desc = isset( $element['desc'] ) ? esc_attr( $element['desc'] ) : '';
-        $html .= sprintf( '<span class="wogo-clear"></span><span class="description">%s</span>', $desc );
+        $html .= sprintf( '<span class="woogool-clear"></span><span class="description">%s</span>', $desc );
         ob_start();
         $this->wrap_start( $element );
-        echo '<div id="wogo-radio" class="wogo-form-field">';
+        echo '<div id="woogool-radio" class="woogool-form-field">';
         echo $html;
         echo '</div>';
         $this->wrap_close( $element );
@@ -260,7 +313,7 @@ class WOGO_Admin_Settings {
         foreach( $fields as $field ) {
             $extra_attr = '';
             $value      = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-            $id         = isset( $field['id'] ) ? esc_attr( $field['id'] ) : 'wogo_' .$name .'_'. $value;
+            $id         = isset( $field['id'] ) ? esc_attr( $field['id'] ) : 'woogool_' .$name .'_'. $value;
             $class      = isset( $field['class'] ) ? esc_attr( $field['class'] ) : esc_attr( $name );
             $disabled   = isset( $field['disabled'] ) ? esc_attr( $field['disabled'] ) : '';
             $extra      = isset( $field['extra'] ) ? $field['extra'] : array();
@@ -274,15 +327,15 @@ class WOGO_Admin_Settings {
             }
 
             $html .= sprintf( '<input type="checkbox" name="%1$s" value="%2$s" class="%3$s" id="%4$s" %5$s %6$s %7$s />', $name, $value, $class, $id, $disabled, $extra_attr, checked( $checked, $value, false ) );
-            $html .= sprintf( '<label class="wogo-checkbox" for="%1s">%2s</label>', $id, $label );
+            $html .= sprintf( '<label class="woogool-checkbox" for="%1s">%2s</label>', $id, $label );
 
         }
 
         $desc = isset( $element['desc'] ) ?  $element['desc'] : '';
-        $html .= sprintf( '<span class="wogo-clear"></span><span class="description">%s</span>', $desc );
+        $html .= sprintf( '<span class="woogool-clear"></span><span class="description">%s</span>', $desc );
         ob_start();
         $this->wrap_start( $element );
-        echo '<div class="wogo-form-field">';
+        echo '<div class="woogool-form-field">';
         echo $html;
         echo '</div>';
         $this->wrap_close( $element );
@@ -308,7 +361,7 @@ class WOGO_Admin_Settings {
         $element['label']    = isset( $element['label'] ) ? esc_attr( $element['label'] ) : '';
         $element['desc']     = isset( $element['desc'] ) ? esc_attr( $element['desc'] ) : '';
         $element['value']    = isset( $element['value'] ) ? esc_attr( $element['value'] ) : '';
-        $element['required']    = ( isset( $element['extra']['data-wogo_required'] ) &&  ( $element['extra']['data-wogo_required'] === true ) ) ? '*' : '';
+        $element['required']    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
 
         if( is_array( $element['extra'] ) && count( $element['extra'] ) ) {
             foreach( $element['extra'] as $key => $action ) {
@@ -319,10 +372,10 @@ class WOGO_Admin_Settings {
         $html = sprintf( '<label for="%1s">%2s<em>%3s</em></label>', $element['id'], $element['label'], $element['required'] );
         $html .= sprintf( '<textarea name="%1$s" class="%2$s" id="%3$s" %4$s %5$s >%6$s</textarea>', $name,
                 $element['class'], $element['id'], $element['disabled'], $extra, $element['value'] );
-        $html .= sprintf( '<span class="wogo-clear"></span><span class="description">%s</span>', $element['desc'] );
+        $html .= sprintf( '<span class="woogool-clear"></span><span class="description">%s</span>', $element['desc'] );
         ob_start();
         $this->wrap_start( $element );
-        echo '<div class="wogo-form-field">';
+        echo '<div class="woogool-form-field">';
         echo $html;
         echo '</div>';
         $this->wrap_close( $element );
@@ -335,7 +388,7 @@ class WOGO_Admin_Settings {
         ob_start();
             $this->wrap_start( $element );
             if ( !empty( $text ) ) {
-                echo '<div class="wogo-form-field wogo-html">';
+                echo '<div class="woogool-form-field woogool-html">';
                 echo $text;
                 echo '</div>';
             }
@@ -353,6 +406,7 @@ class WOGO_Admin_Settings {
         $wrap_attr = ( isset( $element['wrap_attr'] ) && is_array( $element['wrap_attr'] ) ) ? $element['wrap_attr'] : array();
         $wrap_start_tag = isset( $element['wrap_start_tag'] ) ? $element['wrap_start_tag'] : 'div';
         $attr = '';
+        
         if( isset( $element['wrap_start'] ) && $element['wrap_start'] ) {
             foreach ( $wrap_attr as $id => $value) {
                 $attr .= esc_attr( $id ) .'="'. esc_attr( $value ).'" ';

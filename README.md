@@ -20,7 +20,7 @@ After google verification it will be appear in google shop
 
 == Installation ==
 
-1. Unzip and upload the wogo directory to /wp-content/plugins/
+1. Unzip and upload the woogool directory to /wp-content/plugins/
 2. Activate the plugin through the Plugins menu in WordPress
 
 Browser Compatibility
@@ -37,9 +37,7 @@ Browser Compatibility
 
 
 == Changelog ==
-=0.4=
-* Pull product information automatically at single product submit time.
-
+Noting
 == Frequently Asked Questions ==
 
 You can contact with me joy.mishu@gmail.com with this email address. You can ask me any kinds of question about this plugin.

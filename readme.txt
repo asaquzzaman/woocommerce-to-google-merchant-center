@@ -1,35 +1,41 @@
 === Woocommerce to Google merchant center ===
 
 Contributors: asaquzzaman
-Tags: merchant center, google merchant center, woo merchant, woocommerce merchant, woocommerce product feed, google product feed, product feed, woocommerce feed, google feed
+Tags: merchant center, google merchant center, woocommerce shopping feed, product export, woocommerce product feed, woocommerce merchant
 Requires at least: 3.3
 Tested up to: 3.9.1
 Stable tag: trunk
 License: GPLv2 or later
 
+Add your products to Google Merchant Centre
+
 == Description ==
+Add your product WooCommerce to Google merchant center. After Google verification it will appear in Google shop.
 
-Submit your product woocommerce to google merchant center.
+= Features (Free) =
+* Submit your product Google merchant center one by one with the help of Google API.
+* Product submit limit only 5.
 
-= Features:  =
+= Features (Pro) =
+* Submit your product Google merchant center one by one with the help of Google API.
+* Unlimited product submission.
+* Multiple product submission facility with the help of feed xml file.
+* Support variable product.
+* [Purchase](http://mishubd.com/product/woogoo)
 
-Submit your product woocommerce to google merchant center.
-After google verification it will be appear in google shop.
+= Purchase Link =
+[http://mishubd.com/product/woogoo](http://mishubd.com/product/woogoo)
 
-This plugin has pro version you will get it from [here](http://mishubd.com/product/woogoo/)
 
-This free verision has product submission limited. Here is available pro version for unlimited product submission.
-You will get the por version from [here](http://mishubd.com/product/woogoo/)
-
-[Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
-
+= Documentation for single product submission =
 [youtube https://www.youtube.com/watch?v=Fl9jqaKy6JY]
 
-[Documentation](http://mishubd.com/documentation/woocommerce-to-google-merchant-center/)
+= Documentation for multiple product submission =
+[youtube https://www.youtube.com/watch?v=DOT_oMnOnr8]
 
 == Installation ==
 
-1. Unzip and upload the wogo directory to /wp-content/plugins/
+1. Unzip and upload the woogool directory to /wp-content/plugins/
 2. Activate the plugin through the Plugins menu in WordPress
 
 Browser Compatibility
@@ -53,8 +59,14 @@ Browser Compatibility
 8. Screenshot Delete button
 
 == Changelog ==
-=0.4=
-* Pull product information automatically at single product submit time.
+
+= 0.5 =
+* Separate single and multiple product tab.
+* More easy single product submission
+* Multiple product xml file generate time, variable product include exclude system
+* Advanced video tutorial
+
+== Frequently Asked Questions ==
 
 You can contact with me joy.mishu@gmail.com with this email address. You can ask me any kinds of question about this plugin.
 
@@ -63,3 +75,6 @@ You can contact with me joy.mishu@gmail.com with this email address. You can ask
 Nothing to say
 
 Thanks for beign with me.
+
+
+

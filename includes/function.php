@@ -1,5 +1,5 @@
 <?php
-function wogo_get_currency( $currency = '' ) {
+function woogool_get_currency( $currency = '' ) {
 
     switch ($currency) {
         case 'BRL' :
@@ -71,14 +71,14 @@ function wogo_get_currency( $currency = '' ) {
  * Google client class Instantiate
  * @return object
  */
-function wogo_google_class() {
+function woogool_google_class() {
     static $client;
     if ( !$client ) {
-        $plugin_path = WOOGOO_PATH . '/includes';
+        $plugin_path = WOOGOOL_PATH . '/includes';
         set_include_path( $plugin_path . PATH_SEPARATOR . get_include_path());
 
-        require_once WOOGOO_PATH . '/includes/Google/Client.php';
-        require_once WOOGOO_PATH . '/includes/Google/Service/ShoppingContent.php';
+        require_once WOOGOOL_PATH . '/includes/Google/Client.php';
+        require_once WOOGOOL_PATH . '/includes/Google/Service/ShoppingContent.php';
 
         $client = new Google_Client();
     }
@@ -90,7 +90,7 @@ function wogo_google_class() {
  * Check token validate
  * @return string
  */
-function wogo_get_access_token() {
+function woogool_get_access_token() {
 
     $user_id = get_current_user_id();
     $access_token = get_user_meta( $user_id, 'access_token', true );
@@ -98,7 +98,7 @@ function wogo_get_access_token() {
         return false;
     }
 
-    $client = wogo_google_class();
+    $client = woogool_google_class();
 
     $client->setAccessToken( $access_token );
 
@@ -112,9 +112,9 @@ function wogo_get_access_token() {
  * Get client token
  * @return string or boolen
  */
-function wogo_get_client() {
-    $client = wogo_google_class();
-    $access_token = wogo_get_access_token();
+function woogool_get_client() {
+    $client = woogool_google_class();
+    $access_token = woogool_get_access_token();
     if ( $access_token ) {
         $client->setAccessToken( $access_token );
         $client->getAccessToken();
@@ -124,8 +124,8 @@ function wogo_get_client() {
     return false;
 }
 
-function wogo_get_products_list() {
-    $client         = wogo_get_client();
+function woogool_get_products_list() {
+    $client         = woogool_get_client();
     $shoppinContent = new Google_Service_ShoppingContent($client);
     $merchant_id    = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
     $products       = $shoppinContent->products->listProducts( $merchant_id );
@@ -133,8 +133,8 @@ function wogo_get_products_list() {
     return $products;
 }
 
-function wogo_get_product( $product_id ) {
-    $client         = wogo_get_client();
+function woogool_get_product( $product_id ) {
+    $client         = woogool_get_client();
     $shoppinContent = new Google_Service_ShoppingContent($client);
     $merchant_id    = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
     $products       = $shoppinContent->products->get( $merchant_id, $product_id );
@@ -142,7 +142,7 @@ function wogo_get_product( $product_id ) {
     return $products;
 }
 
-function wogo_get_google_product_type() {
+function woogool_get_google_product_type() {
     $request = wp_remote_get( 'http://www.google.com/basepages/producttype/taxonomy.en-US.txt' );
     if ( is_wp_error( $request ) || ! isset( $request['response']['code'] ) || '200' != $request['response']['code'] ) {
         return array();
@@ -152,22 +152,22 @@ function wogo_get_google_product_type() {
     array_shift( $taxonomies );
     // Strip the extra newline at the end
     array_pop( $taxonomies );
-    $taxonomies = array_merge( array( __( '-Select-', 'wogo' ) ), $taxonomies );
+    $taxonomies = array_merge( array( __( '-Select-', 'woogool' ) ), $taxonomies );
     return $taxonomies;
 }
 
-function wogo_get_feeds() {
+function woogool_get_feeds() {
 
     $args = array(
         'posts_per_page'   => -1,
-        'post_type'        => 'woogoo_feed',
+        'post_type'        => array( 'woogoo_feed', 'woogool_feed' ),
         'post_status'      => 'publish',
     );
 
     return get_posts( $args );
 }
 
-function woogoo_get_minute_diff( $current_time, $request_time ) {
+function woogool_get_minute_diff( $current_time, $request_time ) {
     $current_time = new DateTime( $current_time );
     $request_time = new DateTime( $request_time );
     $interval     = $request_time->diff( $current_time );
@@ -179,7 +179,7 @@ function woogoo_get_minute_diff( $current_time, $request_time ) {
     return $total_minute;
 }
 
-function wogo_is_product_attribute_taxonomy( $attr, $porduct_obj ) {
+function woogool_is_product_attribute_taxonomy( $attr, $porduct_obj ) {
 
     $attributes = $porduct_obj->get_attributes();
 
@@ -197,11 +197,38 @@ function wogo_is_product_attribute_taxonomy( $attr, $porduct_obj ) {
     return false;
 }
 
+function woogool_get_query_args() {
+
+    $menu = woogool_pages();
+
+    if ( isset( $_GET['woogool_tab'] ) && ! empty( $_GET['woogool_tab'] ) ) {
+        $tab = $_GET['woogool_tab'];
+    } else {
+        $tab = array_keys( $menu );
+        $tab = reset( $tab ); 
+    }
+
+    if ( isset( $_GET['woogool_sub_tab'] ) && !empty( $_GET['woogool_sub_tab'] ) ) {
+        $subtab = $_GET['woogool_sub_tab'];
+    } else if ( isset( $menu[$tab]['submenu'] ) && count( $menu[$tab]['submenu'] ) ) {
+        $subtab = array_keys( $menu[$tab]['submenu'] );
+        $subtab = reset( $subtab );
+    } else {
+        $subtab = false;
+    }
+
+    return array(
+        'page' => woogool_page_slug(),
+        'tab'  => $tab,
+        'sub_tab' => $subtab
+    );
+}
+
 /**
  * Get woocommerce all product
  * @return array()
 */
-function woogoo_get_products( $count = '-1', $offset = 0 ) {
+function woogool_get_products( $count = '-1', $offset = 0 ) {
     $args = array(
         'posts_per_page'   => $count,
         'post_type'        => 'product',
@@ -212,4 +239,15 @@ function woogoo_get_products( $count = '-1', $offset = 0 ) {
     return get_posts( $args );
 }
 
+function woogool_tab_menu_url( $tab ) {
+    $url = sprintf( '%1s?post_type=%2s&page=%3s&woogool_tab=%4s', admin_url( 'edit.php' ), 'product', woogool_page_slug(), $tab );
+    return apply_filters( 'woogool_tab_menu_url', $url, woogool_page_slug(), $tab );
+}
+
+function woogool_subtab_menu_url( $tab, $sub_tab ) {
+    $url = sprintf( '%1s?post_type=%2s&page=%3s&woogool_tab=%4s&woogool_sub_tab=%5s', admin_url( 'edit.php' ), 'product', woogool_page_slug(), $tab, $sub_tab );
+    return apply_filters( 'hrm_subtab_menu_url', $url, woogool_page_slug(), $tab, $sub_tab );
+}
+
 require_once dirname(__FILE__) . '/ISD-code.php';
+
