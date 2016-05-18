@@ -1,4 +1,4 @@
-=== Woocommerce to Google merchant center ===
+=== Google Product Feed ===
 
 Contributors: asaquzzaman
 Tags: merchant center, google merchant center, woocommerce shopping feed, product export, woocommerce product feed, woocommerce merchant
@@ -7,31 +7,11 @@ Tested up to: 3.9.1
 Stable tag: trunk
 License: GPLv2 or later
 
-Add your products to Google Merchant Centre
+WooCommerce product export
 
 == Description ==
 Add your product WooCommerce to Google merchant center. After Google verification it will appear in Google shop.
 
-= Features (Free) =
-* Submit your product Google merchant center one by one with the help of Google API.
-* Product submit limit only 5.
-
-= Features (Pro) =
-* Submit your product Google merchant center one by one with the help of Google API.
-* Unlimited product submission.
-* Multiple product submission facility with the help of feed xml file.
-* Support variable product.
-* [Purchase](http://mishubd.com/product/woogoo)
-
-= Purchase Link =
-[http://mishubd.com/product/woogoo](http://mishubd.com/product/woogoo)
-
-
-= Documentation for single product submission =
-[youtube https://www.youtube.com/watch?v=Fl9jqaKy6JY]
-
-= Documentation for multiple product submission =
-[youtube https://www.youtube.com/watch?v=DOT_oMnOnr8]
 
 == Installation ==
 
