@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name: WP Woocommerce to Google merchant center
+ * Plugin Name: Google Product Feed
  * Plugin URI: https://github.com/asaquzzaman/woocommerce-to-google-merchant-center
- * Description: Submit your product woocommerce to google merchant center.
+ * Description: WooCommerce product export
  * Author: asaquzzaman
- * Version: 0.5
+ * Version: 1.0
  * Author URI: http://mishubd.com
  * License: GPL2
- * TextDomain: woogool
+ * TextDomain: wogol
  */
 
 /**
