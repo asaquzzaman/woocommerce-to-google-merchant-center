@@ -12,10 +12,76 @@
             $('.woogool').on( 'change', '.woogool-all-product-checkbox-feed', this.allProductHide );
             $('#woogool-feed-metabox-wrap').on('change', '.woogool-all-product-checkbox', this.feedDefault );
             $('.woogool').on( 'change', '.woogool-target-country-drop', this.targetCountry );
+
             this.chosen();
             this.allProductHide();
             this.datePicker();
             this.feedDefault();
+            this.initTipTip();
+            this.googleCatSet();
+        },
+
+        initTipTip: function() {
+            // $( 'body .woogool-help-tip' ).tipTip( {
+            //     defaultPosition: "top",
+            //     fadeIn: 100,
+            //     fadeOut: 100,
+            //     class: 'woogool-feed-toltip'
+            // } );
+        },
+
+        newFeed: function(e) {
+            e.preventDefault();
+            
+            var self = $(this),
+                count = self.find('.woogool-count');
+
+            self.find('.woogool-new-feed-btn').prop('disabled', true);
+            self.find('.woogool-spinner').show();
+            
+            wp.ajax.send('woogool-new-feed', {
+                data: {
+                    form_data: self.serialize(),
+                    _wpnonce: woogool_var.nonce 
+                },
+                success: function(res) {
+                    if ( res.woogool_continue === true ) {
+                        var number = parseInt( count.text() ) + parseInt( res.count );
+                        count.html( number );
+                        WOOGOOL.feedContinue(res);
+                    } else {
+                        window.location.href = res.redirect;
+                    }
+                },
+                error: function() {
+                    self.find('.woogool-new-feed-btn').prop('disabled', false);
+                    self.find('.woogool-spinner').hide();
+                }
+            });
+        },
+
+        feedContinue: function(res) {
+            var count = $('.woogool-feed-form').find('.woogool-count');
+            
+            wp.ajax.send('woogool-new-feed-continue', {
+                data: {
+                    form_data: res,
+                    _wpnonce: woogool_var.nonce 
+                },
+                success: function(res) {
+                    if ( res.woogool_continue === true ) {
+                        var number = parseInt( count.text() ) + parseInt( res.count );
+                        count.html( number );
+                        WOOGOOL.feedContinue(res);
+                    } else {
+                        window.location.href = res.redirect;
+                    }
+                },
+                error: function() {
+                    self.find('.woogool-new-feed-btn').prop('disabled', false);
+                    self.find('.woogool-spinner').hide();
+                }
+            });
         },
 
         targetCountry: function(e) {
@@ -65,16 +131,82 @@
             });
         },
         allProductHide: function() {
-            if ( $('.woogool-all-product-checkbox-feed').prop('checked') ) {
+            var self = $('.woogool-all-product-checkbox-feed'),
+                self_val = self.val();
+
+            if ( self_val === 'all' ) {
                 $('.woogool-product-chosen-field-wrap').hide();
-            } else {
+                $('.woogool-product-category-chosen-field-wrap').hide();
+            }
+
+            if ( self_val === 'individual' ) {
                 $('.woogool-product-chosen-field-wrap').show();
+                $('.woogool-product-category-chosen-field-wrap').hide();
+            }
+
+            if ( self_val === 'category' ) {
+                $('.woogool-product-chosen-field-wrap').hide();
+                $('.woogool-product-category-chosen-field-wrap').show();
             }
         },
         chosen: function() {
 
-            $('.woogool .woogool-chosen').chosen({ width: '300px' });
+            $('.woogool .woogool-chosen')
+                .chosen({ width: '300px' })
+                .change(function(change, change_val ) {
 
+                    if( change_val.deselected && $(change.target).hasClass('woogool-google-cat') ) {
+                        WOOGOOL.categoryRemove( $(change.target), change_val );
+                        WOOGOOL.catVisibleStatus();
+                    } 
+
+                    if ( change_val.selected && $(change.target).hasClass('woogool-google-cat') ) {
+                        WOOGOOL.categoryMap( $(change.target), change_val );
+                        WOOGOOL.catVisibleStatus();
+                    }
+                });
+
+        },
+
+        catVisibleStatus: function() {
+            var wrap = $('.woogool-category-map-wrap'),
+                li   = wrap.find('.woogool-cat-map-li');
+
+            if ( li.length ) {
+                wrap.show();
+            } else {
+                wrap.hide();
+            }
+        },
+
+        categoryRemove: function( self, deselectd_val ) {
+            var name = 'cat_map['+deselectd_val.deselected+']'; 
+           
+            $('input[name="'+name+'"]').closest('.woogool-cat-map-li').remove();
+        },
+
+        categoryMap: function( self, selectd_val ) {
+            var cat_text = self.find('option[value="'+selectd_val.selected+'"]').text(),
+                cat_field = $('#woogool-hidden-field').find('.woogool-cat-map-li').clone();
+            
+            cat_field.find('.woogool-cat-title').text(cat_text);
+            cat_field.find('.woogool-cat-map-field').attr('name', 'cat_map['+selectd_val.selected+']');
+            cat_field.find('.woogool-cat-select').addClass('woogool-chosen-custom');
+                
+
+            $('.woogool-category-map-wrap').find('.woogool-google-cat-ul').append(cat_field);
+            
+            WOOGOOL.googleCatSet();
+              
+        },
+
+        googleCatSet: function() {
+            $('.woogool .woogool-chosen-custom')
+                .chosen({ width: '300px' })
+                .change(function(ele, val) {
+                    var li = $(this).closest('.woogool-cat-map-li');
+                    li.find('.woogool-cat-map-field').attr('value', val.selected);
+                });
         },
 
         changeProduct: function() {

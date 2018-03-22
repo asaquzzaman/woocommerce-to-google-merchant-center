@@ -43,3 +43,5 @@ if ( ! $subtab ) {
         ?>
     </ul>
 </h3>
+
+<?php woogool_warning(); ?>

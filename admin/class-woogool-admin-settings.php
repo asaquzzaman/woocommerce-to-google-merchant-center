@@ -89,6 +89,7 @@ class WooGool_Admin_Settings {
         $element['desc']        = isset( $element['desc'] ) ? $element['desc'] : '';
         $element['action_hook'] = isset( $element['action_hook'] ) ? $element['action_hook'] : '';
         $element['required']    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
+        $element['info']       = empty( $element['info'] ) ? '' : '<span class="woogool-help-tip" title="'.$element['info'].'"></span>';
 
         if( is_array( $element['extra'] ) && count( $element['extra'] ) ) {
             foreach( $element['extra'] as $key => $action ) {
@@ -96,7 +97,7 @@ class WooGool_Admin_Settings {
             }
         }
 
-        $html = sprintf( '<label for="%1s">%2s<em>%3s</em></label>', $element['id'], $element['label'], $element['required'] );
+        $html = sprintf( '<label for="%1s">%2s<em>%3s</em>%4$s</label>', $element['id'], $element['label'], $element['required'], $element['info'] );
         $html .= sprintf( '<select class="%1$s" name="%2$s" id="%3$s" %4$s %5$s>', $element['class'], $name, $element['id'], $element['disabled'], $extra );
         foreach ( $element['option'] as $key => $label ) {
             $html .= sprintf( '<option value="%1$s" %2$s >%3$s</option>', esc_attr( $key ), selected( $element['selected'], $key, false ), esc_attr( $label ) );
@@ -135,6 +136,7 @@ class WooGool_Admin_Settings {
         $element['desc']        = isset( $element['desc'] ) ? $element['desc'] : '';
         $element['action_hook'] = isset( $element['action_hook'] ) ? $element['action_hook'] : '';
         $element['required']    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
+        $element['info']       = empty( $element['info'] ) ? '' : '<span class="woogool-help-tip" title="'.$element['info'].'"></span>';
 
         if( is_array( $element['extra'] ) && count( $element['extra'] ) ) {
             foreach( $element['extra'] as $key => $action ) {
@@ -142,7 +144,7 @@ class WooGool_Admin_Settings {
             }
         }
 
-        $html = sprintf( '<label for="%1s">%2s<em>%3s</em></label>', $element['id'], $element['label'], $element['required'] );
+        $html = sprintf( '<label for="%1$s">%2$s<em>%3$s</em>%4$s</label>', $element['id'], $element['label'], $element['required'], $element['info'] );
         $html .= sprintf( '<select multiple class="%1$s" name="%2$s" id="%3$s" %4$s %5$s>', $element['class'], $name, $element['id'], $element['disabled'], $extra );
         foreach ( $element['option'] as $key => $label ) {
             $html .= sprintf( '<option value="%1$s" %2$s >%3$s</option>', esc_attr( $key ), selected( in_array( $key, $element['selected'] ), true, false ), esc_attr( $label ) );
@@ -184,6 +186,7 @@ class WooGool_Admin_Settings {
         $element_placeholder = isset( $element['placeholder'] ) ? esc_attr( $element['placeholder'] ) : '';
         $element_type        = isset( $element['type'] ) ? esc_attr( $element['type'] ) : 'text';
         $element_required    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
+        $info                = empty( $element['info'] ) ? '' : '<span class="woogool-help-tip" title="'.$element['info'].'"></span>';
 
         if( is_array( $element_extra ) && count( $element_extra ) ) {
             foreach( $element_extra as $key => $action ) {
@@ -196,7 +199,7 @@ class WooGool_Admin_Settings {
         ?>
         <div class="woogool-form-field woogool-text">
 
-            <label for="<?php echo $element_id; ?>"><?php echo $element_label; ?><em><?php echo $element_required; ?></em></label>
+            <label for="<?php echo $element_id; ?>"><?php echo $element_label; ?><em><?php echo $element_required; ?></em><?php echo $info; ?></label>
             <input type="text" name="<?php echo $name; ?>" value="<?php echo $element_value; ?>" placeholder="<?php echo $element_placeholder; ?>" class="<?php echo $element_class; ?>" id="<?php echo $element_id; ?>" <?php echo $element_disabled; ?> <?php echo $extra; ?> />
             <?php do_action( 'settings_text_field', $name, $element ); ?>
             <span class="woogool-clear"></span><span class="description"><?php echo $element_desc; ?></span>
@@ -254,10 +257,11 @@ class WooGool_Admin_Settings {
         if( empty( $name ) ) {
             return;
         }
-
+        
+        $element['info']       = empty( $element['info'] ) ? '' : '<span class="woogool-help-tip" title="'.$element['info'].'"></span>';
         $element['required'] = ( isset( $element['required'] ) &&  ( $element['required'] == 'required' ) ) ? '*' : '';
         $label = isset( $element['label'] ) ? esc_attr( $element['label'] ) : '';
-        $html = sprintf( '<label for="">%1$s<em>%2$s</em></label>', $label, $element['required'] );
+        $html = sprintf( '<label for="">%1$s<em>%2$s</em>%3$s</label>', $label, $element['required'], $element['info'] );
 
         $fields = isset( $element['fields'] ) ? $element['fields'] : array();
 
@@ -304,9 +308,10 @@ class WooGool_Admin_Settings {
             return;
         }
 
+        $element['info']     = empty( $element['info'] ) ? '' : '<span class="woogool-help-tip" title="'.$element['info'].'"></span>';
         $element['required'] = ( isset( $element['required'] ) &&  ( $element['required'] == 'required' ) ) ? '*' : '';
         $label = isset( $element['label'] ) ? esc_attr( $element['label'] ) : '';
-        $html = sprintf( '<label for="">%1$s<em>%2$s</em></label>', $label, $element['required'] );
+        $html = sprintf( '<label for="">%1$s<em>%2$s</em>%3$s</label>', $label, $element['required'], $element['info'] );
 
         $fields = isset( $element['fields'] ) ? $element['fields'] : array();
 
@@ -362,6 +367,7 @@ class WooGool_Admin_Settings {
         $element['desc']     = isset( $element['desc'] ) ? esc_attr( $element['desc'] ) : '';
         $element['value']    = isset( $element['value'] ) ? esc_attr( $element['value'] ) : '';
         $element['required']    = ( isset( $element['extra']['data-woogool_required'] ) &&  ( $element['extra']['data-woogool_required'] === true ) ) ? '*' : '';
+        $element['info']     = empty( $element['info'] ) ? '' : '<span class="woogool-help-tip" title="'.$element['info'].'"></span>';
 
         if( is_array( $element['extra'] ) && count( $element['extra'] ) ) {
             foreach( $element['extra'] as $key => $action ) {
@@ -369,7 +375,7 @@ class WooGool_Admin_Settings {
             }
         }
 
-        $html = sprintf( '<label for="%1s">%2s<em>%3s</em></label>', $element['id'], $element['label'], $element['required'] );
+        $html = sprintf( '<label for="%1s">%2s<em>%3s</em>%4$s</label>', $element['id'], $element['label'], $element['required'], $element['info'] );
         $html .= sprintf( '<textarea name="%1$s" class="%2$s" id="%3$s" %4$s %5$s >%6$s</textarea>', $name,
                 $element['class'], $element['id'], $element['disabled'], $extra, $element['value'] );
         $html .= sprintf( '<span class="woogool-clear"></span><span class="description">%s</span>', $element['desc'] );
@@ -387,11 +393,11 @@ class WooGool_Admin_Settings {
 
         ob_start();
             $this->wrap_start( $element );
-            if ( !empty( $text ) ) {
+            //if ( !empty( $text ) ) {
                 echo '<div class="woogool-form-field woogool-html">';
                 echo $text;
                 echo '</div>';
-            }
+            //}
             $this->wrap_close( $element );
         return ob_get_clean();
     }

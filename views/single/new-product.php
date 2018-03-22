@@ -3,25 +3,25 @@ $is_access_premission = WooGool()->individual->check_authenticate();
 
 if ( ! $is_access_premission ) {
     WooGool()->individual->authentication_process();
-    //return;
+    return;
+} else {
+    woogool_merchan_configure_warning();
 }
 ?>
 
-<div class="">
+<div class="woogool-submit-notification">
 
-    <div class="woogool-submit-notification">
-
-        <div class="woogool-error-code"></div>
-        <div class="error-message"></div>
-    </div>
+    <div class="woogool-error-code"></div>
+    <div class="error-message"></div>
+</div>
 
 <?php
 
 $offset = 20;
-$products = woogool_get_products( 20 );
+$products = woogool_free_get_products( 20 );
 
 while( count( $products ) ) {
-    $new_some_products = woogool_get_products( 20, $offset );
+    $new_some_products = woogool_free_get_products( 20, $offset );
     $products          = array_merge( $products, $new_some_products );
     if ( ! count( $new_some_products ) ) {
         break;
@@ -47,14 +47,14 @@ $product_price = $wc_product->get_price();
 $sku           = $wc_product->get_sku();
 $link          = $wc_product->get_permalink();
 $stock         = $wc_product->is_in_stock() ? 'in stock' : 'out of stock';
-$content       = isset( $wc_product->post ) ? $wc_product->post->post_content : '';
-$product_id    = isset( $wc_product->id ) ? $wc_product->id : '';
+$content       = $wc_product->get_description();
+$product_id    = $wc_product->get_id();
 $image_url     =  wp_get_attachment_url( $wc_product->get_image_id() );
 $currency      = get_woocommerce_currency();
 $shop_field    = array();
 $additional_images = array();
 
-foreach ( $wc_product->get_gallery_attachment_ids( ) as $key => $link_id ) {
+foreach ( $wc_product->get_gallery_image_ids( ) as $key => $link_id ) {
     $additional_images[] =  wp_get_attachment_url( $link_id ); 
     if ( count( $additional_images ) > 9 ) {
         break;
@@ -1421,58 +1421,56 @@ $shop_field[] = array(
     'desc' => __( '', 'woogool' ),
     'label' => __( 'Year', 'woogool' ),
 );*/
-echo '<div class="woogool-form-wrap">';
-echo '<form method="post" class="woogool-form woogool-form-product" action="">';
 ?>
-<h1 class="woogool-product-info"><?php _e( 'Product Information', 'woogool' ); ?></h1>
-<div class="woogool-warning">
-    <?php _e( 'If you did not cofigure your shipping and tax information correctly according 
-    to your targeted coutnry and did not verify your website then please do all these things 
-    from your google merchant account before submitting the form', 'woogool' ); ?>
+
+<div class="woogool-form-wrap">
+    <form method="post" class="woogool-form woogool-form-product" action="">
+
+        <h1 class="woogool-product-info"><?php _e( 'Product Information', 'woogool' ); ?></h1>
+        
+
+        <?php
+
+        foreach( $shop_field as $name => $field_obj ) {
+
+            if( ! isset( $field_obj['type'] ) || empty( $field_obj['type'] ) ) {
+                continue;
+            }
+
+            switch ( $field_obj['type'] ) {
+                case 'text':
+                    echo WooGool_Admin_Settings::getInstance()->text_field( $name, $field_obj );
+                    break;
+                case 'select':
+                    echo WooGool_Admin_Settings::getInstance()->select_field( $name, $field_obj );
+                    break;
+                case 'textarea':
+                    echo WooGool_Admin_Settings::getInstance()->textarea_field( $name, $field_obj );
+                    break;
+                case 'radio':
+                    echo WooGool_Admin_Settings::getInstance()->radio_field( $name, $field_obj );
+                    break;
+                case 'checkbox':
+                    echo WooGool_Admin_Settings::getInstance()->checkbox_field( $name, $field_obj );
+                    break;
+                case 'hidden':
+                    echo WooGool_Admin_Settings::getInstance()->hidden_field( $name, $field_obj );
+                    break;
+                case 'multiple':
+                    echo WooGool_Admin_Settings::getInstance()->multiple_select_field( $name, $field_obj );
+                    break;
+                case 'html':
+                    echo WooGool_Admin_Settings::getInstance()->html_field( $name, $field_obj );
+                    break;
+            }
+        }
+        ?>
+        <div class="woogool-clear"></div>
+        <input type="submit" class="button button-primary" value="<?php _e( 'Send', 'woogool'); ?>" name="woogool_submit">
+        <div class="woogool-spinner-wrap"></div>
+
+    </form>
 </div>
 
-<?php
 
-foreach( $shop_field as $name => $field_obj ) {
-
-    if( ! isset( $field_obj['type'] ) || empty( $field_obj['type'] ) ) {
-        continue;
-    }
-
-    switch ( $field_obj['type'] ) {
-        case 'text':
-            echo WooGool_Admin_Settings::getInstance()->text_field( $name, $field_obj );
-            break;
-        case 'select':
-            echo WooGool_Admin_Settings::getInstance()->select_field( $name, $field_obj );
-            break;
-        case 'textarea':
-            echo WooGool_Admin_Settings::getInstance()->textarea_field( $name, $field_obj );
-            break;
-        case 'radio':
-            echo WooGool_Admin_Settings::getInstance()->radio_field( $name, $field_obj );
-            break;
-        case 'checkbox':
-            echo WooGool_Admin_Settings::getInstance()->checkbox_field( $name, $field_obj );
-            break;
-        case 'hidden':
-            echo WooGool_Admin_Settings::getInstance()->hidden_field( $name, $field_obj );
-            break;
-        case 'multiple':
-            echo WooGool_Admin_Settings::getInstance()->multiple_select_field( $name, $field_obj );
-            break;
-        case 'html':
-            echo WooGool_Admin_Settings::getInstance()->html_field( $name, $field_obj );
-            break;
-    }
-}
-?>
-<div class="woogool-clear"></div>
-<input type="submit" class="button button-primary" value="<?php _e( 'Send', 'woogool'); ?>" name="woogool_submit">
-<div class="woogool-spinner-wrap"></div>
-<?php
-echo '</form>';
-echo '</div>';
-?>
-</div>
 

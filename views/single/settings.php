@@ -37,18 +37,34 @@ $settings['merchant_account_id'] = array(
 
 
 ?>
-<div class="postbox" style="padding: 10px;">
-<form action="" method="post" class="woogool-form">
-	<?php echo WooGool_Admin_Settings::getInstance()->text_field( 'client_id', $settings['client_id'] ); ?>
-	<?php echo WooGool_Admin_Settings::getInstance()->text_field( 'client_secret', $settings['client_secret'] ); ?>
-    <?php echo WooGool_Admin_Settings::getInstance()->text_field( 'merchant_account_id', $settings['merchant_account_id'] ); ?>
-	<p>
-        <label>
-            <strong><?php _e( 'Authorized Rredirect uri', 'woogool' ); ?></strong>
-        </label>
-        <?php echo admin_url( 'edit.php?post_type=product&page=product_woogool' ); ?>&nbsp;<br>
-        <span class="description"><?php _e( 'This url you will be needed when you creating a new client ID for google api authenticate.', 'woogool' ); ?></span>
-    </p>
-    <input type="submit" class="button button-primary" value="<?php _e( 'Save Settings', 'woogool'); ?>" name="woogool_settings">
-</form>
+ <div class="woogool-notice woogool-warning">
+    <?php _e( 'Settings field are need for single product submission not for multiple product feed', 'woogool' ); ?>
 </div>
+<div class="metabox-holder">
+    <div class="postbox">
+        <h2 class="hndle">Settings</h2>
+        <div class="inside">
+            <form action="" method="post" class="woogool-form">
+            	<?php echo WooGool_Admin_Settings::getInstance()->text_field( 'client_id', $settings['client_id'] ); ?>
+            	<?php echo WooGool_Admin_Settings::getInstance()->text_field( 'client_secret', $settings['client_secret'] ); ?>
+                <?php echo WooGool_Admin_Settings::getInstance()->text_field( 'merchant_account_id', $settings['merchant_account_id'] ); ?>
+            	<p>
+                    <label>
+                        <strong><?php _e( 'Authorized Rredirect uri', 'woogool' ); ?></strong>
+                    </label>
+                    <?php echo admin_url( 'edit.php?post_type=product&page=product_woogool' ); ?>&nbsp;<br>
+                    <span class="description"><?php _e( 'This url you will be needed when you creating a new client ID for google api authenticate.', 'woogool' ); ?></span>
+                </p>
+                <input type="submit" class="button button-primary" value="<?php _e( 'Save Settings', 'woogool'); ?>" name="woogool_settings">
+            </form>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .woogool-form .woogool-form-field label {
+        font-size: 14px;
+        font-weight: normal;
+    }
+</style>
+

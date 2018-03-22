@@ -8,6 +8,32 @@ class WooGool_Admin_ajax {
         add_action( 'wp_ajax_delete_product', array( $this, 'delete_product' ) );
         add_action( 'wp_ajax_woogool_merchant_form', array( $this, 'google_merchant' ) );
         add_action( 'wp_ajax_change_product', array( $this, 'change_product' ) );
+        add_action( 'wp_ajax_woogool-new-feed', array( $this, 'new_feed' ) );
+        add_action( 'wp_ajax_woogool-new-feed-continue', array( $this, 'new_feed_continue' ) );
+    }
+
+    function new_feed_continue() {
+        check_ajax_referer( 'woogool_nonce' );
+        $postdata = $_POST['form_data']['postdata'];
+        $res                 = WooGool_Admin_Feed::instance()->new_feed( $postdata );
+        $postdata['id']      = isset( $res['id'] ) ? intval( $res['id'] ) : 0;
+        $postdata['offset']  = $res['offset']; 
+        $postdata['woogool_continue']= $woogool_continue = isset( $res['woogool_continue'] ) ? $res['woogool_continue'] : false;
+        $redirect_url        = woogool_subtab_menu_url( 'woogool_multiple', 'feed-lists' );
+
+        wp_send_json_success( array( 'postdata' => $postdata, 'woogool_continue' => $woogool_continue, 'redirect' => $redirect_url, 'count' => $res['count'] ) );
+    }
+
+    function new_feed() {
+        check_ajax_referer( 'woogool_nonce' );
+        parse_str( $_POST['form_data'], $postdata );
+        $res                 = WooGool_Admin_Feed::instance()->new_feed( $postdata );
+        $postdata['id']      = isset( $res['id'] ) ? intval( $res['id'] ) : 0;
+        $postdata['offset']  = $res['offset']; 
+        $postdata['woogool_continue']= $woogool_continue = isset( $res['woogool_continue'] ) ? $res['woogool_continue'] : false;
+        $redirect_url        = woogool_subtab_menu_url( 'woogool_multiple', 'feed-lists' );
+
+        wp_send_json_success( array( 'postdata' => $postdata, 'woogool_continue' => $woogool_continue, 'redirect' => $redirect_url, 'count' => $res['count'] ) );
     }
 
     /**
@@ -94,13 +120,13 @@ class WooGool_Admin_ajax {
         try {
 
             $submited_products = get_option( 'woogool_submited_products', 0 );
-            
-            if ( $submited_products >= 5 ) { 
-                $url = 'http://mishubd.com/product/woogoo/'; 
-                $notice = sprintf( 'You have to purchase this plugin (woogool) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url ); 
-                wp_send_json_error( array( 'error_code' => 'unknown', 'error_msg' => $notice ) ); 
-            } 
 
+            if ( $submited_products >= 20 ) {
+                $url = 'http://mishubd.com/product/woogoo/';
+                $notice = sprintf( 'You have to purchase this plugin (WooGool) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url );
+                wp_send_json_error( array( 'error_code' => 'unknown', 'error_msg' => $notice ) );
+            }
+            
             $merchant_id = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
             $product = $shoppinContent->products->insert( $merchant_id, new Google_Service_ShoppingContent_Product( $postdatas ) );
             

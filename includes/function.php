@@ -143,7 +143,8 @@ function woogool_get_product( $product_id ) {
 }
 
 function woogool_get_google_product_type() {
-    $request = wp_remote_get( 'http://www.google.com/basepages/producttype/taxonomy.en-US.txt' );
+    $google_taxonomy = apply_filters( 'woogool_google_taxonomy_url', 'http://www.google.com/basepages/producttype/taxonomy.en-US.txt' );
+    $request = wp_remote_get( $google_taxonomy );
     if ( is_wp_error( $request ) || ! isset( $request['response']['code'] ) || '200' != $request['response']['code'] ) {
         return array();
     }
@@ -228,15 +229,38 @@ function woogool_get_query_args() {
  * Get woocommerce all product
  * @return array()
 */
-function woogool_get_products( $count = '-1', $offset = 0 ) {
-    $args = array(
+function woogool_get_products( $count = '-1', $offset = 0, $args = array() ) {
+    
+    $defaults = array(
+        'posts_per_page'   => 20,
+        'post_type'        => 'product',
+        'post_status'      => 'publish',
+        'offset'           => 0,
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+    $query = NEW WP_Query( $args );
+
+    return $query->posts;
+}
+
+/**
+ * Get woocommerce all product
+ * @return array()
+*/
+function woogool_free_get_products( $count = '-1', $offset = 0, $args = array() ) {
+    
+    $defaults = array(
         'posts_per_page'   => $count,
         'post_type'        => 'product',
         'post_status'      => 'publish',
-        'offset'           => $offset
+        'offset'           => $offset,
     );
 
-    return get_posts( $args );
+    $args = wp_parse_args( $args, $defaults );
+    $query = NEW WP_Query( $args );
+
+    return $query->posts;
 }
 
 function woogool_tab_menu_url( $tab ) {
@@ -246,8 +270,146 @@ function woogool_tab_menu_url( $tab ) {
 
 function woogool_subtab_menu_url( $tab, $sub_tab ) {
     $url = sprintf( '%1s?post_type=%2s&page=%3s&woogool_tab=%4s&woogool_sub_tab=%5s', admin_url( 'edit.php' ), 'product', woogool_page_slug(), $tab, $sub_tab );
-    return apply_filters( 'hrm_subtab_menu_url', $url, woogool_page_slug(), $tab, $sub_tab );
+    return apply_filters( 'woogool_subtab_menu_url', $url, woogool_page_slug(), $tab, $sub_tab );
 }
 
 require_once dirname(__FILE__) . '/ISD-code.php';
+
+function woogool_get_products_terms_dropdown_array() {
+    $terms = get_terms( array(
+        'taxonomy' => 'product_cat',
+        'hide_empty' => true,
+    ) );
+
+    $products_term = array();
+
+    foreach ( $terms as $term ) {
+        $products_term[$term->term_id] = $term->name;      
+    }
+
+    return $products_term;
+}
+
+function woogool_generte_save_cat( $feed_id, $taxonomies, $get_products_cat ) {
+    $products_cat = get_post_meta( $feed_id, '_cat_map', true );
+    
+    
+    if ( empty( $products_cat ) || empty( $get_products_cat ) ) {
+        return '';
+    } 
+
+    $products_cat = array_intersect_key( $products_cat, $get_products_cat );
+    
+    ob_start();
+    ?>
+    <ul class="woogool-google-cat-ul">
+        <?php foreach ( $products_cat as $product_cat_id => $google_cat_id ) { ?>
+            <li class="woogool-cat-map-li woogool-clearfix">
+                <input class="woogool-cat-map-field" type="hidden" name="cat_map[<?php echo absint( $product_cat_id ); ?>]" value="<?php echo absint( $google_cat_id ); ?>">
+                <span class="woogool-cat-title"><?php echo $get_products_cat[$product_cat_id] ?></span>
+                <div class="woogool-cat-dropdown">
+                <?php
+                $google_cat = array(
+                    'type'     => 'select',
+                    //'label'    => __( 'Category Maping', 'woogool' ),
+                    'option'   => $taxonomies,
+                    'class'    => 'woogool-cat-select woogool-chosen-custom', //Do not change the "woogool-google-cat" class 
+                    'selected' => $google_cat_id,//get_post_meta( $feed_id, '_google_product_category', true ),
+                    'desc'     => __( 'Google product ​​category. <a href="https://support.google.com/merchants/answer/6324436" target="_blank">More Details</a>' , 'woogool' )
+                );
+                echo WooGool_Admin_Settings::getInstance()->select_field( 'google_cat', $google_cat );
+                ?>
+                </div>
+            </li>
+
+        <?php } ?>
+    </ul>
+
+    <?php
+
+    return ob_get_clean();
+}
+
+function woogool_shipping_html() {
+    ob_start();
+    ?>
+        <p>
+            <label for=""><?php _e( 'Shipping', 'woogool' ); ?></label>
+            <h4>
+                <span class="woogool-field">
+                    <?php _e( 'Please configure your shipping settings from your google merchant account.', 'woogool' ); ?>
+                    <a href="https://www.google.com/retail/merchant-center/" target="_blank"><?php _e('Merchant Account', 'woogool'); ?></a>
+                </span>
+            </h4>
+        </p>
+    
+    <?php
+    return ob_get_clean();
+}
+
+function woogool_tax_html() {
+    ob_start();
+    ?>
+        <div>
+        <label for=""><?php _e( 'Tax', 'woogool' ); ?></label>
+        <h4>
+            <span class="woogool-field">
+                <?php _e( 'Please configure your tax settings from your google merchant account.', 'woogool' ); ?>
+                <a href="https://www.google.com/retail/merchant-center/" target="_blank"><?php _e('Merchant Account', 'woogool'); ?></a>
+            </span>
+        </h4>
+        </div>
+        
+    
+    <?php
+    return ob_get_clean();
+}
+
+function woogool_is_wc_new() {
+    if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+function woogool_xml_count() {
+    $count = array();
+
+    for( $i=0; $i<=20; $i+=WOOGOOL_FEED_PER_PAGE  ) {
+        $k = $i + (WOOGOOL_FEED_PER_PAGE-1);
+        $count[$i] = $i . '-' . $k;
+    }
+
+    return $count;
+}
+
+function woogool_warning() {
+    ?>
+    <div class="wrap">
+        <div class="woogool-notice woogool-warning" style="margin-bottom: 9px;">
+            With this free version you can generate only 20 products feed. For getting unlimited please go with 
+            <a class="woogool-link" href="https://www.google.com/retail/solutions/merchant-center/" target="_blank">
+                <b>Pro Version.</b>
+            </a> 
+        </div>
+    </div>
+    <?php
+}
+
+function woogool_merchan_configure_warning() {
+    ?>
+    <div class="woogool-notice woogool-warning">
+        If you did not cofigure your shipping and tax information correctly according 
+        to your targeted coutnry and did not verify your website then please do all these things 
+        from your 
+        <a class="woogool-link" href="https://www.google.com/retail/solutions/merchant-center/" target="_blank">
+            google merchant account
+        </a> before submitting the form
+    </div>
+    <?php
+}
+
+
+
 

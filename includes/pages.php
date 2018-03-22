@@ -6,11 +6,23 @@ function woogool_pages() {
     $pages['woogool_single']   = woogool_sigle_product_items( $path );
     $pages['woogool_multiple'] = woogool_multi_product_items( $path );
     $pages['woogool_tutorial'] = woogool_tutorial( $path );
+    //$pages['woogool_license']  = woogool_license( $path );
 
     return $pages;
 }
 
+function woogool_license( $path ) {
+    $license = array();
 
+    $license = array(
+        'id'        => 'woogool-license',
+        'title'     => __( 'License', 'woogool' ),
+        'file_slug' => 'license/license',
+        'file_path' => $path . '/license/license.php',
+    );
+
+    return $license;
+}
 
 function woogool_tutorial( $path ) {
     $tutorial = array();
@@ -72,6 +84,7 @@ function woogool_multi_product_items( $path ) {
 
 function woogool_sigle_product_items( $path ) {
 	$single = array();
+    $is_new = woogool_is_wc_new();
 
     $single = array(
         'id'        => 'woogool-single',
@@ -91,7 +104,7 @@ function woogool_sigle_product_items( $path ) {
                 'id'        => 'woogool-new-product',
                 'title'     => __( 'New Product', 'hrm' ),
                 'file_slug' => 'single/new-product',
-                'file_path' => $path . '/single/new-product.php',
+                'file_path' => $is_new ? $path . '/single/new-product.php' : $path . '/single/old-wc-new-product.php',
             ),
             'settings' => array(
                 'id'        => 'woogool-settings',

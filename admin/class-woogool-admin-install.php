@@ -13,7 +13,7 @@ class WooGool_Admin_Install {
     }
 
     function __construct( $current_version ) {
-    	$this->set_feed_default();
+    	//$this->set_feed_default();
     }
 
 	function set_feed_default() {

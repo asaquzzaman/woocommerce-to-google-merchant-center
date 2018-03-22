@@ -1,3 +1,80 @@
+.woogool-clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+}
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    //width: 120px;
+    background-color: black;
+    color: #fff;
+    //text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+
+.woogool-help-tip:after {
+    font-family: Dashicons;
+    font-weight: 400;
+    font-variant: normal;
+    line-height: 1;
+    margin: 0;
+    text-indent: 0;
+    //position: absolute;
+    top: 0;
+    
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    content: "";
+    cursor: help;
+    
+}
+.woogool-help-tip {
+	position: relative;
+	left: 53%;
+	font-size: 15px;
+	top: 5px;
+}
+.woogool-clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+.woogool-clearfix { height: 1%; }
+.woogool-clearfix { display: block; }
+
 input[type="checkbox"], input[type="radio"] {
 	width: 16px !important;
 }
@@ -145,16 +222,7 @@ input[type="checkbox"], input[type="radio"] {
 	margin-left: 24%;
 }
 
-.woogool-warning {
-	border: 2px solid #7ad03a;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 2;
-    margin: 10px;
-    padding: 9px;
-    text-align: justify;
-    width: 56%;
-}
+
 .woogool .woogool-sub-nav {
 	background: #FFFFFF;
     border-color: #CCCCCC;
@@ -193,3 +261,48 @@ input[type="checkbox"], input[type="radio"] {
 .woogool-hidden {
 	display: none;
 }
+.woogool-feed-form .woogool-spinner {
+
+	background: url( 'images/loading.gif' ) no-repeat;
+	height: 16px;
+	display: inline-block;
+	margin: 8px 0 0 15px;
+	background-position: 28%;
+	width: 80%;
+}
+.woogool-category-map-wrap .woogool-google-cat-ul {
+	//left: 24%;
+    //position: relative;
+    //ui-bg_highlight-soft_75_cccccc_1x100.png
+}
+.woogool-category-map-wrap .woogool-google-cat-ul .woogool-cat-map-li .woogool-form-field {
+	margin: 0;
+}
+.woogool-category-map-wrap .woogool-google-cat-ul .woogool-cat-map-li .woogool-cat-title {
+	float: left;
+	width: 24%;
+}
+.woogool-category-map-wrap .woogool-google-cat-ul .woogool-cat-map-li .woogool-cat-dropdown {
+	float: left;
+}
+
+.woogool-category-map-wrap .woogool-google-cat-ul .woogool-cat-map-li .description {
+    margin-left: 0px;
+}
+.woogool-notice {
+    background: #fff;
+    border-left: 4px solid #fff;
+    box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+    margin: 5px 0px 0px;
+    padding: 8px 12px;
+}
+
+.woogool-warning {
+    border-left-color: #ffb900;
+}
+
+.woogool-link {
+    text-decoration: none;
+}
+
+
