@@ -530,13 +530,24 @@ $feed_fields['custom_label_4'] = array(
 						}
 						?>
 						<div class="woogool-clear"></div>
-						<input type="submit" class="button button-primary woogool-new-feed-btn" value="<?php _e( 'Create Feed', 'woogool'); ?>" name="woogool_submit_feed">
+						
+						<?php
+						if( woogool_is_pro() ) {
+							?>
+							<input type="submit" class="button button-primary woogool-new-feed-btn" value="<?php _e( 'Create Feed', 'woogool'); ?>" name="woogool_submit_feed">
+							<?php
+						} else {
+
+							?>
+							<a class="button button-primary" href="http://wpspear.com/product-feed/" target="_blank"><?php _e('This feature is available for pro version', 'woogool'); ?></a>
+							<?php
+						}
+						?>
+						
 						<div class="woogool-spinner" style="display: none;"><?php _e( 'Please wait processing ', 'woogool' ); ?><span class="woogool-count"><?php echo WOOGOOL_FEED_PER_PAGE; ?></span><?php _e( ' products', 'woogool' ); ?></div>
 					</form>
 				</div>
 				<div class="woogool-clear"></div>
-
-
 
 				<div id="woogool-hidden-field" style="display: none;">
 					<li class="woogool-cat-map-li woogool-clearfix">

@@ -376,7 +376,7 @@ function woogool_is_wc_new() {
 function woogool_xml_count() {
     $count = array();
 
-    for( $i=0; $i<=20; $i+=WOOGOOL_FEED_PER_PAGE  ) {
+    for( $i=0; $i<=10000; $i+=WOOGOOL_FEED_PER_PAGE  ) {
         $k = $i + (WOOGOOL_FEED_PER_PAGE-1);
         $count[$i] = $i . '-' . $k;
     }
@@ -388,7 +388,7 @@ function woogool_warning() {
     ?>
     <div class="wrap">
         <div class="woogool-notice woogool-warning" style="margin-bottom: 9px;">
-            With this free version you can generate only 20 products feed. For getting unlimited please go with 
+            With this free version you can process only 40 products. For getting unlimited please go with the
             <a class="woogool-link" href="https://www.google.com/retail/solutions/merchant-center/" target="_blank">
                 <b>Pro Version.</b>
             </a> 
@@ -408,6 +408,10 @@ function woogool_merchan_configure_warning() {
         </a> before submitting the form
     </div>
     <?php
+}
+
+function woogool_is_pro() {
+    return apply_filters( 'woogool_filter_is_pro', false );
 }
 
 
