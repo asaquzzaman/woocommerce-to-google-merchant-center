@@ -236,9 +236,13 @@ if ( ! class_exists('WP_WooGool') ) {
         }
 
         function scripts_multiple_products() {
-            wp_enqueue_script( 'woogool-vue', plugins_url( '/assets/js/vue/vue.min.js', __FILE__ ), array( 'jquery' ), time(), true );
-            wp_enqueue_script( 'woogool-vuex', plugins_url( '/assets/js/vue/vuex.min.js', __FILE__ ), array( 'jquery' ), time(), true );
-            wp_enqueue_script( 'woogool-vue-router', plugins_url( '/assets/js/vue/vue-router.min.js', __FILE__ ), array( 'jquery' ), time(), true );
+            wp_enqueue_script( 'woogool-bootstrap', plugins_url( '/assets/js/bootstrap.js', __FILE__ ), array( 'jquery' ), time(), true );
+            wp_enqueue_script( 'woogool-vue', plugins_url( '/assets/js/vue/vue.min.js', __FILE__ ), array( 'jquery', 'woogool-bootstrap' ), time(), true );
+            wp_enqueue_script( 'woogool-vuex', plugins_url( '/assets/js/vue/vuex.min.js', __FILE__ ), array( 'jquery', 'woogool-vue' ), time(), true );
+            wp_enqueue_script( 'woogool-vue-router', plugins_url( '/assets/js/vue/vue-router.min.js', __FILE__ ), array( 'jquery', 'woogool-vuex' ), time(), true );
+            wp_enqueue_script( 'woogool-constant', plugins_url( '/assets/js/constant.js', __FILE__ ), array( 'jquery', 'woogool-vue-router' ), time(), true );
+            wp_enqueue_script( 'woogool-library', plugins_url( '/assets/js/pro/library.js', __FILE__ ), array( 'jquery', 'woogool-constant' ), time(), true );
+            wp_enqueue_script( 'woogool-pro', plugins_url( '/assets/js/pro/woogool_pro.js', __FILE__ ), array( 'jquery', 'woogool-library' ), time(), true );
         }
 
         /**
@@ -256,6 +260,7 @@ if ( ! class_exists('WP_WooGool') ) {
                 'nonce'           => wp_create_nonce( 'woogool_nonce' ),
                 'country_details' => json_encode( woogool_country_details() ),
                 'is_admin'        => is_admin() ? 'yes' : 'no',
+                'dir_url'         => plugin_dir_url( __FILE__ )
             ));
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen.min.css', __FILE__ ), false, time(), 'all' );
             wp_enqueue_style( 'woogool-style', plugins_url( 'assets/css/woogool.css', __FILE__ ) );

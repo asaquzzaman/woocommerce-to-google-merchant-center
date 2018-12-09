@@ -1,6 +1,4 @@
-import clickOutside from '@helpers/click-outside';
-
-pm.Vue.directive('pm-slide-up-down', {
+woogool.Vue.directive('woogool-slide-up-down', {
 	inserted: function(el) {
 		var node = jQuery(el);
 		
@@ -14,7 +12,7 @@ pm.Vue.directive('pm-slide-up-down', {
 });
 
 
-pm.Vue.directive('pm-pretty-photo', {
+woogool.Vue.directive('woogool-pretty-photo', {
 	inserted: function(el) {
 		var node = jQuery(el);
 		
@@ -28,13 +26,13 @@ pm.Vue.directive('pm-pretty-photo', {
 	},
 });
 
-pm.Vue.directive('pm-tooltip', {
+woogool.Vue.directive('woogool-tooltip', {
 	inserted: function(el) {
 		jQuery(el).tipTip();
 	},
 });
 
-pm.Vue.directive('pm-popper', {
+woogool.Vue.directive('woogool-popper', {
 	inserted: function(el) {
 		const reference = document.querySelector('#popper-ref');
 		const popper = document.querySelector('#poppercontent');
@@ -44,12 +42,11 @@ pm.Vue.directive('pm-popper', {
 	},
 });
 
-pm.Vue.directive('pm-click-outside', clickOutside);
 
-pm.Vue.directive('pm-header-menu-responsive', {
+woogool.Vue.directive('woogool-header-menu-responsive', {
 	inserted: function(el) {
 		// jQuery(el).slicknav({
-		// 		prependTo:'.pm-header-menu-wrap'
+		// 		prependTo:'.woogool-header-menu-wrap'
 		// });
 	},
 });

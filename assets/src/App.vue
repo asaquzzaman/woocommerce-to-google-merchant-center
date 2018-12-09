@@ -38,7 +38,7 @@
             registerModule () {
                 let self = this;
 
-                weDevsPmModules.forEach(function(module) {
+                wpspearWooGoolProModules.forEach(function(module) {
                     let store = require('./components/'+module.path+'/store.js');
                     self.registerStore(module.name, store.default );
                 });
@@ -47,7 +47,7 @@
 
         data () {
             return {
-                is_pro: PM_Vars.is_pro
+                is_pro: woogool_var.is_pro
             }
         }
 

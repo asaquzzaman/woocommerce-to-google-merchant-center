@@ -2,10 +2,10 @@
 
     import mixin from './../../helpers/mixin/mixin';
     
-    function PMGetComponents() {
+    function woogoolGetComponents() {
         var components = {};
         
-        weDevs_PM_Components.map(function(obj, key) {
+        wpspear_WooGool_Components.map(function(obj, key) {
             if (obj.property.mixins) {
                 obj.property.mixins.push(mixin);
             } else {
@@ -34,15 +34,15 @@
             }
         },
 
-        components: PMGetComponents(),
+        components: woogoolGetComponents(),
 
         render (h) {
-            this.$options.components = PMGetComponents();
+            this.$options.components = woogoolGetComponents();
 
             var components = [],
                 self = this;
 
-            weDevs_PM_Components.map(function(obj, key) {
+            wpspear_WooGool_Components.map(function(obj, key) {
                 if (obj.hook == self.hook) {
                     components.push(
                        Vue.compile('<'+obj.component+' :actionData="actionData"></'+obj.component+'>').render.call(self)
@@ -50,7 +50,7 @@
                 }
             });
 
-            return h('span', {class: 'pm-action-wrap'}, components);
+            return h('span', {class: 'woogool-action-wrap'}, components);
         }
     }
 

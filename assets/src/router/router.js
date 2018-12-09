@@ -1,41 +1,21 @@
+import FeedLists from '@components/feed-lists/router';
+import NewFeed from '@components/new-feed/router';
 
-import projects from '@components/project-lists/router';
-import categories from '@components/categories/router';
-import add_ons from '@components/add-ons/router';
-
-if (!PM_Vars.is_pro) {
-    require( '@components/my-tasks/router');
-    require('@components/calendar/router');
-    require('@components/reports/router');
-    require('@components/progress/router'); 
-}
-
-import {general, email} from '@components/settings/router';
 import Empty from '@components/root/init.vue';
 
-weDevs_PM_Routers.push({
+wooGoolRouters.push({
 	path: '/', 
     component:  Empty,
-    name: 'project_root',
+    name: 'woogool_root',
 
-	children: wedevsPMGetRegisterChildrenRoute('project_root')
+	children: wpspearWooGoolGetRegisterChildrenRoute('woogool_root')
 });
 
-var router = new pm.VueRouter({
-	routes: weDevs_PM_Routers,
-});
-
-router.beforeEach((to, from, next) => {
-    pm.NProgress.start();
-    next();
+var router = new woogool.VueRouter({
+	routes: wooGoolRouters,
 });
 
 
-//Load all components mixin
-weDevsPmModules.forEach(function(module) {
-    let mixin = require('@components/'+module.path+'/mixin.js');
-    PmMixin[module.name] = mixin.default;
-});
 
 
 export default router;
