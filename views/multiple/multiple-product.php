@@ -1,4 +1,10 @@
 <?php
+$query_args = woogool_get_query_args();
+
+$page       = $query_args['page'];
+$tab        = $query_args['tab'];
+$subtab     = $query_args['sub_tab'];
+
 $header_path = dirname(__FILE__) . '/header.php';
 
 if ( file_exists( $header_path ) ) {

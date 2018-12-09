@@ -17,9 +17,6 @@ The WooCommerce Google Product Feed plugin allows you to do so!
 
 Now, you can easily upload your WC product feed XML file directly to your Google merchant account. It requires verification from Google to upload the file to your account. After verifying, you can see your product in the Google shop. 
 
-= Purchase Link =
-[http://mishubd.com/product/woogoo](http://mishubd.com/product/woogoo)
-
 
 = Documentation for single product submission =
 [youtube https://www.youtube.com/watch?v=Fl9jqaKy6JY]
@@ -83,6 +80,10 @@ It provides you to submit products one by one to Google merchant center. There i
 <strong>Multiple product submission</strong>
 
 It provides you to generate all product feed XML file at once and it also supports product variation. It will also help you to generate product feed XML by product category wise. This feature is only available for pro version.
+
+== Purchase Link ==
+[http://wpspear.com/product-feed/](http://wpspear.com/product-feed/)
+
 
 The WooCommerce Google product feed plugin is compatible with WooCommerce latest (3.0.0+).
 

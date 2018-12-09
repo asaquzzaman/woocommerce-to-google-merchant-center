@@ -52,7 +52,7 @@ $settings['merchant_account_id'] = array(
                     <label>
                         <strong><?php _e( 'Authorized Rredirect uri', 'woogool' ); ?></strong>
                     </label>
-                    <?php echo admin_url( 'edit.php?post_type=product&page=product_woogool' ); ?>&nbsp;<br>
+                    <?php echo admin_url( 'admin.php?page=woogool&tab=new_product' ); ?>&nbsp;<br>
                     <span class="description"><?php _e( 'This url you will be needed when you creating a new client ID for google api authenticate.', 'woogool' ); ?></span>
                 </p>
                 <input type="submit" class="button button-primary" value="<?php _e( 'Save Settings', 'woogool'); ?>" name="woogool_settings">

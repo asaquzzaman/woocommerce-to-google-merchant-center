@@ -17,21 +17,21 @@ class WooGool_Admin_Settings {
         return self::$_instance;
     }
 
+
     function show_tab_page( $page, $tab, $subtab, $nested_tab = '' ) {
         if ( !$tab ) {
-            _e( 'Missing Tab Page!', 'hrm' );
+            _e( 'Missing Tab Page!', 'woogool' );
             return;
         }
 
         $menu = woogool_pages();
         $tab = empty( $nested_tab ) ? $tab : $nested_tab;
-
-        $path = isset( $menu[$tab]['file_path'] ) ? $menu[$tab]['file_path'] : '';
+        $path = isset( $menu[$page][$tab]['file_path'] ) ? $menu[$page][$tab]['file_path'] : '';
 
         if( file_exists( $path ) ) {
             include_once $path;
         } else {
-            _e('Page not found', 'hrm' );
+            _e('Page not found', 'woogool' );
         }
 
     }

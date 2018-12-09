@@ -199,27 +199,28 @@ function woogool_is_product_attribute_taxonomy( $attr, $porduct_obj ) {
 }
 
 function woogool_get_query_args() {
-
+    $page = $_GET['page'];
     $menu = woogool_pages();
 
-    if ( isset( $_GET['woogool_tab'] ) && ! empty( $_GET['woogool_tab'] ) ) {
-        $tab = $_GET['woogool_tab'];
+    if ( isset( $_GET['tab'] ) && ! empty( $_GET['tab'] ) ) {
+        $tab = $_GET['tab'];
     } else {
-        $tab = array_keys( $menu );
+        $tab = array_keys( $menu[$page] );
         $tab = reset( $tab ); 
+
     }
 
     if ( isset( $_GET['woogool_sub_tab'] ) && !empty( $_GET['woogool_sub_tab'] ) ) {
         $subtab = $_GET['woogool_sub_tab'];
-    } else if ( isset( $menu[$tab]['submenu'] ) && count( $menu[$tab]['submenu'] ) ) {
-        $subtab = array_keys( $menu[$tab]['submenu'] );
+    } else if ( isset( $menu[$page][$tab]['submenu'] ) && count( $menu[$page][$tab]['submenu'] ) ) {
+        $subtab = array_keys( $menu[$page][$tab]['submenu'] );
         $subtab = reset( $subtab );
     } else {
         $subtab = false;
     }
 
     return array(
-        'page' => woogool_page_slug(),
+        'page' => $page,
         'tab'  => $tab,
         'sub_tab' => $subtab
     );
@@ -232,7 +233,7 @@ function woogool_get_query_args() {
 function woogool_get_products( $count = '-1', $offset = 0, $args = array() ) {
     
     $defaults = array(
-        'posts_per_page'   => 20,
+        'posts_per_page'   => -1,
         'post_type'        => 'product',
         'post_status'      => 'publish',
         'offset'           => 0,
@@ -263,13 +264,13 @@ function woogool_free_get_products( $count = '-1', $offset = 0, $args = array() 
     return $query->posts;
 }
 
-function woogool_tab_menu_url( $tab ) {
-    $url = sprintf( '%1s?post_type=%2s&page=%3s&woogool_tab=%4s', admin_url( 'edit.php' ), 'product', woogool_page_slug(), $tab );
-    return apply_filters( 'woogool_tab_menu_url', $url, woogool_page_slug(), $tab );
+function woogool_tab_menu_url( $page, $tab ) {
+    $url = sprintf( '%1s?page=%2s&tab=%4s', admin_url( 'admin.php' ), $page, $tab );
+    return apply_filters( 'tab_menu_url', $url, $page, $tab );
 }
 
 function woogool_subtab_menu_url( $tab, $sub_tab ) {
-    $url = sprintf( '%1s?post_type=%2s&page=%3s&woogool_tab=%4s&woogool_sub_tab=%5s', admin_url( 'edit.php' ), 'product', woogool_page_slug(), $tab, $sub_tab );
+    $url = sprintf( '%1s?post_type=%2s&page=%3s&tab=%4s&woogool_sub_tab=%5s', admin_url( 'edit.php' ), 'product', woogool_page_slug(), $tab, $sub_tab );
     return apply_filters( 'woogool_subtab_menu_url', $url, woogool_page_slug(), $tab, $sub_tab );
 }
 

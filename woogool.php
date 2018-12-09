@@ -235,6 +235,12 @@ if ( ! class_exists('WP_WooGool') ) {
             new WooGool_Admin_Upgrade();
         }
 
+        function scripts_multiple_products() {
+            wp_enqueue_script( 'woogool-vue', plugins_url( '/assets/js/vue/vue.min.js', __FILE__ ), array( 'jquery' ), time(), true );
+            wp_enqueue_script( 'woogool-vuex', plugins_url( '/assets/js/vue/vuex.min.js', __FILE__ ), array( 'jquery' ), time(), true );
+            wp_enqueue_script( 'woogool-vue-router', plugins_url( '/assets/js/vue/vue-router.min.js', __FILE__ ), array( 'jquery' ), time(), true );
+        }
+
         /**
          * Load script
          * @return  void
@@ -260,8 +266,12 @@ if ( ! class_exists('WP_WooGool') ) {
          * @return void
          */
         function admin_menu() {
-            $woogool = add_submenu_page( 'edit.php?post_type=product', __( 'WooGool', 'woogool' ), __( 'WooGool', 'woogool' ), 'manage_product_terms', woogool_page_slug() , array( $this, 'woogool_page' ) );
+            $woogool = add_menu_page( __( 'WooGool Feed', 'woogool' ), __( 'WooGool Feed', 'woogool' ), 'read', 'woogool', array( $this, 'woogool_page' ) );
+            $woogool_single = add_submenu_page( 'woogool', __( 'Individual Product', 'woogool' ), __( 'Individual Product', 'woogool' ), 'read', 'woogool' , array( $this, 'woogool_page' ) );
+            $woogool_multi = add_submenu_page( 'woogool', __( 'Multiple Products', 'woogool' ), __( 'Multiple Products', 'woogool' ), 'read', 'woogool_multiple', array( $this, 'woogool_page' ) );
+            
             add_action( 'admin_print_styles-' . $woogool, array( $this, 'scripts' ) );
+            add_action( 'admin_print_styles-' . $woogool_multi, array( $this, 'scripts_multiple_products' ) );
         }
         /**
          * View page controller
@@ -279,13 +289,22 @@ if ( ! class_exists('WP_WooGool') ) {
                 update_user_meta( $current_user_id, 'woogool_product_id', $_GET['product_id'] );
             }
 
-            $query_args = woogool_get_query_args();
-            $page       = $query_args['page'];
-            $tab        = $query_args['tab'];
-            $subtab     = $query_args['sub_tab'];
-                
+            $page = isset( $_GET['page'] ) ? $_GET['page'] : '';
+            $page_path = '';
+
+            if ( $page == 'woogool' ) {
+                $page_path = WOOGOOL_VIEWS_PATH . '/single/single.php';
+            } else if ( $page == 'woogool_multiple' ) {
+                $page_path = WOOGOOL_VIEWS_PATH . '/multiple/multiple-product.php';
+            }
+
+            if ( ! file_exists( $page_path ) ) {
+                _e('Page not found', 'woogool' );
+                return;
+            }
+            
             echo '<div class="woogool wrap" id="woogool">';
-                WooGool_Admin_Settings::getInstance()->show_tab_page( $page, $tab, $subtab );
+                require_once $page_path;
             echo '</div>';
         }
 

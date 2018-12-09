@@ -1,13 +1,14 @@
 <?php
 $menu = woogool_pages();
+
 ?>
 <div class="wrap">
     <h2 class="nav-tab-wrapper">
         <?php
 
-        foreach ( $menu as $tab_key => $tab_event ) {
+        foreach ( $menu[$page] as $tab_key => $tab_event ) {
             $active = ( $tab == $tab_key ) ? 'nav-tab-active' : '';
-            $url = woogool_tab_menu_url( $tab_key );
+            $url = woogool_tab_menu_url( $page, $tab_key );
             printf( '<a href="%1$s" class="nav-tab %4$s" id="%2$s-tab">%3$s</a>',$url, $tab_event['id'], $tab_event['title'], $active );
         }
 
@@ -45,5 +46,5 @@ $menu = woogool_pages();
     </h3>
 </div>
 
-
+<?php woogool_warning(); ?>
 

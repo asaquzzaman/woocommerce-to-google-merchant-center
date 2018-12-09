@@ -49,11 +49,7 @@ class WooGool_Admin_single_product {
      */
     function check_authenticate() {
 
-        if ( ! isset( $_GET['post_type'] ) || $_GET['post_type'] != 'product' ) {
-            return false;
-        }
-
-        if ( ! isset( $_GET['page'] ) || $_GET['page'] != 'product_woogool' ) {
+        if ( ! isset( $_GET['page'] ) || $_GET['page'] != 'woogool' ) {
             return false;
         }
 
@@ -66,7 +62,7 @@ class WooGool_Admin_single_product {
 
     function authentication_process() {
         $client = woogool_google_class();
-        $scriptUri = admin_url( 'edit.php?post_type=product&page=product_woogool' );
+        $scriptUri = admin_url( "admin.php?page=woogool&tab=new_product" );
         $client->setClientId( $this->client_id );
         $client->setClientSecret( $this->client_secret );
         $client->setRedirectUri( $scriptUri );
@@ -83,9 +79,6 @@ class WooGool_Admin_single_product {
      * @return void
      */
     function get_token_from_url_code() {
-        if ( !isset( $_GET['post_type'] ) || $_GET['post_type'] != 'product' ) {
-            return;
-        }
 
         if ( !isset( $_GET['page'] ) || $_GET['page'] != woogool_page_slug() ) {
             return;
@@ -101,11 +94,16 @@ class WooGool_Admin_single_product {
      */
     function save_setting() {
         if ( isset( $_POST['woogool_settings'] ) ) {
-            update_user_meta( get_current_user_id(), 'wogo_client_id', $_POST['client_id'] );
-            update_user_meta( get_current_user_id(), 'wogo_client_secret', $_POST['client_secret'] );
-            update_user_meta( get_current_user_id(), 'merchant_account_id', $_POST['merchant_account_id'] );
-            $redirect_url = admin_url( 'edit.php?post_type=product&page='.woogool_page_slug().'&woogool_tab=woogool_single&woogool_sub_tab=settings' );
-            wp_redirect( $redirect_url );
+            $client_id           = preg_replace('/\s+/', '', $_POST['client_id'] );
+            $client_secret       = preg_replace('/\s+/', '', $_POST['client_secret'] );
+            $merchant_account_id = preg_replace('/\s+/', '', $_POST['merchant_account_id'] );
+
+            update_user_meta( get_current_user_id(), 'wogo_client_id', $client_id );
+            update_user_meta( get_current_user_id(), 'wogo_client_secret', $client_secret );
+            update_user_meta( get_current_user_id(), 'merchant_account_id', $merchant_account_id );
+            
+            $redirect_url = admin_url( 'admin.php?page=' . woogool_page_slug() . '&tab=settings' );
+            wp_safe_redirect( $redirect_url );
             exit();
         }
     }
@@ -117,7 +115,7 @@ class WooGool_Admin_single_product {
     function get_new_token() {
 
         $client = woogool_google_class();
-        $scriptUri = admin_url( 'edit.php?post_type=product&page=' . woogool_page_slug() );
+        $scriptUri = admin_url( 'admin.php?page=woogool&tab=new_product' );
         $client->setClientId( $this->client_id );
         $client->setClientSecret( $this->client_secret );
         $client->setRedirectUri( $scriptUri );

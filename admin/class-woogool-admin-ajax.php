@@ -42,7 +42,7 @@ class WooGool_Admin_ajax {
      */
     function change_product() {
         $product_id = $_POST['product_id'];
-        $url = admin_url( 'edit.php?post_type=product&page=product_woogool&woogool_tab=woogool_single&woogool_sub_tab=new_product&product_id=' . $product_id );
+        $url = admin_url( 'admin.php?page=woogool&tab=new_product&product_id=' . $product_id );
         wp_send_json_success( array( 'url' => $url ) );
     }
 
@@ -122,7 +122,7 @@ class WooGool_Admin_ajax {
             $submited_products = get_option( 'woogool_submited_products', 0 );
 
             if ( $submited_products >= 20 ) {
-                $url = 'http://mishubd.com/product/woogoo/';
+                $url = 'http://wpspear.com/product-feed/';
                 $notice = sprintf( 'You have to purchase this plugin (WooGool) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url );
                 wp_send_json_error( array( 'error_code' => 'unknown', 'error_msg' => $notice ) );
             }
