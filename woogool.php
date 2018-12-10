@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP Woocommerce to Google merchant center
+ * Plugin Name: WP Woocommerce to Google merchant center new
  * Plugin URI: https://github.com/asaquzzaman/woocommerce-to-google-merchant-center
  * Description: Submit your product woocommerce to google merchant center.
  * Author: asaquzzaman
@@ -236,6 +236,7 @@ if ( ! class_exists('WP_WooGool') ) {
         }
 
         function scripts_multiple_products() {
+            wp_enqueue_script( 'woogool-chosen', plugins_url( '/assets/js/chosen/chosen.jquery.min.js', __FILE__ ), array( 'jquery' ), time(), true );
             wp_enqueue_script( 'woogool-bootstrap', plugins_url( '/assets/js/bootstrap.js', __FILE__ ), array( 'jquery' ), time(), true );
             wp_enqueue_script( 'woogool-vue', plugins_url( '/assets/js/vue/vue.min.js', __FILE__ ), array( 'jquery', 'woogool-bootstrap' ), time(), true );
             wp_enqueue_script( 'woogool-vuex', plugins_url( '/assets/js/vue/vuex.min.js', __FILE__ ), array( 'jquery', 'woogool-vue' ), time(), true );
@@ -243,6 +244,14 @@ if ( ! class_exists('WP_WooGool') ) {
             wp_enqueue_script( 'woogool-constant', plugins_url( '/assets/js/constant.js', __FILE__ ), array( 'jquery', 'woogool-vue-router' ), time(), true );
             wp_enqueue_script( 'woogool-library', plugins_url( '/assets/js/pro/library.js', __FILE__ ), array( 'jquery', 'woogool-constant' ), time(), true );
             wp_enqueue_script( 'woogool-pro', plugins_url( '/assets/js/pro/woogool_pro.js', __FILE__ ), array( 'jquery', 'woogool-library' ), time(), true );
+
+            wp_localize_script( 'woogool-pro', 'woogool_multi_product_var', array(
+                'product_categories' => woogool_get_products_terms_dropdown_array(),
+                'google_categories' => get_option( 'woogool_google_product_type' )
+            ));
+
+            wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
+
         }
 
         /**
@@ -253,16 +262,16 @@ if ( ! class_exists('WP_WooGool') ) {
             wp_enqueue_script( 'jquery' );
             wp_enqueue_script( 'jquery-ui-datepicker' );
             wp_enqueue_media();
-            wp_enqueue_script( 'woogool-chosen', plugins_url( '/assets/js/chosen.jquery.min.js', __FILE__ ), array( 'jquery' ), time(), true );
+            wp_enqueue_script( 'woogool-chosen', plugins_url( '/assets/js/chosen/chosen.jquery.min.js', __FILE__ ), array( 'jquery' ), time(), true );
             wp_enqueue_script( 'woogool-script', plugins_url( 'assets/js/woogool.js', __FILE__ ), array( 'jquery' ), time(), true );
             wp_localize_script( 'woogool-script', 'woogool_var', array(
-                'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-                'nonce'           => wp_create_nonce( 'woogool_nonce' ),
-                'country_details' => json_encode( woogool_country_details() ),
-                'is_admin'        => is_admin() ? 'yes' : 'no',
-                'dir_url'         => plugin_dir_url( __FILE__ )
+                'ajaxurl'            => admin_url( 'admin-ajax.php' ),
+                'nonce'              => wp_create_nonce( 'woogool_nonce' ),
+                'country_details'    => json_encode( woogool_country_details() ),
+                'is_admin'           => is_admin() ? 'yes' : 'no',
+                'dir_url'            => plugin_dir_url( __FILE__ ),
             ));
-            wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen.min.css', __FILE__ ), false, time(), 'all' );
+            wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
             wp_enqueue_style( 'woogool-style', plugins_url( 'assets/css/woogool.css', __FILE__ ) );
             wp_enqueue_style( 'woogool-jquery-ui', plugins_url( '/assets/css/jquery-ui.css', __FILE__ ), false, time(), 'all' );
         }

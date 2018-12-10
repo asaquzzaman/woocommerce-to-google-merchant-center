@@ -1061,6 +1061,7 @@ class WooGool_Admin_Feed {
     }
 
     function check_categori_fetch() {
+
         $feed_cat_fetch_time = get_option( 'woogool_google_product_type_fetch_time', false );
         if ( ! $feed_cat_fetch_time ) {
             $this->store_google_product_type();

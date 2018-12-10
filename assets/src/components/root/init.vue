@@ -9,7 +9,7 @@
 			if ( '/' === this.$route.path ) {
 				this.$router.push(
 					{
-						name: 'projects'
+						name: 'new_feed'
 					}
 				);
 			}
@@ -20,7 +20,7 @@
 				if ( '/' === this.$route.path ) {
 					this.$router.push(
 						{
-							name: 'projects'
+							name: 'new_feed'
 						}
 					);
 				}

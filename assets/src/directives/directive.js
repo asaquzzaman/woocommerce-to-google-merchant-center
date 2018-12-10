@@ -32,23 +32,25 @@ woogool.Vue.directive('woogool-tooltip', {
 	},
 });
 
-woogool.Vue.directive('woogool-popper', {
-	inserted: function(el) {
-		const reference = document.querySelector('#popper-ref');
-		const popper = document.querySelector('#poppercontent');
-		var popperss = new Popper(reference, popper, {
-		    placement: 'bottom'
-		});
-	},
+woogool.Vue.directive('woogool-chosen-google-categories', {
+	inserted: function(el, binding, vnode) {
+		jQuery(el)
+			.chosen({ width: '300px' })
+            .change(function(change, change_val ) {
+
+            });
+		},
 });
 
 
-woogool.Vue.directive('woogool-header-menu-responsive', {
-	inserted: function(el) {
-		// jQuery(el).slicknav({
-		// 		prependTo:'.woogool-header-menu-wrap'
-		// });
-	},
+woogool.Vue.directive('woogool-chosen', {
+	inserted: function(el, binding, vnode) {
+		jQuery(el)
+			.chosen({ width: '300px' })
+            .change(function(change, change_val ) {
+                vnode.context.chosenChange(change, change_val);
+            });
+		},
 });
 
 

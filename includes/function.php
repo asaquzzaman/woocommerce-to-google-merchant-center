@@ -153,7 +153,7 @@ function woogool_get_google_product_type() {
     array_shift( $taxonomies );
     // Strip the extra newline at the end
     array_pop( $taxonomies );
-    $taxonomies = array_merge( array( __( '-Select-', 'woogool' ) ), $taxonomies );
+   // $taxonomies = array_merge( array( __( '-Select-', 'woogool' ) ), $taxonomies );
     return $taxonomies;
 }
 
