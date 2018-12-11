@@ -387,11 +387,67 @@ if (false) {(function () {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+	data: function data() {
+		return {
+			header: {
+				feedByCatgory: false,
+				name: '',
+				activeVariation: false,
+				feedCategories: [],
+				refresh: 1,
+				googleCategories: [],
+				categories: []
+			}
+		};
+	},
+
 	components: {
 		'feed-header': __WEBPACK_IMPORTED_MODULE_0__components_header_vue__["a" /* default */],
 		'form-header': __WEBPACK_IMPORTED_MODULE_1__components_new_feed_form_header_vue__["a" /* default */],
 		'form-content': __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_logic_vue__["a" /* default */],
 		'form-logic': __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_content_vue__["a" /* default */]
+	},
+
+	created: function created() {
+		this.getFeed(68);
+	},
+
+	methods: {
+		newFeed: function newFeed() {
+			var request = {
+				type: 'POST',
+				url: woogool_var.ajaxurl,
+				data: {
+					action: 'woogool-new-feed',
+					_wpnonce: woogool_var.nonce,
+					header: this.header
+				},
+				success: function success(res) {}
+			};
+
+			this.httpRequest(request);
+		},
+		getFeed: function getFeed(postId) {
+			var self = this;
+			var request = {
+				type: 'POST',
+				url: woogool_var.ajaxurl,
+				data: {
+					post_id: postId,
+					action: 'woogool-get-feed',
+					_wpnonce: woogool_var.nonce
+				},
+				success: function success(res) {
+					self.setHeader(res.data);
+				}
+			};
+
+			this.httpRequest(request);
+		},
+		setHeader: function setHeader(feed) {
+			this.header = feed.post_meta;
+			console.log(this.header);
+		}
 	}
 });
 
@@ -400,6 +456,18 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -467,6 +535,7 @@ if (false) {(function () {
 		};
 	},
 	created: function created() {
+
 		this.categories = woogool_multi_product_var.product_categories;
 		this.googleCategories = woogool_multi_product_var.google_categories;
 	},
@@ -476,12 +545,12 @@ if (false) {(function () {
 		chosenChange: function chosenChange(change, change_val) {
 
 			if (typeof change_val.deselected == 'string') {
-				var index = this.getIndex(this.catElements, change_val.deselected, 'id');
-				this.catElements.splice(index, 1);
+				var index = this.getIndex(this.header.googleCategories, change_val.deselected, 'id');
+				this.header.googleCategories.splice(index, 1);
 			} else {
 				var isExist = false;
 
-				this.catElements.forEach(function (catElements) {
+				this.header.googleCategories.forEach(function (catElements) {
 					if (catElements.id == change_val.selected) {
 						isExist = true;
 					}
@@ -491,11 +560,52 @@ if (false) {(function () {
 					return;
 				}
 
-				this.catElements.push({
+				this.header.googleCategories.push({
+					catId: change_val.selected,
+					catName: this.categories[change_val.selected]
+				});
+			}
+		},
+		setCategories: function setCategories(change, change_val) {
+			if (typeof change_val.deselected == 'string') {
+				var index = this.getIndex(this.header.categories, change_val.deselected, 'id');
+				this.header.categories.splice(index, 1);
+			} else {
+				var isExist = false;
+
+				this.header.categories.forEach(function (catElements) {
+					if (catElements.id == change_val.selected) {
+						isExist = true;
+					}
+				});
+
+				if (isExist) {
+					return;
+				}
+
+				this.header.categories.push({
 					id: change_val.selected,
 					label: this.categories[change_val.selected]
 				});
 			}
+		},
+		setGoogleCategories: function setGoogleCategories(change, change_val) {
+			var WPCatId = jQuery(change.target).data('element_id');
+			var index = this.getIndex(this.header.googleCategories, WPCatId, 'catId');
+
+			if (index > -1) {
+				this.header.googleCategories[index]['googleCat'] = change_val.selected;
+			}
+		},
+		getSelectedCat: function getSelectedCat(id) {
+
+			var index = this.getIndex(this.header.categories, id, 'id');
+
+			if (index !== false) {
+				return 'selected';
+			}
+
+			return false;
 		}
 	}
 });
@@ -590,6 +700,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     methods: {
+        httpRequest: function httpRequest(property) {
+
+            return jQuery.ajax(property);
+        },
+
+
         /**
                * Get index from array object element
                *
@@ -2764,39 +2880,189 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+      _c("label", { staticClass: "woogool-label" }, [_vm._v("Feed name")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.header.name,
+            expression: "header.name"
+          }
+        ],
+        staticClass: "woogool-field",
+        attrs: { type: "text" },
+        domProps: { value: _vm.header.name },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.header, "name", $event.target.value)
+          }
+        }
+      })
+    ]),
     _vm._v(" "),
-    _vm._m(1),
+    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+      _c("label", { staticClass: "woogool-label" }, [
+        _vm._v("Enable product variations")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.header.activeVariation,
+            expression: "header.activeVariation"
+          }
+        ],
+        staticClass: "woogool-field",
+        attrs: { type: "checkbox" },
+        domProps: {
+          checked: Array.isArray(_vm.header.activeVariation)
+            ? _vm._i(_vm.header.activeVariation, null) > -1
+            : _vm.header.activeVariation
+        },
+        on: {
+          change: function($event) {
+            var $$a = _vm.header.activeVariation,
+              $$el = $event.target,
+              $$c = $$el.checked ? true : false
+            if (Array.isArray($$a)) {
+              var $$v = null,
+                $$i = _vm._i($$a, $$v)
+              if ($$el.checked) {
+                $$i < 0 &&
+                  _vm.$set(_vm.header, "activeVariation", $$a.concat([$$v]))
+              } else {
+                $$i > -1 &&
+                  _vm.$set(
+                    _vm.header,
+                    "activeVariation",
+                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                  )
+              }
+            } else {
+              _vm.$set(_vm.header, "activeVariation", $$c)
+            }
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+      _c("label", { staticClass: "woogool-label" }, [
+        _vm._v("Feed by category")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.header.feedByCatgory,
+            expression: "header.feedByCatgory"
+          }
+        ],
+        staticClass: "woogool-field",
+        attrs: { type: "checkbox" },
+        domProps: {
+          checked: Array.isArray(_vm.header.feedByCatgory)
+            ? _vm._i(_vm.header.feedByCatgory, null) > -1
+            : _vm.header.feedByCatgory
+        },
+        on: {
+          change: function($event) {
+            var $$a = _vm.header.feedByCatgory,
+              $$el = $event.target,
+              $$c = $$el.checked ? true : false
+            if (Array.isArray($$a)) {
+              var $$v = null,
+                $$i = _vm._i($$a, $$v)
+              if ($$el.checked) {
+                $$i < 0 &&
+                  _vm.$set(_vm.header, "feedByCatgory", $$a.concat([$$v]))
+              } else {
+                $$i > -1 &&
+                  _vm.$set(
+                    _vm.header,
+                    "feedByCatgory",
+                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                  )
+              }
+            } else {
+              _vm.$set(_vm.header, "feedByCatgory", $$c)
+            }
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _vm.header.feedByCatgory
+      ? _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+          _c("label", { staticClass: "woogool-label" }, [
+            _vm._v("Select Category")
+          ]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "woogool-chosen-categories",
+                  rawName: "v-woogool-chosen-categories"
+                }
+              ],
+              attrs: { multiple: "", tabindex: "-1" }
+            },
+            _vm._l(_vm.categories, function(categorie, id) {
+              return _c(
+                "option",
+                { domProps: { selected: _vm.getSelectedCat(id), value: id } },
+                [_vm._v(_vm._s(categorie))]
+              )
+            })
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "woogool-individual-field-wrap" }, [
       _c("label", { staticClass: "woogool-label" }, [
         _vm._v("Category maping")
       ]),
       _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [{ name: "woogool-chosen", rawName: "v-woogool-chosen" }],
-          attrs: { multiple: "", tabindex: "-1" }
-        },
-        _vm._l(_vm.categories, function(categories, id) {
-          return _c("option", { domProps: { value: id } }, [
-            _vm._v(_vm._s(categories))
-          ])
-        })
-      )
+      _vm.header.categories
+        ? _c(
+            "select",
+            {
+              directives: [
+                { name: "woogool-chosen", rawName: "v-woogool-chosen" }
+              ],
+              attrs: { multiple: "", tabindex: "-1" }
+            },
+            _vm._l(_vm.categories, function(categories, id) {
+              return _c("option", { domProps: { value: id } }, [
+                _vm._v(_vm._s(categories))
+              ])
+            })
+          )
+        : _vm._e()
     ]),
     _vm._v(" "),
-    _vm.catElements.length
+    _vm.header.googleCategories.length
       ? _c(
           "div",
-          _vm._l(_vm.catElements, function(catElement, index) {
+          _vm._l(_vm.header.googleCategories, function(catElement, index) {
             return _c(
               "div",
               { key: index, staticClass: "woogool-individual-field-wrap" },
               [
                 _c("label", { staticClass: "woogool-label" }, [
-                  _vm._v(_vm._s(catElement.label))
+                  _vm._v(_vm._s(catElement.catName))
                 ]),
                 _vm._v(" "),
                 _c(
@@ -2808,7 +3074,10 @@ var render = function() {
                         rawName: "v-woogool-chosen-google-categories"
                       }
                     ],
-                    attrs: { tabindex: "-1" }
+                    attrs: {
+                      "data-element_id": catElement.catId,
+                      tabindex: "-1"
+                    }
                   },
                   _vm._l(_vm.googleCategories, function(
                     googleCategorie,
@@ -2831,7 +3100,7 @@ var render = function() {
                 _c("span", [
                   _vm._v(
                     "Google category of the " +
-                      _vm._s(catElement.label.toLowerCase()) +
+                      _vm._s(catElement.catName.toLowerCase()) +
                       " item"
                   )
                 ])
@@ -2841,53 +3110,54 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm._m(2)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [_vm._v("Feed name")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "woogool-field", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [
-        _vm._v("Enable product variations")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "woogool-field", attrs: { type: "checkbox" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
       _c("label", { staticClass: "woogool-label" }, [
         _vm._v("Refresh interval")
       ]),
       _vm._v(" "),
-      _c("select", [
-        _c("option", { attrs: { value: "1" } }, [_vm._v("Daily")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "2" } }, [_vm._v("Hourly")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "3" } }, [_vm._v("Weekly")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
-      ])
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.header.refresh,
+              expression: "header.refresh"
+            }
+          ],
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.header,
+                "refresh",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { value: "1" } }, [_vm._v("Daily")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "2" } }, [_vm._v("Hourly")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "3" } }, [_vm._v("Weekly")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
+        ]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -3063,9 +3333,17 @@ var render = function() {
       _vm._v(" "),
       _c(
         "form",
-        { attrs: { action: "", method: "post" } },
+        {
+          attrs: { action: "", method: "post" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.newFeed()
+            }
+          }
+        },
         [
-          _c("form-header", { attrs: { header: {} } }),
+          _c("form-header", { attrs: { header: _vm.header } }),
           _vm._v(" "),
           _c("form-content", { attrs: { content: {} } }),
           _vm._v(" "),
@@ -3225,7 +3503,17 @@ woogool.Vue.directive('woogool-tooltip', {
 
 woogool.Vue.directive('woogool-chosen-google-categories', {
 	inserted: function inserted(el, binding, vnode) {
-		jQuery(el).chosen({ width: '300px' }).change(function (change, change_val) {});
+		jQuery(el).chosen({ width: '300px' }).change(function (change, change_val) {
+			vnode.context.setGoogleCategories(change, change_val);
+		});
+	}
+});
+
+woogool.Vue.directive('woogool-chosen-categories', {
+	inserted: function inserted(el, binding, vnode) {
+		jQuery(el).chosen({ width: '300px' }).change(function (change, change_val) {
+			vnode.context.setCategories(change, change_val);
+		});
 	}
 });
 

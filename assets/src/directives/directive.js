@@ -36,8 +36,18 @@ woogool.Vue.directive('woogool-chosen-google-categories', {
 	inserted: function(el, binding, vnode) {
 		jQuery(el)
 			.chosen({ width: '300px' })
-            .change(function(change, change_val ) {
+            .change(function(change, change_val) {
+            	vnode.context.setGoogleCategories(change, change_val);
+            });
+		},
+});
 
+woogool.Vue.directive('woogool-chosen-categories', {
+	inserted: function(el, binding, vnode) {
+		jQuery(el)
+			.chosen({ width: '300px' })
+            .change(function(change, change_val) {
+            	vnode.context.setCategories(change, change_val);
             });
 		},
 });

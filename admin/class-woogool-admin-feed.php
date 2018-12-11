@@ -32,14 +32,14 @@ class WooGool_Admin_Feed {
         //add_action( 'admin_init', array( $this, 'new_feed' ) );
         add_action( 'admin_init', array( $this, 'feed_delete' ) );
         add_action( 'admin_init', array( $this, 'check_categori_fetch' ) );
-        add_action( 'admin_init', array( $this, 'new_feed' ) );
+        //add_action( 'admin_init', array( $this, 'new_feed' ) );
         //add_action( 'add_meta_boxes', array( $this, 'feed_meta_box' ) );
         add_action( 'save_post', array( $this, 'save_post_meta' ), 10, 3 );
         add_action( 'template_redirect', array( $this, 'xml_download' ) );
     }
 
     function register_post_type() {
-        register_post_type( 'woogool_feed', array(
+        register_post_type( 'new_woogool_feed', array(
             'label'               => __( 'Feed', 'hrm' ),
             'public'              => false,
             'show_in_admin_bar'   => false,
@@ -81,8 +81,8 @@ class WooGool_Admin_Feed {
     function insert_feed( $post ) {
 
         $arg = array(
-            'post_type'    => 'woogool_feed',
-            'post_title'   => $post['post_title'],
+            'post_type'    => 'new_woogool_feed',
+            'post_title'   => $post['header']['name'],
             'post_content' => '',//$xml_content,
             'post_status'  => 'publish'
         );
@@ -96,7 +96,7 @@ class WooGool_Admin_Feed {
         } else {
             $post_id = wp_insert_post( $arg );
         }
-
+        
         if ( $post_id ) {
             $this->update_feed_meta( $post_id, $post );
         }
@@ -114,114 +114,131 @@ class WooGool_Admin_Feed {
 
 
     function update_feed_meta( $post_id, $post ) {
+
+        $header = $post['header'];
+
+        $feedByCatgory = isset( $header['feedByCatgory'] ) ? $header['feedByCatgory'] : false;
+        update_post_meta( $post_id, 'feed_by_category', $feedByCatgory );
+
+        $activeVariation = isset( $header['activeVariation'] ) ? $header['activeVariation'] : false;
+        update_post_meta( $post_id, 'active_variation', $activeVariation );
+
+        $refresh = isset( $header['refresh'] ) ? $header['refresh'] : 1;
+        update_post_meta( $post_id, 'refresh', $refresh );
+
+        $categories = isset( $header['categories'] ) ? $header['categories'] : [];
+        update_post_meta( $post_id, 'categories', $categories );
+
+        $googleCategories = isset( $header['googleCategories'] ) ? $header['googleCategories'] : [];
+        update_post_meta( $post_id, 'google_categories', $googleCategories );
        
-        $all_products = isset( $post['all_products'] ) ? $post['all_products'] : 0;
-        update_post_meta( $post_id, '_all_products', $all_products );
+        // $all_products = isset( $post['all_products'] ) ? $post['all_products'] : 0;
+        // update_post_meta( $post_id, '_all_products', $all_products );
 
-        $products = isset( $post['xml_count'] ) ? $post['xml_count'] : array();
-        update_post_meta( $post_id, '_xml_count', $products );
+        // $products = isset( $post['xml_count'] ) ? $post['xml_count'] : array();
+        // update_post_meta( $post_id, '_xml_count', $products );
 
-        $woogool_description = isset( $post['woogool_description'] ) ? $post['woogool_description'] : array();
-        update_post_meta( $post_id, '_woogool_description', $woogool_description );
+        // $woogool_description = isset( $post['woogool_description'] ) ? $post['woogool_description'] : array();
+        // update_post_meta( $post_id, '_woogool_description', $woogool_description );
 
-        $products_cat = isset( $post['products_cat'] ) ? $post['products_cat'] : array();
-        update_post_meta( $post_id, '_products_cat', $products_cat );
+        // $products_cat = isset( $post['products_cat'] ) ? $post['products_cat'] : array();
+        // update_post_meta( $post_id, '_products_cat', $products_cat );
 
-        $var_products = isset( $post['variable_products'] ) ? $post['variable_products'] : 'no';
-        update_post_meta( $post_id, '_woogool_include_variable_products', $var_products );
+        // $var_products = isset( $post['variable_products'] ) ? $post['variable_products'] : 'no';
+        // update_post_meta( $post_id, '_woogool_include_variable_products', $var_products );
 
-        $google_product_category = isset( $post['google_product_category'] ) ? $post['google_product_category'] : '';
-        update_post_meta( $post_id, '_google_product_category', $google_product_category );
+        // $google_product_category = isset( $post['google_product_category'] ) ? $post['google_product_category'] : '';
+        // update_post_meta( $post_id, '_google_product_category', $google_product_category );
 
-        $product_type = isset( $post['product_type'] ) ? $post['product_type'] : '';
-        update_post_meta( $post_id, '_product_type', $product_type );
+        // $product_type = isset( $post['product_type'] ) ? $post['product_type'] : '';
+        // update_post_meta( $post_id, '_product_type', $product_type );
 
-        $availability = isset( $post['availability'] ) ? $post['availability'] : '';
-        update_post_meta( $post_id, '_availability', $availability );
+        // $availability = isset( $post['availability'] ) ? $post['availability'] : '';
+        // update_post_meta( $post_id, '_availability', $availability );
 
-        $availability_date = isset( $post['availability_date'] ) ? $post['availability_date'] : '';
-        update_post_meta( $post_id, '_availability_date', $availability_date );
+        // $availability_date = isset( $post['availability_date'] ) ? $post['availability_date'] : '';
+        // update_post_meta( $post_id, '_availability_date', $availability_date );
 
-        $condition = isset( $post['condition'] ) ? $post['condition'] : '';
-        update_post_meta( $post_id, '_condition', $condition );
+        // $condition = isset( $post['condition'] ) ? $post['condition'] : '';
+        // update_post_meta( $post_id, '_condition', $condition );
 
-        $brand = isset( $post['brand'] ) ? $post['brand'] : '';
-        update_post_meta( $post_id, '_brand', $brand );
+        // $brand = isset( $post['brand'] ) ? $post['brand'] : '';
+        // update_post_meta( $post_id, '_brand', $brand );
 
-        $mpn = isset( $post['mpn'] ) ? $post['mpn'] : '';
-        update_post_meta( $post_id, '_mpn', $mpn );
+        // $mpn = isset( $post['mpn'] ) ? $post['mpn'] : '';
+        // update_post_meta( $post_id, '_mpn', $mpn );
 
-        $gtin = isset( $post['gtin'] ) ? $post['gtin'] : '';
-        update_post_meta( $post_id, '_gtin', $gtin );
+        // $gtin = isset( $post['gtin'] ) ? $post['gtin'] : '';
+        // update_post_meta( $post_id, '_gtin', $gtin );
 
-        $gender = isset( $post['gender'] ) ? $post['gender'] : '';
-        update_post_meta( $post_id, '_gender', $gender );
+        // $gender = isset( $post['gender'] ) ? $post['gender'] : '';
+        // update_post_meta( $post_id, '_gender', $gender );
 
-        $age_group = isset( $post['age_group'] ) ? $post['age_group'] : '';
-        update_post_meta( $post_id, '_age_group', $age_group );
+        // $age_group = isset( $post['age_group'] ) ? $post['age_group'] : '';
+        // update_post_meta( $post_id, '_age_group', $age_group );
 
-        $color = isset( $post['color'] ) ? $post['color'] : '';
-        update_post_meta( $post_id, '_color', $color );
+        // $color = isset( $post['color'] ) ? $post['color'] : '';
+        // update_post_meta( $post_id, '_color', $color );
 
-        $size = isset( $post['size'] ) ? $post['size'] : '';
-        update_post_meta( $post_id, '_size', $size );
+        // $size = isset( $post['size'] ) ? $post['size'] : '';
+        // update_post_meta( $post_id, '_size', $size );
 
-        $size_type = isset( $post['size_type'] ) ? $post['size_type'] : '';
-        update_post_meta( $post_id, '_size_type', $size_type );
+        // $size_type = isset( $post['size_type'] ) ? $post['size_type'] : '';
+        // update_post_meta( $post_id, '_size_type', $size_type );
 
-        $size_system = isset( $post['size_system'] ) ? $post['size_system'] : '';
-        update_post_meta( $post_id, '_size_system', $size_system );
+        // $size_system = isset( $post['size_system'] ) ? $post['size_system'] : '';
+        // update_post_meta( $post_id, '_size_system', $size_system );
 
-        $expiration_date = isset( $post['expiration_date'] ) ? $post['expiration_date'] : '';
-        update_post_meta( $post_id, '_expiration_date', $expiration_date );
+        // $expiration_date = isset( $post['expiration_date'] ) ? $post['expiration_date'] : '';
+        // update_post_meta( $post_id, '_expiration_date', $expiration_date );
 
-        $sale_price = isset( $post['sale_price'] ) ? $post['sale_price'] : 'no';
-        update_post_meta( $post_id, '_sale_price', $sale_price );
+        // $sale_price = isset( $post['sale_price'] ) ? $post['sale_price'] : 'no';
+        // update_post_meta( $post_id, '_sale_price', $sale_price );
 
-        $sale_price_effective_date = isset( $post['sale_price_effective_date'] ) ? $post['sale_price_effective_date'] : 'no';
-        update_post_meta( $post_id, '_sale_price_effective_date', $sale_price_effective_date );
+        // $sale_price_effective_date = isset( $post['sale_price_effective_date'] ) ? $post['sale_price_effective_date'] : 'no';
+        // update_post_meta( $post_id, '_sale_price_effective_date', $sale_price_effective_date );
 
-        $custom_label_0 = isset( $post['custom_label_0'] ) ? $post['custom_label_0'] : '';
-        update_post_meta( $post_id, '_custom_label_0', $custom_label_0 );
+        // $custom_label_0 = isset( $post['custom_label_0'] ) ? $post['custom_label_0'] : '';
+        // update_post_meta( $post_id, '_custom_label_0', $custom_label_0 );
 
-        $custom_label_1 = isset( $post['custom_label_1'] ) ? $post['custom_label_1'] : '';
-        update_post_meta( $post_id, '_custom_label_1', $custom_label_1 );
+        // $custom_label_1 = isset( $post['custom_label_1'] ) ? $post['custom_label_1'] : '';
+        // update_post_meta( $post_id, '_custom_label_1', $custom_label_1 );
 
-        $custom_label_2 = isset( $post['custom_label_2'] ) ? $post['custom_label_2'] : '';
-        update_post_meta( $post_id, '_custom_label_2', $custom_label_2 );
+        // $custom_label_2 = isset( $post['custom_label_2'] ) ? $post['custom_label_2'] : '';
+        // update_post_meta( $post_id, '_custom_label_2', $custom_label_2 );
 
-        $custom_label_3 = isset( $post['custom_label_3'] ) ? $post['custom_label_3'] : '';
-        update_post_meta( $post_id, '_custom_label_3', $custom_label_3 );
+        // $custom_label_3 = isset( $post['custom_label_3'] ) ? $post['custom_label_3'] : '';
+        // update_post_meta( $post_id, '_custom_label_3', $custom_label_3 );
 
-        $custom_label_4 = isset( $post['custom_label_4'] ) ? $post['custom_label_4'] : '';
-        update_post_meta( $post_id, '_custom_label_4', $custom_label_4 );
+        // $custom_label_4 = isset( $post['custom_label_4'] ) ? $post['custom_label_4'] : '';
+        // update_post_meta( $post_id, '_custom_label_4', $custom_label_4 );
 
-        $promotion_id = isset( $post['promotion_id'] ) ? $post['promotion_id'] : '';
-        update_post_meta( $post_id, '_promotion_id', $promotion_id );
+        // $promotion_id = isset( $post['promotion_id'] ) ? $post['promotion_id'] : '';
+        // update_post_meta( $post_id, '_promotion_id', $promotion_id );
 
-        $promotion_id = isset( $post['identifier_exists'] ) ? $post['identifier_exists'] : '';
-        update_post_meta( $post_id, '_identifier_exists', $promotion_id );
+        // $promotion_id = isset( $post['identifier_exists'] ) ? $post['identifier_exists'] : '';
+        // update_post_meta( $post_id, '_identifier_exists', $promotion_id );
 
-        $cat_map = isset( $post['cat_map'] ) ? $post['cat_map'] : array();
-        update_post_meta( $post_id, '_cat_map', $cat_map );
+        // $cat_map = isset( $post['cat_map'] ) ? $post['cat_map'] : array();
+        // update_post_meta( $post_id, '_cat_map', $cat_map );
 
-        $woogool_price = isset( $post['woogool_price'] ) ? $post['woogool_price'] : '';
-        update_post_meta( $post_id, '_woogool_price', $woogool_price );
+        // $woogool_price = isset( $post['woogool_price'] ) ? $post['woogool_price'] : '';
+        // update_post_meta( $post_id, '_woogool_price', $woogool_price );
 
-        $woogool_adult = isset( $post['woogool_adult'] ) ? $post['woogool_adult'] : '';
-        update_post_meta( $post_id, '_woogool_adult', $woogool_adult );
+        // $woogool_adult = isset( $post['woogool_adult'] ) ? $post['woogool_adult'] : '';
+        // update_post_meta( $post_id, '_woogool_adult', $woogool_adult );
 
-        $woogool_is_bundle = isset( $post['woogool_is_bundle'] ) ? $post['woogool_is_bundle'] : '';
-        update_post_meta( $post_id, '_woogool_is_bundle', $woogool_is_bundle );
+        // $woogool_is_bundle = isset( $post['woogool_is_bundle'] ) ? $post['woogool_is_bundle'] : '';
+        // update_post_meta( $post_id, '_woogool_is_bundle', $woogool_is_bundle );
 
-        $woogool_multipack = isset( $post['woogool_multipack'] ) ? $post['woogool_multipack'] : '';
-        update_post_meta( $post_id, '_woogool_multipack', $woogool_multipack );
+        // $woogool_multipack = isset( $post['woogool_multipack'] ) ? $post['woogool_multipack'] : '';
+        // update_post_meta( $post_id, '_woogool_multipack', $woogool_multipack );
 
-        $woogool_material = isset( $post['woogool_material'] ) ? $post['woogool_material'] : '';
-        update_post_meta( $post_id, '_woogool_material', $woogool_material );
+        // $woogool_material = isset( $post['woogool_material'] ) ? $post['woogool_material'] : '';
+        // update_post_meta( $post_id, '_woogool_material', $woogool_material );
 
-        $woogool_pattern = isset( $post['woogool_pattern'] ) ? $post['woogool_pattern'] : '';
-        update_post_meta( $post_id, '_woogool_pattern', $woogool_pattern );
+        // $woogool_pattern = isset( $post['woogool_pattern'] ) ? $post['woogool_pattern'] : '';
+        // update_post_meta( $post_id, '_woogool_pattern', $woogool_pattern );
     }
 
     function xml_get_products( $xml_count, $products_cat ) {

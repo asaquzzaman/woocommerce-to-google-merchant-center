@@ -1,5 +1,11 @@
 export default {
 	methods: {
+
+        httpRequest (property) {
+
+            return jQuery.ajax(property);
+        },
+
 		/**
          * Get index from array object element
          *
