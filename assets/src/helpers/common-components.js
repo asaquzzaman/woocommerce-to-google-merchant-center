@@ -1,0 +1,1 @@
+woogool.Vue.component('vue-woogool-multiselect', window.VueMultiselect.default);

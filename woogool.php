@@ -238,12 +238,14 @@ if ( ! class_exists('WP_WooGool') ) {
         function scripts_multiple_products() {
             wp_enqueue_script( 'woogool-chosen', plugins_url( '/assets/js/chosen/chosen.jquery.min.js', __FILE__ ), array( 'jquery' ), time(), true );
             wp_enqueue_script( 'woogool-bootstrap', plugins_url( '/assets/js/bootstrap.js', __FILE__ ), array( 'jquery' ), time(), true );
-            wp_enqueue_script( 'woogool-vue', plugins_url( '/assets/js/vue/vue.min.js', __FILE__ ), array( 'jquery', 'woogool-bootstrap' ), time(), true );
-            wp_enqueue_script( 'woogool-vuex', plugins_url( '/assets/js/vue/vuex.min.js', __FILE__ ), array( 'jquery', 'woogool-vue' ), time(), true );
-            wp_enqueue_script( 'woogool-vue-router', plugins_url( '/assets/js/vue/vue-router.min.js', __FILE__ ), array( 'jquery', 'woogool-vuex' ), time(), true );
-            wp_enqueue_script( 'woogool-constant', plugins_url( '/assets/js/constant.js', __FILE__ ), array( 'jquery', 'woogool-vue-router' ), time(), true );
-            wp_enqueue_script( 'woogool-library', plugins_url( '/assets/js/pro/library.js', __FILE__ ), array( 'jquery', 'woogool-constant' ), time(), true );
-            wp_enqueue_script( 'woogool-pro', plugins_url( '/assets/js/pro/woogool_pro.js', __FILE__ ), array( 'jquery', 'woogool-library' ), time(), true );
+            wp_enqueue_script( 'woogool-vue', plugins_url( '/assets/js/vue/vue.min.js', __FILE__ ), array( 'woogool-bootstrap' ), time(), true );
+            wp_enqueue_script( 'woogool-vuex', plugins_url( '/assets/js/vue/vuex.min.js', __FILE__ ), array( 'woogool-vue' ), time(), true );
+            wp_enqueue_script( 'woogool-vue-router', plugins_url( '/assets/js/vue/vue-router.min.js', __FILE__ ), array( 'woogool-vuex' ), time(), true );
+            wp_enqueue_script( 'woogool-constant', plugins_url( '/assets/js/constant.js', __FILE__ ), array( 'woogool-vue-router' ), time(), true );
+            wp_enqueue_script( 'woogool-multiselect', plugins_url( '/assets/js/vue-multiselect/vue-multiselect.min.js', __FILE__ ), array( 'woogool-constant' ), time(), true );
+            wp_enqueue_script( 'woogool-library', plugins_url( '/assets/js/pro/library.js', __FILE__ ), array( 'woogool-multiselect' ), time(), true );
+            wp_enqueue_script( 'woogool-pro', plugins_url( '/assets/js/pro/woogool_pro.js', __FILE__ ), array( 'woogool-library' ), time(), true );
+
 
             wp_localize_script( 'woogool-pro', 'woogool_multi_product_var', array(
                 'product_categories' => woogool_get_products_terms_dropdown_array(),
@@ -251,6 +253,8 @@ if ( ! class_exists('WP_WooGool') ) {
             ));
 
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
+            wp_enqueue_style( 'woogool-vue-multiselect', plugins_url( '/assets/css/vue-multiselect/vue-multiselect.min.css', __FILE__ ), false, time(), 'all' );
+
 
         }
 

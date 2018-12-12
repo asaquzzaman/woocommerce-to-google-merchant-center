@@ -409,11 +409,12 @@ if (false) {(function () {
 	},
 
 	created: function created() {
-		this.getFeed(68);
+		this.getFeed(69);
 	},
 
 	methods: {
 		newFeed: function newFeed() {
+
 			var request = {
 				type: 'POST',
 				url: woogool_var.ajaxurl,
@@ -445,8 +446,8 @@ if (false) {(function () {
 			this.httpRequest(request);
 		},
 		setHeader: function setHeader(feed) {
+			console.log(feed);
 			this.header = feed.post_meta;
-			console.log(this.header);
 		}
 	}
 });
@@ -456,6 +457,40 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -530,82 +565,26 @@ if (false) {(function () {
 	data: function data() {
 		return {
 			categories: [],
-			catElements: [],
 			googleCategories: []
 		};
 	},
 	created: function created() {
+		var self = this;
 
-		this.categories = woogool_multi_product_var.product_categories;
 		this.googleCategories = woogool_multi_product_var.google_categories;
+
+		jQuery.each(woogool_multi_product_var.product_categories, function (index, cat) {
+			self.categories.push({
+				'catId': index,
+				'catName': cat
+			});
+		});
 	},
 
 
 	methods: {
-		chosenChange: function chosenChange(change, change_val) {
-
-			if (typeof change_val.deselected == 'string') {
-				var index = this.getIndex(this.header.googleCategories, change_val.deselected, 'id');
-				this.header.googleCategories.splice(index, 1);
-			} else {
-				var isExist = false;
-
-				this.header.googleCategories.forEach(function (catElements) {
-					if (catElements.id == change_val.selected) {
-						isExist = true;
-					}
-				});
-
-				if (isExist) {
-					return;
-				}
-
-				this.header.googleCategories.push({
-					catId: change_val.selected,
-					catName: this.categories[change_val.selected]
-				});
-			}
-		},
-		setCategories: function setCategories(change, change_val) {
-			if (typeof change_val.deselected == 'string') {
-				var index = this.getIndex(this.header.categories, change_val.deselected, 'id');
-				this.header.categories.splice(index, 1);
-			} else {
-				var isExist = false;
-
-				this.header.categories.forEach(function (catElements) {
-					if (catElements.id == change_val.selected) {
-						isExist = true;
-					}
-				});
-
-				if (isExist) {
-					return;
-				}
-
-				this.header.categories.push({
-					id: change_val.selected,
-					label: this.categories[change_val.selected]
-				});
-			}
-		},
-		setGoogleCategories: function setGoogleCategories(change, change_val) {
-			var WPCatId = jQuery(change.target).data('element_id');
-			var index = this.getIndex(this.header.googleCategories, WPCatId, 'catId');
-
-			if (index > -1) {
-				this.header.googleCategories[index]['googleCat'] = change_val.selected;
-			}
-		},
-		getSelectedCat: function getSelectedCat(id) {
-
-			var index = this.getIndex(this.header.categories, id, 'id');
-
-			if (index !== false) {
-				return 'selected';
-			}
-
-			return false;
+		setGoogleCat: function setGoogleCat(cat, googleCat) {
+			cat['googleCat'] = googleCat;
 		}
 	}
 });
@@ -2879,283 +2858,298 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [_vm._v("Feed name")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.header.name,
-            expression: "header.name"
-          }
-        ],
-        staticClass: "woogool-field",
-        attrs: { type: "text" },
-        domProps: { value: _vm.header.name },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.header, "name", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [
-        _vm._v("Enable product variations")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.header.activeVariation,
-            expression: "header.activeVariation"
-          }
-        ],
-        staticClass: "woogool-field",
-        attrs: { type: "checkbox" },
-        domProps: {
-          checked: Array.isArray(_vm.header.activeVariation)
-            ? _vm._i(_vm.header.activeVariation, null) > -1
-            : _vm.header.activeVariation
-        },
-        on: {
-          change: function($event) {
-            var $$a = _vm.header.activeVariation,
-              $$el = $event.target,
-              $$c = $$el.checked ? true : false
-            if (Array.isArray($$a)) {
-              var $$v = null,
-                $$i = _vm._i($$a, $$v)
-              if ($$el.checked) {
-                $$i < 0 &&
-                  _vm.$set(_vm.header, "activeVariation", $$a.concat([$$v]))
-              } else {
-                $$i > -1 &&
-                  _vm.$set(
-                    _vm.header,
-                    "activeVariation",
-                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                  )
-              }
-            } else {
-              _vm.$set(_vm.header, "activeVariation", $$c)
-            }
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [
-        _vm._v("Feed by category")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.header.feedByCatgory,
-            expression: "header.feedByCatgory"
-          }
-        ],
-        staticClass: "woogool-field",
-        attrs: { type: "checkbox" },
-        domProps: {
-          checked: Array.isArray(_vm.header.feedByCatgory)
-            ? _vm._i(_vm.header.feedByCatgory, null) > -1
-            : _vm.header.feedByCatgory
-        },
-        on: {
-          change: function($event) {
-            var $$a = _vm.header.feedByCatgory,
-              $$el = $event.target,
-              $$c = $$el.checked ? true : false
-            if (Array.isArray($$a)) {
-              var $$v = null,
-                $$i = _vm._i($$a, $$v)
-              if ($$el.checked) {
-                $$i < 0 &&
-                  _vm.$set(_vm.header, "feedByCatgory", $$a.concat([$$v]))
-              } else {
-                $$i > -1 &&
-                  _vm.$set(
-                    _vm.header,
-                    "feedByCatgory",
-                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                  )
-              }
-            } else {
-              _vm.$set(_vm.header, "feedByCatgory", $$c)
-            }
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _vm.header.feedByCatgory
-      ? _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-          _c("label", { staticClass: "woogool-label" }, [
-            _vm._v("Select Category")
-          ]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "woogool-chosen-categories",
-                  rawName: "v-woogool-chosen-categories"
-                }
-              ],
-              attrs: { multiple: "", tabindex: "-1" }
-            },
-            _vm._l(_vm.categories, function(categorie, id) {
-              return _c(
-                "option",
-                { domProps: { selected: _vm.getSelectedCat(id), value: id } },
-                [_vm._v(_vm._s(categorie))]
-              )
-            })
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [
-        _vm._v("Category maping")
-      ]),
-      _vm._v(" "),
-      _vm.header.categories
-        ? _c(
-            "select",
-            {
-              directives: [
-                { name: "woogool-chosen", rawName: "v-woogool-chosen" }
-              ],
-              attrs: { multiple: "", tabindex: "-1" }
-            },
-            _vm._l(_vm.categories, function(categories, id) {
-              return _c("option", { domProps: { value: id } }, [
-                _vm._v(_vm._s(categories))
-              ])
-            })
-          )
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _vm.header.googleCategories.length
-      ? _c(
-          "div",
-          _vm._l(_vm.header.googleCategories, function(catElement, index) {
-            return _c(
-              "div",
-              { key: index, staticClass: "woogool-individual-field-wrap" },
-              [
-                _c("label", { staticClass: "woogool-label" }, [
-                  _vm._v(_vm._s(catElement.catName))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "woogool-chosen-google-categories",
-                        rawName: "v-woogool-chosen-google-categories"
-                      }
-                    ],
-                    attrs: {
-                      "data-element_id": catElement.catId,
-                      tabindex: "-1"
-                    }
-                  },
-                  _vm._l(_vm.googleCategories, function(
-                    googleCategorie,
-                    lockId
-                  ) {
-                    return _c(
-                      "option",
-                      { key: lockId, domProps: { value: googleCategorie } },
-                      [
-                        _vm._v(
-                          "\n\t\t\t\t\t" +
-                            _vm._s(googleCategorie) +
-                            "\n\t\t\t\t"
-                        )
-                      ]
-                    )
-                  })
-                ),
-                _vm._v(" "),
-                _c("span", [
-                  _vm._v(
-                    "Google category of the " +
-                      _vm._s(catElement.catName.toLowerCase()) +
-                      " item"
-                  )
-                ])
-              ]
-            )
-          })
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-      _c("label", { staticClass: "woogool-label" }, [
-        _vm._v("Refresh interval")
-      ]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+        _c("label", { staticClass: "woogool-label" }, [_vm._v("Feed name")]),
+        _vm._v(" "),
+        _c("input", {
           directives: [
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.header.refresh,
-              expression: "header.refresh"
+              value: _vm.header.name,
+              expression: "header.name"
             }
           ],
+          staticClass: "woogool-field",
+          attrs: { type: "text" },
+          domProps: { value: _vm.header.name },
           on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.$set(
-                _vm.header,
-                "refresh",
-                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-              )
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.header, "name", $event.target.value)
             }
           }
-        },
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+        _c("label", { staticClass: "woogool-label" }, [
+          _vm._v("Enable product variations")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.header.activeVariation,
+              expression: "header.activeVariation"
+            }
+          ],
+          staticClass: "woogool-field",
+          attrs: { type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.header.activeVariation)
+              ? _vm._i(_vm.header.activeVariation, null) > -1
+              : _vm.header.activeVariation
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.header.activeVariation,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 &&
+                    _vm.$set(_vm.header, "activeVariation", $$a.concat([$$v]))
+                } else {
+                  $$i > -1 &&
+                    _vm.$set(
+                      _vm.header,
+                      "activeVariation",
+                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                    )
+                }
+              } else {
+                _vm.$set(_vm.header, "activeVariation", $$c)
+              }
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+        _c("label", { staticClass: "woogool-label" }, [
+          _vm._v("Feed by category")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.header.feedByCatgory,
+              expression: "header.feedByCatgory"
+            }
+          ],
+          staticClass: "woogool-field",
+          attrs: { type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.header.feedByCatgory)
+              ? _vm._i(_vm.header.feedByCatgory, null) > -1
+              : _vm.header.feedByCatgory
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.header.feedByCatgory,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 &&
+                    _vm.$set(_vm.header, "feedByCatgory", $$a.concat([$$v]))
+                } else {
+                  $$i > -1 &&
+                    _vm.$set(
+                      _vm.header,
+                      "feedByCatgory",
+                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                    )
+                }
+              } else {
+                _vm.$set(_vm.header, "feedByCatgory", $$c)
+              }
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _vm.header.feedByCatgory
+        ? _c(
+            "div",
+            [
+              _c("label", [_vm._v("Feed by category")]),
+              _vm._v(" "),
+              _c("vue-woogool-multiselect", {
+                attrs: {
+                  options: _vm.categories,
+                  multiple: true,
+                  "close-on-select": true,
+                  "clear-on-select": true,
+                  "show-labels": true,
+                  searchable: true,
+                  placeholder: "Select Category",
+                  "select-label": "",
+                  "selected-label": "selected",
+                  "deselect-label": "",
+                  label: "catName",
+                  "track-by": "catId",
+                  "allow-empty": true
+                },
+                model: {
+                  value: _vm.header.categories,
+                  callback: function($$v) {
+                    _vm.$set(_vm.header, "categories", $$v)
+                  },
+                  expression: "header.categories"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
         [
-          _c("option", { attrs: { value: "1" } }, [_vm._v("Daily")]),
+          _c("label", [_vm._v("Category Maping")]),
           _vm._v(" "),
-          _c("option", { attrs: { value: "2" } }, [_vm._v("Hourly")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "3" } }, [_vm._v("Weekly")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
-        ]
-      )
-    ])
-  ])
+          _c("vue-woogool-multiselect", {
+            attrs: {
+              options: _vm.categories,
+              multiple: true,
+              "close-on-select": true,
+              "clear-on-select": true,
+              "show-labels": true,
+              searchable: true,
+              placeholder: "Category maping",
+              "select-label": "",
+              "selected-label": "selected",
+              "deselect-label": "",
+              label: "catName",
+              "track-by": "catId",
+              "allow-empty": true
+            },
+            model: {
+              value: _vm.header.googleCategories,
+              callback: function($$v) {
+                _vm.$set(_vm.header, "googleCategories", $$v)
+              },
+              expression: "header.googleCategories"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.header.googleCategories, function(catElement, index) {
+        return _c(
+          "div",
+          { key: index, staticClass: "woogool-individual-field-wrap" },
+          [
+            _c("label", { staticClass: "woogool-label" }, [
+              _vm._v(_vm._s(catElement.catName))
+            ]),
+            _vm._v(" "),
+            _c("vue-woogool-multiselect", {
+              attrs: {
+                options: _vm.googleCategories,
+                multiple: false,
+                "close-on-select": true,
+                "clear-on-select": true,
+                "show-labels": true,
+                searchable: true,
+                placeholder: "Category maping",
+                "select-label": "",
+                "selected-label": "selected",
+                "deselect-label": "",
+                label: "",
+                "track-by": "id",
+                "allow-empty": true
+              },
+              on: {
+                input: function($event) {
+                  _vm.setGoogleCat(catElement, $event)
+                }
+              },
+              model: {
+                value: catElement.googleCat,
+                callback: function($$v) {
+                  _vm.$set(catElement, "googleCat", $$v)
+                },
+                expression: "catElement.googleCat"
+              }
+            }),
+            _vm._v(" "),
+            _c("span", [
+              _vm._v(
+                "Google category of the " +
+                  _vm._s(catElement.catName.toLowerCase()) +
+                  " item"
+              )
+            ])
+          ],
+          1
+        )
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+        _c("label", { staticClass: "woogool-label" }, [
+          _vm._v("Refresh interval")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.header.refresh,
+                expression: "header.refresh"
+              }
+            ],
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.header,
+                  "refresh",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { value: "1" } }, [_vm._v("Daily")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "2" } }, [_vm._v("Hourly")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "3" } }, [_vm._v("Weekly")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
+          ]
+        )
+      ])
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3501,30 +3495,6 @@ woogool.Vue.directive('woogool-tooltip', {
 	}
 });
 
-woogool.Vue.directive('woogool-chosen-google-categories', {
-	inserted: function inserted(el, binding, vnode) {
-		jQuery(el).chosen({ width: '300px' }).change(function (change, change_val) {
-			vnode.context.setGoogleCategories(change, change_val);
-		});
-	}
-});
-
-woogool.Vue.directive('woogool-chosen-categories', {
-	inserted: function inserted(el, binding, vnode) {
-		jQuery(el).chosen({ width: '300px' }).change(function (change, change_val) {
-			vnode.context.setCategories(change, change_val);
-		});
-	}
-});
-
-woogool.Vue.directive('woogool-chosen', {
-	inserted: function inserted(el, binding, vnode) {
-		jQuery(el).chosen({ width: '300px' }).change(function (change, change_val) {
-			vnode.context.chosenChange(change, change_val);
-		});
-	}
-});
-
 /***/ }),
 /* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3803,6 +3773,8 @@ if (false) {
 
 "use strict";
 
+
+woogool.Vue.component('vue-woogool-multiselect', window.VueMultiselect.default);
 
 /***/ })
 /******/ ]);

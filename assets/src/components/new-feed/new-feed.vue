@@ -41,10 +41,11 @@
 		},
 
 		created () {
-			this.getFeed(68);
+			this.getFeed(69);
 		},
 		methods: {
 			newFeed () {
+				
 				var request = {
 	                type: 'POST',
 	                url: woogool_var.ajaxurl,
@@ -80,8 +81,8 @@
 			},
 
 			setHeader (feed) {
+				console.log(feed);
 				this.header = feed.post_meta;
-				console.log(this.header);
 			}
 		}
 	}

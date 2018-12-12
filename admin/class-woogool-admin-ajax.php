@@ -28,15 +28,17 @@ class WooGool_Admin_ajax {
     function get_feed() {
         check_ajax_referer( 'woogool_nonce' );
         $post_id   = empty( $_POST['post_id'] ) ? 0 : intval( $_POST['post_id'] );
-        
+        $post = get_post( $post_id );
+
         wp_send_json_success([
-            'post' => get_post( $post_id ),
+            'post' => $post,
             'post_meta' => [
                 'feedByCatgory'    => get_post_meta( $post_id, 'feed_by_category', true ),
                 'activeVariation'  => get_post_meta( $post_id, 'active_variation', true ),
                 'refresh'          => get_post_meta( $post_id, 'refresh', true ),
                 'categories'       => get_post_meta( $post_id, 'categories', true ),
-                'googleCategories' => get_post_meta( $post_id, 'google_categories', true )
+                'googleCategories' => get_post_meta( $post_id, 'google_categories', true ),
+                'name'             => $post->post_title
             ]
         ]);
     }
