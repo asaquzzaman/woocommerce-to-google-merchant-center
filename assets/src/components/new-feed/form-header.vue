@@ -77,7 +77,7 @@
                 :allow-empty="true">
 					
 			</vue-woogool-multiselect>
-			<span>Google category of the {{ catElement.catName.toLowerCase() }} item</span>
+			<span>Google category for the {{ catElement.catName.toLowerCase() }} item</span>
 		</div>
 
 		<div class="woogool-individual-field-wrap">
@@ -89,12 +89,25 @@
 				<option value="4">Monthly</option>
 			</select>
 		</div>
+
+		<div>
+			<a href="#" class="button button-primary" @click.prevent="changeStage('second')">{{ 'Next' }}</a>
+		</div>
 	</div>
 </template>
 
 <script>
+	import Mixin from '@components/new-feed/mixin'
+
 	export default {
+		mixins: [Mixin],
 		props: {
+			stage: {
+				type: [Object],
+				default () {
+					return {}
+				}
+			},
 			header: {
 				type: [Object],
 				default () {

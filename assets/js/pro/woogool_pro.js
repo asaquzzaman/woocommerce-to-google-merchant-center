@@ -365,8 +365,10 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_header_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_new_feed_form_header_vue__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_logic_vue__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_content_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_content_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_logic_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin__);
 //
 //
 //
@@ -380,6 +382,23 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -387,6 +406,7 @@ if (false) {(function () {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+	mixins: [__WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin___default.a],
 	data: function data() {
 		return {
 			header: {
@@ -397,15 +417,16 @@ if (false) {(function () {
 				refresh: 1,
 				googleCategories: [],
 				categories: []
-			}
+			},
+			content: {}
 		};
 	},
 
 	components: {
 		'feed-header': __WEBPACK_IMPORTED_MODULE_0__components_header_vue__["a" /* default */],
 		'form-header': __WEBPACK_IMPORTED_MODULE_1__components_new_feed_form_header_vue__["a" /* default */],
-		'form-content': __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_logic_vue__["a" /* default */],
-		'form-logic': __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_content_vue__["a" /* default */]
+		'form-content': __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_content_vue__["a" /* default */],
+		'form-logic': __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_logic_vue__["a" /* default */]
 	},
 
 	created: function created() {
@@ -446,7 +467,6 @@ if (false) {(function () {
 			this.httpRequest(request);
 		},
 		setHeader: function setHeader(feed) {
-			console.log(feed);
 			this.header = feed.post_meta;
 		}
 	}
@@ -457,6 +477,12 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__);
+//
+//
+//
+//
 //
 //
 //
@@ -552,8 +578,17 @@ if (false) {(function () {
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
+	mixins: [__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default.a],
 	props: {
+		stage: {
+			type: [Object],
+			default: function _default() {
+				return {};
+			}
+		},
 		header: {
 			type: [Object],
 			default: function _default() {
@@ -594,6 +629,12 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__);
+//
+//
+//
+//
 //
 //
 //
@@ -601,8 +642,18 @@ if (false) {(function () {
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
+	mixins: [__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default.a],
+
 	props: {
+		stage: {
+			type: [Object],
+			default: function _default() {
+				return {};
+			}
+		},
 		logic: {
 			type: [Object],
 			default: function _default() {
@@ -617,6 +668,12 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__);
+//
+//
+//
+//
 //
 //
 //
@@ -624,8 +681,17 @@ if (false) {(function () {
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
+	mixins: [__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default.a],
 	props: {
+		stage: {
+			type: [Object],
+			default: function _default() {
+				return {};
+			}
+		},
 		content: {
 			type: [Object],
 			default: function _default() {
@@ -3092,7 +3158,7 @@ var render = function() {
             _vm._v(" "),
             _c("span", [
               _vm._v(
-                "Google category of the " +
+                "Google category for the " +
                   _vm._s(catElement.catName.toLowerCase()) +
                   " item"
               )
@@ -3145,6 +3211,23 @@ var render = function() {
             _vm._v(" "),
             _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
           ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "a",
+          {
+            staticClass: "button button-primary",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.changeStage("second")
+              }
+            }
+          },
+          [_vm._v(_vm._s("Next"))]
         )
       ])
     ],
@@ -3223,7 +3306,30 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", [
+    _vm._v("\n\tstep third\n\t"),
+    _c("div", [
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changeStage("second")
+            }
+          }
+        },
+        [_vm._v(_vm._s("Prev"))]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "button button-primary",
+        attrs: { type: "submit", value: "Submit" }
+      })
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3297,7 +3403,40 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", [
+    _vm._v("\n\tstep second\n\t"),
+    _c("div", [
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changeStage("first")
+            }
+          }
+        },
+        [_vm._v(_vm._s("Prev"))]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changeStage("third")
+            }
+          }
+        },
+        [_vm._v(_vm._s("Next"))]
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3337,16 +3476,23 @@ var render = function() {
           }
         },
         [
-          _c("form-header", { attrs: { header: _vm.header } }),
+          _vm.stage.step == "first"
+            ? _c("form-header", {
+                attrs: { header: _vm.header, stage: _vm.stage }
+              })
+            : _vm._e(),
           _vm._v(" "),
-          _c("form-content", { attrs: { content: {} } }),
+          _vm.stage.step == "second"
+            ? _c("form-content", {
+                attrs: { content: _vm.content, stage: _vm.stage }
+              })
+            : _vm._e(),
           _vm._v(" "),
-          _c("form-logic", { attrs: { logic: {} } }),
+          _vm.stage.step == "third"
+            ? _c("form-logic", { attrs: { logic: {}, stage: _vm.stage } })
+            : _vm._e(),
           _vm._v(" "),
-          _c("input", {
-            staticClass: "button button-primary",
-            attrs: { type: "submit", value: "Submit" }
-          })
+          _c("div")
         ],
         1
       )
@@ -3775,6 +3921,34 @@ if (false) {
 
 
 woogool.Vue.component('vue-woogool-multiselect', window.VueMultiselect.default);
+
+/***/ }),
+/* 49 */,
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	data: function data() {
+		return {
+			'stage': {
+				step: 'first'
+			}
+		};
+	},
+
+	methods: {
+		changeStage: function changeStage(step) {
+			this.stage.step = step;
+			console.log(this.stage.step);
+		}
+	}
+};
 
 /***/ })
 /******/ ]);
