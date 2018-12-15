@@ -253,7 +253,8 @@ if ( ! class_exists('WP_WooGool') ) {
                 'product_categories'         => woogool_get_products_terms_dropdown_array(),
                 'google_categories'          => get_option( 'woogool_google_product_type' ),
                 'google_shopping_attributes' => woogool_shopping_attributes(),
-                'woogool_product_attributes' => woogool_product_attributes()
+                'woogool_product_attributes' => woogool_product_attributes(),
+                'google_extra_attr_fields'    => [],
             ));
 
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );

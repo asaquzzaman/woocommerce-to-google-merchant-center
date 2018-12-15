@@ -680,6 +680,111 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -697,6 +802,42 @@ if (false) {(function () {
 			default: function _default() {
 				return {};
 			}
+		}
+	},
+	data: function data() {
+		return {
+			googleAttributes: woogool_multi_product_var.google_shopping_attributes,
+			woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
+			googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields
+		};
+	},
+
+
+	methods: {
+		isGoogleAttrSelected: function isGoogleAttrSelected(gAttributeTr, googleAttrTd) {
+			return gAttributeTr.name == googleAttrTd.name ? 'selected' : false;
+		},
+		isProductAttrSelected: function isProductAttrSelected(gAttributeTr, wpKey) {
+			return gAttributeTr.woogool_suggest == wpKey ? 'selected' : false;
+		},
+		removeAttr: function removeAttr(gAttributeTr) {
+			if (!confirm('Are you sure')) {
+				return;
+			}
+
+			gAttributeTr.format = 'optional';
+		},
+		addMappingField: function addMappingField() {
+			this.googleExtraAttrFields.push({
+				'type': 'mapping',
+				'format': 'required'
+			});
+		},
+		addCustomField: function addCustomField() {
+			this.googleExtraAttrFields.push({
+				'type': 'custom',
+				'format': 'required'
+			});
 		}
 	}
 });
@@ -3404,7 +3545,260 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._v("\n\tstep second\n\t"),
+    _c("table", { staticClass: "wp-list-table widefat fixed striped posts" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          _vm._l(_vm.googleAttributes, function(gAttribute, key) {
+            return _vm._l(gAttribute.attributes, function(gAttributeTr, gkey) {
+              return gAttributeTr.format == "required"
+                ? _c("tr", [
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.removeAttr(gAttributeTr)
+                            }
+                          }
+                        },
+                        [_c("span", [_vm._v("X")])]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "select",
+                        _vm._l(_vm.googleAttributes, function(
+                          googleAttributeTd,
+                          key
+                        ) {
+                          return _c(
+                            "optgroup",
+                            { attrs: { label: googleAttributeTd.label } },
+                            _vm._l(googleAttributeTd.attributes, function(
+                              googleAttrTd,
+                              key
+                            ) {
+                              return _c(
+                                "option",
+                                {
+                                  domProps: {
+                                    selected: _vm.isGoogleAttrSelected(
+                                      gAttributeTr,
+                                      googleAttrTd
+                                    )
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n\t\t\t\t\t\t\t\t\t" +
+                                      _vm._s(googleAttrTd.label) +
+                                      " " +
+                                      _vm._s(
+                                        "(" + googleAttrTd.feed_name + ")"
+                                      ) +
+                                      "\n\t\t\t\t\t\t\t\t"
+                                  )
+                                ]
+                              )
+                            })
+                          )
+                        })
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "select",
+                        _vm._l(_vm.woogoolAttributes, function(
+                          woogoolAttribute,
+                          wpKey
+                        ) {
+                          return _c(
+                            "option",
+                            {
+                              domProps: {
+                                selected: _vm.isProductAttrSelected(
+                                  gAttributeTr,
+                                  wpKey
+                                )
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t\t\t" +
+                                  _vm._s(woogoolAttribute) +
+                                  "\n\t\t\t\t\t\t\t"
+                              )
+                            ]
+                          )
+                        })
+                      )
+                    ])
+                  ])
+                : _vm._e()
+            })
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.googleExtraAttrFields, function(extraAF, attrKey) {
+            return extraAF.format == "required"
+              ? [
+                  extraAF.type == "mapping"
+                    ? _c("tr", [
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.removeAttr(extraAF)
+                                }
+                              }
+                            },
+                            [_c("span", [_vm._v("X")])]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "select",
+                            [
+                              _c("option", { attrs: { value: "" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.googleAttributes, function(
+                                googleAttributeTd,
+                                key
+                              ) {
+                                return _c(
+                                  "optgroup",
+                                  { attrs: { label: googleAttributeTd.label } },
+                                  _vm._l(googleAttributeTd.attributes, function(
+                                    googleAttrTd,
+                                    key
+                                  ) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        domProps: {
+                                          selected: _vm.isGoogleAttrSelected(
+                                            extraAF,
+                                            googleAttrTd
+                                          )
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t" +
+                                            _vm._s(googleAttrTd.label) +
+                                            " " +
+                                            _vm._s(
+                                              "(" + googleAttrTd.feed_name + ")"
+                                            ) +
+                                            "\n\t\t\t\t\t\t\t\t"
+                                        )
+                                      ]
+                                    )
+                                  })
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "select",
+                            [
+                              _c("option", { attrs: { value: "" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.woogoolAttributes, function(
+                                woogoolAttribute,
+                                wpKey
+                              ) {
+                                return _c(
+                                  "option",
+                                  { domProps: { selected: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n\t\t\t\t\t\t\t\t" +
+                                        _vm._s(woogoolAttribute) +
+                                        "\n\t\t\t\t\t\t\t"
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  extraAF.type == "custom"
+                    ? _c("tr", [
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.removeAttr(extraAF)
+                                }
+                              }
+                            },
+                            [_c("span", [_vm._v("X")])]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(1, true),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "select",
+                            [
+                              _c("option", { attrs: { value: "" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.woogoolAttributes, function(
+                                woogoolAttribute,
+                                wpKey
+                              ) {
+                                return _c(
+                                  "option",
+                                  { domProps: { selected: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n\t\t\t\t\t\t\t\t" +
+                                        _vm._s(woogoolAttribute) +
+                                        "\n\t\t\t\t\t\t\t"
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ]
+              : _vm._e()
+          })
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
     _c("div", [
       _c(
         "a",
@@ -3429,6 +3823,36 @@ var render = function() {
           on: {
             click: function($event) {
               $event.preventDefault()
+              _vm.addCustomField("first")
+            }
+          }
+        },
+        [_vm._v(_vm._s("Add custom field"))]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.addMappingField()
+            }
+          }
+        },
+        [_vm._v(_vm._s("Add mapping field"))]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
               _vm.changeStage("third")
             }
           }
@@ -3438,7 +3862,28 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th"),
+        _vm._v(" "),
+        _c("th", [_vm._v("Google Shopping Attributes")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Product Attributes")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("input", { attrs: { type: "text" } })])
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -3942,10 +4387,27 @@ exports.default = {
 		};
 	},
 
+	watch: {
+		stage: {
+			handler: function handler(stage) {
+				window.localStorage.setItem('woogoolStageStep', stage.step);
+			},
+
+
+			deep: true
+		}
+	},
+	created: function created() {
+		var step = localStorage.getItem('woogoolStageStep');
+
+		if (step) {
+			this.stage.step = step;
+		}
+	},
+
 	methods: {
 		changeStage: function changeStage(step) {
 			this.stage.step = step;
-			console.log(this.stage.step);
 		}
 	}
 };
