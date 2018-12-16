@@ -11,21 +11,23 @@
 			</thead>
 
 			<tbody>
-				<template v-for="(gAttribute, key) in googleAttributes">
-					<tr 
-						v-for="(gAttributeTr, gkey) in gAttribute.attributes"
-						v-if="gAttributeTr.format == 'required'">
+				<template 
+					v-for="(gAttrTr, gkey) in gAttrs" 
+					v-if="gAttrTr.format == 'required'">
+				
+					<tr :key="gkey" v-if="gAttrTr.type == 'default'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttributeTr)"><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrTr, gkey)"><span>X</span></a>
 						</td>
 						<td>
-							<select>
+							<select @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<optgroup 
 									v-for="(googleAttributeTd, key) in googleAttributes"
 									:label="googleAttributeTd.label">
-									<option 
-										v-for="(googleAttrTd, key) in googleAttributeTd.attributes"
-										:selected="isGoogleAttrSelected(gAttributeTr, googleAttrTd)">
+									<option
+										v-for="(googleAttrTd, optKey) in googleAttributeTd.attributes"
+										:value="googleAttrTd.name" 
+										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
 										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
@@ -33,34 +35,32 @@
 							</select>
 						</td>
 						<td>
-							<select>
+							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option 
-									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
-									:selected="isProductAttrSelected(gAttributeTr, wpKey)">
+									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
+									:value="proMetaKey"
+									:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
 						</td>
 					</tr>
-				</template>
-				<!-- For extra map fields -->
-				<template 
-					v-for="(extraAF, attrKey) in googleExtraAttrFields" 
-					v-if="extraAF.format == 'required'">
-
-					<tr v-if="extraAF.type == 'mapping'">
+			
+					<!-- For extra map fields -->
+					<tr :key="gkey" v-if="gAttrTr.type == 'mapping'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(extraAF)"><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrTr)"><span>X</span></a>
 						</td>
 						<td>
-							<select>
+							<select @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<option value=""></option>
 								<optgroup 
 									v-for="(googleAttributeTd, key) in googleAttributes"
 									:label="googleAttributeTd.label">
 									<option 
-										v-for="(googleAttrTd, key) in googleAttributeTd.attributes"
-										:selected="isGoogleAttrSelected(extraAF, googleAttrTd)">
+										v-for="(googleAttrTd, mKey) in googleAttributeTd.attributes"
+										:value="googleAttrTd.name"
+										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
 										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
@@ -68,11 +68,12 @@
 							</select>
 						</td>
 						<td>
-							<select>
+							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
-									:selected="''">
+									:value="wpKey"
+									:selected="isProductAttrSelected(gAttrTr, wpKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
@@ -80,9 +81,9 @@
 					</tr>
 
 					<!-- For custom fields -->
-					<tr v-if="extraAF.type == 'custom'">
+					<tr :key="gkey" v-if="gAttrTr.type == 'custom'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(extraAF)"><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrTr)"><span>X</span></a>
 						</td>
 						<td>
 							<input type="text">
@@ -137,10 +138,56 @@
 				googleAttributes: woogool_multi_product_var.google_shopping_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
 				googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
+				gAttrs: [],
+
 			}
 		},
 
+		created () {
+			this.setDefaultAttr();
+		},
+
 		methods: {
+
+			setGooAttrReqVal (gooAttr, key, type, evt) {
+				var self = this;
+				var value = evt.target.value;
+				
+				jQuery.each(this.googleAttributes, function(index, googleAttribute) {
+					jQuery.each(googleAttribute.attributes, function(position, attr) {
+						
+						if(attr.name == value) {
+							let newAttr = Object.assign({}, attr, 
+								{
+									'woogool_suggest': gooAttr.woogool_suggest, 
+									'type': type, 
+									'format': 'required'
+								}
+							);
+							
+				 			self.gAttrs.splice(key, 1, newAttr);
+						} 
+					});
+				});
+			},
+			setProAttrReqVal (gooAttr, key, evt) {
+				var value = evt.target.value;
+				woogool.Vue.set( this.gAttrs[key], 'woogool_suggest', value );
+			},
+			setDefaultAttr () {
+				var self = this;
+
+				jQuery.each(this.googleAttributes, function(index, googleAttribute) {
+					jQuery.each(googleAttribute.attributes, function(key, attr) {
+						if(attr.format == 'required') {
+							if(typeof attr.type == 'undefined') {
+								woogool.Vue.set(attr, 'type', 'default');
+							}
+				 			self.gAttrs.push(attr);
+						}
+					});
+				});
+			},
 			isGoogleAttrSelected (gAttributeTr, googleAttrTd) {
 				return gAttributeTr.name == googleAttrTd.name ? 'selected' : false;
 			},
@@ -149,23 +196,23 @@
 				return gAttributeTr.woogool_suggest == wpKey ? 'selected' : false;
 			},
 
-			removeAttr(gAttributeTr) {
+			removeAttr(gAttributeTr, key) {
 				if(!confirm('Are you sure')) {
 					return;
 				}
 
-				gAttributeTr.format = 'optional';
+				this.gAttrs.splice(key, 1);
 			},
 
 			addMappingField () {
-				this.googleExtraAttrFields.push({
+				this.gAttrs.push({
 					'type': 'mapping',
 					'format': 'required'
 				});
 			},
 
 			addCustomField () {
-				this.googleExtraAttrFields.push({
+				this.gAttrs.push({
 					'type': 'custom',
 					'format': 'required'
 				});
