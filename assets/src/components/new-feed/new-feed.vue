@@ -1,10 +1,10 @@
 <template>
-	<div class="wrap">
+	<div class="">
 		<feed-header></feed-header>
 		<form action="" @submit.prevent="newFeed()" method="post">
-			<form-header v-if="stage.step == 'first'" :header="header" :stage="stage"></form-header>
-			<form-content v-if="stage.step == 'second'" :content="content" :stage="stage"></form-content>
-			<form-logic v-if="stage.step == 'third'" :logic="{}" :stage="stage"></form-logic>
+			<form-header v-show="stage.step == 'first'" :header="header" :stage="stage"></form-header>
+			<form-content v-show="stage.step == 'second'" :gAttrs="contentAttrs"  :stage="stage"></form-content>
+			<form-logic v-show="stage.step == 'third'" :logic="logic" :stage="stage"></form-logic>
 			
 			<div>
 				<!-- <span v-if="step == 'first'">
@@ -16,8 +16,8 @@
 					<a href="#" class="button button-primary" @click.prevent="changeStage('third')">{{ 'Next' }}</a>
 				</span>
 
-				<span v-if="step == 'third'">
-					<a href="#" class="button button-primary" @click.prevent="changeStage('second')">{{ 'Prev' }}</a>
+				<span >
+					
 					<input type="submit" class="button button-primary" value="Submit">
 				</span> -->
 
@@ -47,9 +47,8 @@
 					googleCategories: [],
 					categories: []
 				},
-				content: {
-					
-				}
+				contentAttrs: [],
+				logic: []
 			}
 		},
 		components: {
@@ -64,7 +63,7 @@
 		},
 		methods: {
 			newFeed () {
-				
+				console.log(this.contentAttrs); return;
 				var request = {
 	                type: 'POST',
 	                url: woogool_var.ajaxurl,

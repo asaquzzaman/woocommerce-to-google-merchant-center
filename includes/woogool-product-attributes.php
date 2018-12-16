@@ -101,6 +101,116 @@ function woogool_product_attributes () {
 	return $attributes;
 }
 
+function woogool_product_attribute_with_optgroups () {
+
+	$dynamic_attributes = [];
+	$custom_attributes = [];
+
+	if ( is_array( woogool_get_dynamic_attributes() ) ) {
+    	$dynamic_attributes = woogool_get_dynamic_attributes();
+	}
+
+	if( is_array( woogool_get_custom_attributes() ) ) {
+		$custom_attributes = woogool_get_custom_attributes();
+    }
+
+    $attributes = array (
+    	'main_attributes' => array (
+    		'label' => 'Main attributes',
+    		'attributes' => array (
+				"id"                        => "Product Id",
+				"sku"                       => "SKU", 
+				"sku_id"                    => "SKU_ID",
+				"title"                     => "Product name",
+				"mother_title"              => "Product name mother product",
+				"description"               => "Product description",
+				"short_description"         => "Product short description",
+				"price"                     => "Price",
+				"regular_price"             => "Regular price",
+				"sale_price"                => "Sale price",
+				"net_price"                 => "Price excl. VAT",
+				"net_regular_price"         => "Regular price excl. VAT",
+				"net_sale_price"            => "Sale price excl. VAT",
+				"price_forced"              => "Price incl. VAT front end",
+				"regular_price_forced"      => "Regular price incl. VAT front end",
+				"sale_price_forced"         => "Sale price incl. VAT front end",
+				"sale_price_start_date"     => "Sale start date",
+				"sale_price_end_date"       => "Sale end date",
+				"sale_price_effective_date" => "Sale price effective date",
+				"link"                      => "Link",
+				"currency"                  => "Currency",
+				"categories"                => "Category",
+				"category_link"             => "Category link",
+				"category_path"             => "Category path",
+				"condition"                 => "Condition",
+				"availability"              => "Availability",
+				"quantity"                  => "Quantity [Stock]",
+				"product_type"              => "Product Type",
+				"content_type"              => "Content Type",
+				"exclude_from_catalog"      => "Excluded from catalog",
+				"exclude_from_search"       => "Excluded from search",
+				"exclude_from_all"          => "Excluded from all (hidden)",
+				"publication_date"          => "Publication date",
+				"item_group_id"             => "Item group ID",
+				"weight"                    => "Weight",
+				"width"                     => "Width",
+				"height"                    => "Height",
+				"length"                    => "Length",
+				"shipping"                  => "Shipping",
+				"visibility"                => "Visibility",
+				"rating_total"              => "Total rating",
+				"rating_average"            => "Average rating",
+			)
+    	),
+
+    	'image_attributes' => array (
+
+    		'label' => 'Image attributes',
+    		'attributes' => array(
+				"image"         => "Main image",
+				"feature_image" => "Featured image",
+				"image_1"       => "Additional image 1",
+				"image_2"       => "Additional image 2",
+				"image_3"       => "Additional image 3",
+				"image_4"       => "Additional image 4",
+				"image_5"       => "Additional image 5",
+				"image_6"       => "Additional image 6",
+				"image_7"       => "Additional image 7",
+				"image_8"       => "Additional image 8",
+				"image_9"       => "Additional image 9",
+				"image_10"      => "Additional image 10",
+			)
+    	),
+
+    	'dynamic_attributes' => array (
+    		'label' => 'Dynamic attributes',
+    		'attributes' => $dynamic_attributes,
+    	),
+
+    	'google_category_taxonomy' => array (
+    		'label' => 'Google category taxonomy',
+    		'attributes' => array (
+    			'google_category' => 'Google category',
+    		)
+    	),
+
+    	'custom_field_attributes' => array (
+    		'label' => 'Custom field attributes',
+    		'attributes' => $custom_attributes
+    	),
+
+    	'other_fields' => array (
+    		'label' => 'Other fields',
+    		'attributes' => array (
+    			'product_tag' => 'Product tags'
+    		)
+    	)
+    );
+
+
+	return $attributes;
+}
+
 function woogool_get_dynamic_attributes() {
 	global $wpdb;
 	$list = array();

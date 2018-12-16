@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<table class="wp-list-table widefat fixed striped posts">
+		<table class="wp-list-table widefat striped posts">
 			<thead>
 				<tr>
 					<th></th>
@@ -17,7 +17,7 @@
 				
 					<tr :key="gkey" v-if="gAttrTr.type == 'default'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrTr, gkey)"><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
 						</td>
 						<td>
 							<select @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
@@ -49,7 +49,7 @@
 					<!-- For extra map fields -->
 					<tr :key="gkey" v-if="gAttrTr.type == 'mapping'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrTr)"><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
 						</td>
 						<td>
 							<select @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
@@ -83,17 +83,18 @@
 					<!-- For custom fields -->
 					<tr :key="gkey" v-if="gAttrTr.type == 'custom'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrTr)"><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
 						</td>
 						<td>
-							<input type="text">
+							<input type="text" @input="setCustomText(gAttrTr, gkey, $event)">
 						</td>
 						<td>
-							<select>
+							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option value=""></option>
 								<option 
-									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
-									:selected="''">
+									v-for="(woogoolAttribute, pmKey) in woogoolAttributes"
+									:value="pmKey"
+									:selected="isProductAttrSelected(gAttrTr, pmKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
@@ -126,10 +127,10 @@
 					return {}
 				}
 			},
-			content: {
-				type: [Object],
+			gAttrs: {
+				type: [Array],
 				default () {
-					return {}
+					return []
 				}
 			}
 		},
@@ -138,8 +139,6 @@
 				googleAttributes: woogool_multi_product_var.google_shopping_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
 				googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
-				gAttrs: [],
-
 			}
 		},
 
@@ -148,7 +147,9 @@
 		},
 
 		methods: {
-
+			setCustomText (gAttrTr, gkey, elet) {
+				woogool.Vue.set(gAttrTr, 'name', elet.target.value);
+			},
 			setGooAttrReqVal (gooAttr, key, type, evt) {
 				var self = this;
 				var value = evt.target.value;
@@ -171,8 +172,9 @@
 				});
 			},
 			setProAttrReqVal (gooAttr, key, evt) {
+				var self = this;
 				var value = evt.target.value;
-				woogool.Vue.set( this.gAttrs[key], 'woogool_suggest', value );
+				woogool.Vue.set( gooAttr, 'woogool_suggest', value );
 			},
 			setDefaultAttr () {
 				var self = this;

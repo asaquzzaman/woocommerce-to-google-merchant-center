@@ -254,6 +254,7 @@ if ( ! class_exists('WP_WooGool') ) {
                 'google_categories'          => get_option( 'woogool_google_product_type' ),
                 'google_shopping_attributes' => woogool_shopping_attributes(),
                 'woogool_product_attributes' => woogool_product_attributes(),
+                'woogool_product_attribute_with_optgroups' => woogool_product_attribute_with_optgroups (),
                 'google_extra_attr_fields'    => [],
             ));
 

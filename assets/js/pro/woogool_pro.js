@@ -418,7 +418,8 @@ if (false) {(function () {
 				googleCategories: [],
 				categories: []
 			},
-			content: {}
+			contentAttrs: [],
+			logic: []
 		};
 	},
 
@@ -435,7 +436,7 @@ if (false) {(function () {
 
 	methods: {
 		newFeed: function newFeed() {
-
+			console.log(this.contentAttrs);return;
 			var request = {
 				type: 'POST',
 				url: woogool_var.ajaxurl,
@@ -641,6 +642,132 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -655,10 +782,111 @@ if (false) {(function () {
 			}
 		},
 		logic: {
-			type: [Object],
+			type: [Array],
 			default: function _default() {
-				return {};
+				return [];
 			}
+		}
+	},
+
+	data: function data() {
+		return {
+			proAttrs: woogool_multi_product_var.woogool_product_attribute_with_optgroups,
+			filterCondDrops: [{
+				id: 'contains',
+				label: 'Contains'
+			}, {
+				id: 'does_not_contain',
+				label: 'does not contain'
+			}, {
+				id: 'is_equal_to',
+				label: 'is equal to'
+			}, {
+				id: 'is_not_equal_to',
+				label: 'is not equal to'
+			}, {
+				id: 'is_greater_than',
+				label: 'is greater than'
+			}, {
+				id: 'is_greater_or_equal_to',
+				label: 'is greater or equal to'
+			}, {
+				id: 'is_less_than',
+				label: 'is less than'
+			}, {
+				id: 'is_less_or_equal_to',
+				label: 'is less or equal to'
+			}, {
+				id: 'is_empty',
+				label: 'is empty'
+			}],
+
+			ruleCondDrops: [{
+				id: 'contains',
+				label: 'Contains'
+			}, {
+				id: 'does_not_contain',
+				label: 'does not contain'
+			}, {
+				id: 'is_equal_to',
+				label: 'is equal to'
+			}, {
+				id: 'is_not_equal_to',
+				label: 'is not equal to'
+			}, {
+				id: 'is_greater_than',
+				label: 'is greater than'
+			}, {
+				id: 'is_greater_or_equal_to',
+				label: 'is greater or equal to'
+			}, {
+				id: 'is_less_than',
+				label: 'is less than'
+			}, {
+				id: 'is_less_or_equal_to',
+				label: 'is less or equal to'
+			}, {
+				id: 'is_empty',
+				label: 'is empty'
+			}, {
+				id: 'multiply',
+				label: 'multiply'
+			}, {
+				id: 'divide',
+				label: 'divide'
+			}, {
+				id: 'plus',
+				label: 'plus'
+			}, {
+				id: 'minus',
+				label: 'minus'
+			}, {
+				id: 'replace',
+				label: 'replace'
+			}]
+		};
+	},
+
+
+	methods: {
+		addFields: function addFields(type) {
+			var filter = {
+				type: type,
+				if: '',
+				condition: '',
+				value: '',
+				then: '',
+				is: ''
+			};
+
+			this.logic.push(filter);
+		},
+		removeAttr: function removeAttr(key) {
+			if (!confirm('Are you sure')) {
+				return;
+			}
+
+			this.logic.splice(key, 1);
 		}
 	}
 });
@@ -789,6 +1017,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -801,10 +1030,10 @@ if (false) {(function () {
 				return {};
 			}
 		},
-		content: {
-			type: [Object],
+		gAttrs: {
+			type: [Array],
 			default: function _default() {
-				return {};
+				return [];
 			}
 		}
 	},
@@ -812,9 +1041,7 @@ if (false) {(function () {
 		return {
 			googleAttributes: woogool_multi_product_var.google_shopping_attributes,
 			woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
-			googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
-			gAttrs: []
-
+			googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields
 		};
 	},
 	created: function created() {
@@ -823,6 +1050,9 @@ if (false) {(function () {
 
 
 	methods: {
+		setCustomText: function setCustomText(gAttrTr, gkey, elet) {
+			woogool.Vue.set(gAttrTr, 'name', elet.target.value);
+		},
 		setGooAttrReqVal: function setGooAttrReqVal(gooAttr, key, type, evt) {
 			var self = this;
 			var value = evt.target.value;
@@ -843,8 +1073,9 @@ if (false) {(function () {
 			});
 		},
 		setProAttrReqVal: function setProAttrReqVal(gooAttr, key, evt) {
+			var self = this;
 			var value = evt.target.value;
-			woogool.Vue.set(this.gAttrs[key], 'woogool_suggest', value);
+			woogool.Vue.set(gooAttr, 'woogool_suggest', value);
 		},
 		setDefaultAttr: function setDefaultAttr() {
 			var self = this;
@@ -957,6 +1188,11 @@ exports.default = {
             });
 
             return index;
+        },
+        ucfirst: function ucfirst(word) {
+            return word.replace(/\w/, function (c) {
+                return c.toUpperCase();
+            });
         }
     }
 };
@@ -3441,6 +3677,10 @@ if (false) {
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0ee82c0e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_logic_vue__ = __webpack_require__(31);
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(89)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -3450,7 +3690,7 @@ var normalizeComponent = __webpack_require__(0)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -3494,7 +3734,181 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._v("\n\tstep third\n\t"),
+    _c("table", { staticClass: "wp-list-table widefat fixed striped posts" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          _vm._l(_vm.logic, function(logical, key) {
+            return [
+              _c("tr", [
+                _c("td", { staticClass: "first" }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.removeAttr(key)
+                        }
+                      }
+                    },
+                    [_c("span", [_vm._v("X")])]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "second" }, [
+                  _vm._v(
+                    "\n\t\t\t\t\t\t" +
+                      _vm._s(_vm.ucfirst(logical.type)) +
+                      "\n\t\t\t\t\t"
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "third" }, [
+                  _c(
+                    "select",
+                    { staticClass: "woogool-drop" },
+                    _vm._l(_vm.proAttrs, function(proAttrTd, prokey) {
+                      return _c(
+                        "optgroup",
+                        { attrs: { label: proAttrTd.label } },
+                        _vm._l(proAttrTd.attributes, function(
+                          attribute,
+                          attrKey
+                        ) {
+                          return _c(
+                            "option",
+                            {
+                              attrs: { selected: "" },
+                              domProps: { value: attrKey }
+                            },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t\t\t\t" +
+                                  _vm._s(attribute) +
+                                  " \n\t\t\t\t\t\t\t\t"
+                              )
+                            ]
+                          )
+                        })
+                      )
+                    })
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "fourth" }, [
+                  logical.type == "filter"
+                    ? _c("div", [
+                        _c(
+                          "select",
+                          { staticClass: "woogool-drop" },
+                          _vm._l(_vm.filterCondDrops, function(filterCondDrop) {
+                            return _c(
+                              "option",
+                              { domProps: { value: filterCondDrop.id } },
+                              [
+                                _vm._v(
+                                  "\n\n\t\t\t\t\t\t\t\t\t" +
+                                    _vm._s(filterCondDrop.label) +
+                                    "\n\t\t\t\t\t\t\t\t"
+                                )
+                              ]
+                            )
+                          })
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  logical.type == "rule" || logical.type == "value"
+                    ? _c("div", [
+                        _c(
+                          "select",
+                          { staticClass: "woogool-drop" },
+                          _vm._l(_vm.ruleCondDrops, function(ruleCondDrop) {
+                            return _c(
+                              "option",
+                              { domProps: { value: ruleCondDrop.id } },
+                              [
+                                _vm._v(
+                                  "\n\n\t\t\t\t\t\t\t\t\t" +
+                                    _vm._s(ruleCondDrop.label) +
+                                    "\n\t\t\t\t\t\t\t\t"
+                                )
+                              ]
+                            )
+                          })
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _vm._m(1, true),
+                _vm._v(" "),
+                _c("td", { staticClass: "six" }, [
+                  logical.type == "filter"
+                    ? _c("div", [_vm._m(2, true)])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  logical.type == "rule"
+                    ? _c("div", [
+                        _c(
+                          "select",
+                          { staticClass: "woogool-drop" },
+                          _vm._l(_vm.proAttrs, function(proAttrTd, prokey) {
+                            return _c(
+                              "optgroup",
+                              { attrs: { label: proAttrTd.label } },
+                              _vm._l(proAttrTd.attributes, function(
+                                attribute,
+                                attrKey
+                              ) {
+                                return _c(
+                                  "option",
+                                  {
+                                    attrs: { selected: "" },
+                                    domProps: { value: attrKey }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n\t\t\t\t\t\t\t\t\t\t" +
+                                        _vm._s(attribute) +
+                                        " \n\t\t\t\t\t\t\t\t\t"
+                                    )
+                                  ]
+                                )
+                              })
+                            )
+                          })
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  logical.type == "value"
+                    ? _c("div", [_vm._v("THEN")])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "seven" }, [
+                  logical.type == "rule" || logical.type == "value"
+                    ? _c("div", [
+                        _c("input", {
+                          staticClass: "woogool-text",
+                          attrs: { type: "text" }
+                        })
+                      ])
+                    : _vm._e()
+                ])
+              ])
+            ]
+          })
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
     _c("div", [
       _c(
         "a",
@@ -3511,6 +3925,51 @@ var render = function() {
         [_vm._v(_vm._s("Prev"))]
       ),
       _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.addFields("filter")
+            }
+          }
+        },
+        [_vm._v(_vm._s("+ Filter"))]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.addFields("rule")
+            }
+          }
+        },
+        [_vm._v(_vm._s("+ Rule"))]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "button button-primary",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.addFields("value")
+            }
+          }
+        },
+        [_vm._v(_vm._s("+ Value"))]
+      ),
+      _vm._v(" "),
       _c("input", {
         staticClass: "button button-primary",
         attrs: { type: "submit", value: "Submit" }
@@ -3518,7 +3977,48 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "first" }),
+        _vm._v(" "),
+        _c("th", { staticClass: "second" }, [_vm._v("TYPE")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "third" }, [_vm._v("IF")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "fourth" }, [_vm._v("CONDITION")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "five" }, [_vm._v("VALUE")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "six" }, [_vm._v("THEN")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "seven" }, [_vm._v("is")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "five" }, [
+      _c("input", { staticClass: "woogool-text", attrs: { type: "text" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("select", { staticClass: "woogool-drop" }, [
+      _c("option", { attrs: { value: "exclude" } }, [_vm._v("Exclude")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "include" } }, [_vm._v("Include")])
+    ])
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -3591,7 +4091,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("table", { staticClass: "wp-list-table widefat fixed striped posts" }, [
+    _c("table", { staticClass: "wp-list-table widefat striped posts" }, [
       _vm._m(0),
       _vm._v(" "),
       _c(
@@ -3610,7 +4110,7 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   $event.preventDefault()
-                                  _vm.removeAttr(gAttrTr, gkey)
+                                  _vm.removeAttr(_vm.gAttrs, gkey)
                                 }
                               }
                             },
@@ -3725,7 +4225,7 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   $event.preventDefault()
-                                  _vm.removeAttr(gAttrTr)
+                                  _vm.removeAttr(_vm.gAttrs, gkey)
                                 }
                               }
                             },
@@ -3853,7 +4353,7 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   $event.preventDefault()
-                                  _vm.removeAttr(gAttrTr)
+                                  _vm.removeAttr(_vm.gAttrs, gkey)
                                 }
                               }
                             },
@@ -3861,21 +4361,48 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(1, true),
+                        _c("td", [
+                          _c("input", {
+                            attrs: { type: "text" },
+                            on: {
+                              input: function($event) {
+                                _vm.setCustomText(gAttrTr, gkey, $event)
+                              }
+                            }
+                          })
+                        ]),
                         _vm._v(" "),
                         _c("td", [
                           _c(
                             "select",
+                            {
+                              on: {
+                                change: function($event) {
+                                  if ($event.target !== $event.currentTarget) {
+                                    return null
+                                  }
+                                  _vm.setProAttrReqVal(gAttrTr, gkey, $event)
+                                }
+                              }
+                            },
                             [
                               _c("option", { attrs: { value: "" } }),
                               _vm._v(" "),
                               _vm._l(_vm.woogoolAttributes, function(
                                 woogoolAttribute,
-                                wpKey
+                                pmKey
                               ) {
                                 return _c(
                                   "option",
-                                  { domProps: { selected: "" } },
+                                  {
+                                    domProps: {
+                                      value: pmKey,
+                                      selected: _vm.isProductAttrSelected(
+                                        gAttrTr,
+                                        pmKey
+                                      )
+                                    }
+                                  },
                                   [
                                     _vm._v(
                                       "\n\t\t\t\t\t\t\t\t" +
@@ -3976,12 +4503,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Product Attributes")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("input", { attrs: { type: "text" } })])
   }
 ]
 render._withStripped = true
@@ -4005,7 +4526,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "wrap" },
+    {},
     [
       _c("feed-header"),
       _vm._v(" "),
@@ -4021,21 +4542,41 @@ var render = function() {
           }
         },
         [
-          _vm.stage.step == "first"
-            ? _c("form-header", {
-                attrs: { header: _vm.header, stage: _vm.stage }
-              })
-            : _vm._e(),
+          _c("form-header", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.stage.step == "first",
+                expression: "stage.step == 'first'"
+              }
+            ],
+            attrs: { header: _vm.header, stage: _vm.stage }
+          }),
           _vm._v(" "),
-          _vm.stage.step == "second"
-            ? _c("form-content", {
-                attrs: { content: _vm.content, stage: _vm.stage }
-              })
-            : _vm._e(),
+          _c("form-content", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.stage.step == "second",
+                expression: "stage.step == 'second'"
+              }
+            ],
+            attrs: { gAttrs: _vm.contentAttrs, stage: _vm.stage }
+          }),
           _vm._v(" "),
-          _vm.stage.step == "third"
-            ? _c("form-logic", { attrs: { logic: {}, stage: _vm.stage } })
-            : _vm._e(),
+          _c("form-logic", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.stage.step == "third",
+                expression: "stage.step == 'third'"
+              }
+            ],
+            attrs: { logic: _vm.logic, stage: _vm.stage }
+          }),
           _vm._v(" "),
           _c("div")
         ],
@@ -5072,6 +5613,46 @@ var defined = __webpack_require__(59);
 module.exports = function (it) {
   return Object(defined(it));
 };
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(90);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(11)("29c1f79a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0ee82c0e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/less-loader/dist/cjs.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form-logic.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0ee82c0e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/less-loader/dist/cjs.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form-logic.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.wp-list-table .first {\n  width: 1em;\n}\n.wp-list-table .second {\n  width: 3em;\n}\n.wp-list-table .woogool-drop,\n.wp-list-table .woogool-text {\n  width: 150px;\n}\n", ""]);
+
+// exports
 
 
 /***/ })

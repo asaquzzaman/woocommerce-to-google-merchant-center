@@ -26,5 +26,9 @@ export default {
 
             return index;
         },
+
+        ucfirst (word) {
+            return word.replace(/\w/, c => c.toUpperCase())
+        },
 	}
 }
