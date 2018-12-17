@@ -70,7 +70,7 @@ class WooGool_Admin_Feed {
            return;
         } 
 
-        $post = $_POST;
+        $post = wp_unslash( $_POST );
         $feed_update_id = $this->insert_feed( $post );
 
         $feed_list_url = woogool_subtab_menu_url( 'woogool_multiple', 'feed-lists' );
@@ -131,6 +131,13 @@ class WooGool_Admin_Feed {
 
         $googleCategories = isset( $header['googleCategories'] ) ? $header['googleCategories'] : [];
         update_post_meta( $post_id, 'google_categories', $googleCategories );
+
+        $contentAttrs = isset( $post['contentAttrs'] ) ? $post['contentAttrs'] : [];
+        update_post_meta( $post_id, 'content_attributes', $contentAttrs );
+
+        $logic = isset( $post['logic'] ) ? $post['logic'] : [];
+        update_post_meta( $post_id, 'logic', $logic );
+
        
         // $all_products = isset( $post['all_products'] ) ? $post['all_products'] : 0;
         // update_post_meta( $post_id, '_all_products', $all_products );

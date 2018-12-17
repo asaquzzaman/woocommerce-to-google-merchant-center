@@ -86,7 +86,7 @@
 							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
 						</td>
 						<td>
-							<input type="text" @input="setCustomText(gAttrTr, gkey, $event)">
+							<input :value="gAttrTr.name" type="text" @input="setCustomText(gAttrTr, gkey, $event)">
 						</td>
 						<td>
 							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">

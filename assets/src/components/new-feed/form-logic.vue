@@ -18,7 +18,7 @@
 
 					<tr>
 						<td class="first">
-							<a href="#" @click.prevent="removeAttr(key)""><span>X</span></a>
+							<a href="#" @click.prevent="removeAttr(key)"><span>X</span></a>
 						</td>
 						
 						<td class="second">
@@ -26,14 +26,14 @@
 						</td>
 						
 						<td class="third">
-							<select class="woogool-drop">
+							<select @change="setData(logical, 'if', $event)" class="woogool-drop">
 								<optgroup 
 									v-for="(proAttrTd, prokey) in proAttrs"
 									:label="proAttrTd.label">
 									<option
 										v-for="(attribute, attrKey) in proAttrTd.attributes"
 										:value="attrKey" 
-										selected="">
+										:selected="logical.if == attrKey ? 'selected' : ''">
 										{{ attribute }} 
 									</option>
 								</optgroup>
@@ -43,10 +43,11 @@
 						
 						<td class="fourth">
 							<div v-if="logical.type == 'filter'">
-								<select class="woogool-drop">
+								<select @change="setData(logical, 'condition', $event)" class="woogool-drop">
 									<option 
 										v-for="filterCondDrop in filterCondDrops"
-										:value="filterCondDrop.id">
+										:value="filterCondDrop.id"
+										:selected="logical.condition == filterCondDrop.id ? 'selected' : ''">
 
 										{{ filterCondDrop.label }}
 									</option>
@@ -54,10 +55,11 @@
 							</div>
 
 							<div v-if="logical.type == 'rule' || logical.type == 'value'">
-								<select class="woogool-drop">
+								<select @change="setData(logical, 'condition', $event)" class="woogool-drop">
 									<option 
 										v-for="ruleCondDrop in ruleCondDrops"
-										:value="ruleCondDrop.id">
+										:value="ruleCondDrop.id"
+										:selected="logical.condition == ruleCondDrop.id ? 'selected' : ''">
 
 										{{ ruleCondDrop.label }}
 									</option>
@@ -66,26 +68,30 @@
 						</td>
 						
 						<td class="five">
-							<input class="woogool-text" type="text">
+							<input :value="logical.value" @input="setData(logical, 'value', $event)" class="woogool-text" type="text">
 						</td>
 						
 						<td class="six">
 							<div v-if="logical.type == 'filter'">
-								<select class="woogool-drop">
-									<option value="exclude">Exclude</option>
-									<option value="include">Include</option>
+								<select @change="setData(logical, 'then', $event)" class="woogool-drop">
+									<option :selected="logical.then == 'exclude' ? 'selected' : ''" value="exclude">
+										Exclude
+									</option>
+									<option :selected="logical.then == 'include' ? 'selected' : ''" value="include">
+										Include
+									</option>
 								</select>
 							</div>
 
 							<div v-if="logical.type == 'rule'">
-								<select class="woogool-drop">
+								<select @change="setData(logical, 'then', $event)" class="woogool-drop">
 									<optgroup 
 										v-for="(proAttrTd, prokey) in proAttrs"
 										:label="proAttrTd.label">
 										<option
 											v-for="(attribute, attrKey) in proAttrTd.attributes"
 											:value="attrKey" 
-											selected="">
+											:selected="logical.then == attrKey ? 'selected' : ''">
 											{{ attribute }} 
 										</option>
 									</optgroup>
@@ -99,7 +105,7 @@
 
 						<td class="seven">
 							<div v-if="logical.type == 'rule' || logical.type == 'value'">
-								<input class="woogool-text" type="text">
+								<input :value="logical.is" @input="setData(logical, 'is', $event)" class="woogool-text" type="text">
 							</div>
 						</td>
 					</tr>
@@ -113,7 +119,6 @@
 			<a href="#" class="button button-primary" @click.prevent="addFields('filter')">{{ '+ Filter' }}</a>
 			<a href="#" class="button button-primary" @click.prevent="addFields('rule')">{{ '+ Rule' }}</a>
 			<a href="#" class="button button-primary" @click.prevent="addFields('value')">{{ '+ Value' }}</a>
-			<input type="submit" class="button button-primary" value="Submit">
 		</div>
 	</div>
 </template>
@@ -278,7 +283,15 @@
 				}
 				
 				this.logic.splice(key, 1);
-			}
+			},
+
+			setData (dataObje, key, evt) {
+				dataObje[key] = evt.target.value;
+			},
+
+			isProductAttrSelected (gAttributeTr, wpKey) {
+				return gAttributeTr.woogool_suggest == wpKey ? 'selected' : false;
+			},
 		}
 	}
 </script>

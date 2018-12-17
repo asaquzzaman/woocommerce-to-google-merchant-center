@@ -1,27 +1,14 @@
 <template>
 	<div class="">
 		<feed-header></feed-header>
-		<form action="" @submit.prevent="newFeed()" method="post">
+		<form action="" @submit.prevent="submit()" method="post">
 			<form-header v-show="stage.step == 'first'" :header="header" :stage="stage"></form-header>
 			<form-content v-show="stage.step == 'second'" :gAttrs="contentAttrs"  :stage="stage"></form-content>
 			<form-logic v-show="stage.step == 'third'" :logic="logic" :stage="stage"></form-logic>
 			
-			<div>
-				<!-- <span v-if="step == 'first'">
-					<a href="#" class="button button-primary" @click.prevent="changeStage('second')">{{ 'Next' }}</a>
-				</span> -->
+			
+			<a href="#" class="button button-primary" @click.prevent="submit()">{{ 'Save' }}</a>
 
-				<!-- <span v-if="step == 'second'">
-					<a href="#" class="button button-primary" @click.prevent="changeStage('first')">{{ 'Prev' }}</a>
-					<a href="#" class="button button-primary" @click.prevent="changeStage('third')">{{ 'Next' }}</a>
-				</span>
-
-				<span >
-					
-					<input type="submit" class="button button-primary" value="Submit">
-				</span> -->
-
-			</div>
 		</form>
 	</div>
 </template>
@@ -38,6 +25,7 @@
 		mixins: [Mixin],
 		data () {
 			return {
+				feed_id: false,
 				header: {
 					feedByCatgory: false,
 					name: '',
@@ -59,27 +47,26 @@
 		},
 
 		created () {
-			this.getFeed(69);
+			this.getFeed(80);
+			this.feed_id = 80;
 		},
 		methods: {
-			newFeed () {
-				console.log(this.contentAttrs); return;
-				var request = {
-	                type: 'POST',
-	                url: woogool_var.ajaxurl,
-	                data: {
-	                	action: 'woogool-new-feed',
-	                	_wpnonce: woogool_var.nonce,
-	                	header: this.header
-	                },
-	                success (res) {
-	                    
-	                },
-	            };
-
-	            this.httpRequest(request);
+			submit () {
+				var self = this;
+				var args = {
+					data: {
+						feed_id: self.feed_id,
+						header: self.header,
+                		contentAttrs: self.contentAttrs,
+                		logic: self.logic	
+					},
+					callback (res) {
+						self.feed_id = res.data.feed_id;
+					}
+				}
+				
+				self.newFeed(args);
 			},
-
 			getFeed (postId) {
 				var self = this;
 				var request = {
@@ -92,6 +79,8 @@
 	                },
 	                success (res) {
 	                    self.setHeader(res.data);
+	                    self.setContentAttrs(res.data);
+	                    self.setLogic(res.data);
 	                },
 	            };
 
@@ -99,7 +88,17 @@
 			},
 
 			setHeader (feed) {
-				this.header = feed.post_meta;
+				this.header = feed.header;
+				this.header.activeVariation = this.setBoolen(feed.header.activeVariation);
+				this.header.feedByCatgory = this.setBoolen(feed.header.feedByCatgory);
+			},
+
+			setContentAttrs (feed) {
+				this.contentAttrs = feed.contentAttrs;
+			},
+
+			setLogic (feed) {
+				this.logic = feed.logic;
 			}
 		}
 	}

@@ -139,6 +139,18 @@
 		},
 
 		methods: {
+			submit () {
+				var args = {
+					header: this.header,
+                	contentAttrs: this.contentAttrs,
+                	
+					callback (res) {
+
+					}
+				}
+
+				this.newFeed(args);
+			},
 			setGoogleCat (cat, googleCat) {
 				cat['googleCat'] = googleCat;
 			},

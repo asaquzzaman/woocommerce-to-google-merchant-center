@@ -32,14 +32,16 @@ class WooGool_Admin_ajax {
 
         wp_send_json_success([
             'post' => $post,
-            'post_meta' => [
+            'header' => [
                 'feedByCatgory'    => get_post_meta( $post_id, 'feed_by_category', true ),
                 'activeVariation'  => get_post_meta( $post_id, 'active_variation', true ),
                 'refresh'          => get_post_meta( $post_id, 'refresh', true ),
                 'categories'       => get_post_meta( $post_id, 'categories', true ),
                 'googleCategories' => get_post_meta( $post_id, 'google_categories', true ),
                 'name'             => $post->post_title
-            ]
+            ],
+            'contentAttrs' => get_post_meta( $post_id, 'content_attributes', true ),
+            'logic' => get_post_meta( $post_id, 'logic', true ),
         ]);
     }
 
@@ -47,14 +49,16 @@ class WooGool_Admin_ajax {
         check_ajax_referer( 'woogool_nonce' );
         
         // parse_str( $_POST['form_data'], $postdata );
-        $feed = WooGool_Admin_Feed::instance()->insert_feed( $_POST  );
+        $feed_id = WooGool_Admin_Feed::instance()->insert_feed( $_POST  );
         // $postdata['id']      = isset( $res['id'] ) ? intval( $res['id'] ) : 0;
         // $postdata['offset']  = $res['offset']; 
         // $postdata['woogool_continue']= $woogool_continue = isset( $res['woogool_continue'] ) ? $res['woogool_continue'] : false;
         // $redirect_url        = woogool_subtab_menu_url( 'woogool_multiple', 'feed-lists' );
 
         // wp_send_json_success( array( 'postdata' => $postdata, 'woogool_continue' => $woogool_continue, 'redirect' => $redirect_url, 'count' => $res['count'] ) );
-        wp_send_json_success();
+        wp_send_json_success( array(
+            'feed_id' => $feed_id
+        ) );
     }
 
     /**
