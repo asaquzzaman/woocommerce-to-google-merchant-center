@@ -8,6 +8,7 @@
 			
 			
 			<a href="#" class="button button-primary" @click.prevent="submit()">{{ 'Save' }}</a>
+			<a href="#" class="button button-primary" @click.prevent="createFeedFile(80)">{{ 'Generate Feed File' }}</a>
 
 		</form>
 	</div>
@@ -99,7 +100,23 @@
 
 			setLogic (feed) {
 				this.logic = feed.logic;
+			},
+
+			createFeedFile (feedID) {
+				var self = this;
+
+				var args = {
+					data: {
+						feed_id: feedID
+					},
+					callback ($this, res) {
+
+					}
+				}
+
+				this.generateFeedFile(args);
 			}
-		}
+		},
+
 	}
 </script>

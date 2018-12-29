@@ -176,7 +176,7 @@ function woogool_shopping_attributes () {
 					"name"        => "identifier_exists",
 					"feed_name"   => "g:identifier_exists",
 					"woogool_suggest" => "calculated",
-					"format"      => "required",
+					"format"      => "optional",
 				),
 			)
 		),
@@ -278,30 +278,18 @@ function woogool_shopping_attributes () {
 					'label'     => 'Item group ID',
 					"name"      => "item_group_id",
 					"feed_name" => "g:item_group_id",
-					"format"    => "required",
+					"format"    => "optional",
 				),
 			)
 
 		),
 		"shopping_campaigns" => array(
-			'label'      => 'Shopping campaigns',
+			'label'      => 'Shopping campaigns and other configurations',
 			'attributes' => array (
-				"adwords_redirect_old" => array(
-					'label'     => 'Adwords redirect (old)',
-					"name"      => "adwords_redirect",
-					"feed_name" => "g:adwords_redirect",
-					"format"    => "optional",
-				),
 				"ads_redirect_new" => array(
-					'label'     => 'Ads redirect (new)',
+					'label'     => 'Ads redirect',
 					"name"      => "ads_redirect",
 					"feed_name" => "g:ads_redirect",
-					"format"    => "optional",
-				),
-				"excluded_destination" => array(
-					'label'     => 'Excluded destination',
-					"name"      => "excluded_destination",
-					"feed_name" => "g:excluded_destination",
 					"format"    => "optional",
 				),
 				"custom_label_0" => array(
@@ -340,21 +328,27 @@ function woogool_shopping_attributes () {
 					"feed_name" => "g:promotion_id",
 					"format"    => "optional",
 				),
-				"included_destination" => array(
-					'label'     => 'Included destination',
-					"name"      => "included_destination",
-					"feed_name" => "included_destination",
-					"format"    => "optional",
-				),
+			)
+
+		),
+		"destinations" => array(
+			'label'      => 'Destinations',
+			'attributes' => array (
 				"excluded_destination" => array(
 					'label'     => 'Excluded destination',
 					"name"      => "excluded_destination",
 					"feed_name" => "g:excluded_destination",
 					"format"    => "optional",
 				),
+				"included_destination" => array(
+					'label'     => 'Included destination',
+					"name"      => "included_destination",
+					"feed_name" => "g:included_destination",
+					"format"    => "optional",
+				)
 			)
-
 		),
+
 		"shipping" => array(
 			'label'      => 'Shipping',
 			'attributes' => array (
@@ -362,7 +356,7 @@ function woogool_shopping_attributes () {
 					'label'     => 'Shipping',
 					"name"      => "shipping",
 					"feed_name" => "g:shipping",
-					"format"    => "optional",
+					"format"    => "required",
 				),
 				"shipping_label" => array(
 					'label'     => 'Shipping label',

@@ -74,7 +74,6 @@ if ( ! class_exists('WP_WooGool') ) {
          * @return void
          */
         function __construct() {
-
             $this->init();
             $this->instantiate();
 
@@ -128,8 +127,9 @@ if ( ! class_exists('WP_WooGool') ) {
             $this->define( 'WOOGOOL_PATH', dirname( __FILE__ ) );
             $this->define( 'WOOGOOL_INCLUDES_PATH', dirname( __FILE__ ) . '/includes' );
             $this->define( 'WOOGOOL_VIEWS_PATH', dirname( __FILE__ ) . '/views' );
-            $this->define( 'WOOGOOL_FEED_PER_PAGE', 500 );
             $this->define( 'WOOGOOL_VERSION', self::$version );
+            $this->define( 'WOOGOOL_FEED_PER_PAGE', 50 );
+            $this->define( 'WOOGOOL_REQUEST_AMOUNT', 10 );
         }
 
         /**
@@ -229,10 +229,8 @@ if ( ! class_exists('WP_WooGool') ) {
             $this->individual = WooGool_Admin_single_product::instance();
             WooGool_Admin_Feed::instance();
             new WooGool_Admin_ajax();
-
-            //license
-            //new WooGool_Admin_Update();
-
+            new WooGool_Admin_Google_Shopping();
+            
             //version update
             new WooGool_Admin_Upgrade();
         }
@@ -256,6 +254,8 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogool_product_attributes' => woogool_product_attributes(),
                 'woogool_product_attribute_with_optgroups' => woogool_product_attribute_with_optgroups (),
                 'google_extra_attr_fields'    => [],
+                'request_amount' => WOOGOOL_REQUEST_AMOUNT,
+                'feed_per_page' => WOOGOOL_FEED_PER_PAGE,
             ));
 
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
@@ -446,4 +446,173 @@ function woogool_notice() {
     </div>';
 }
 
+//add_action( 'woocommerce_product_options_general_product_data', 'woogool_custom_variable_fields', 10, 3 );
 
+function woogool_custom_variable_fields( $loop, $variation_id, $variation ) {
+        die('mishu custom asdfasdfasdfeawdsfawsdfzsdfzsdw');
+        // Check if the option is enabled or not in the pluggin settings 
+        //if( get_option('add_unique_identifiers') == "yes" ){
+
+                // Variation Brand field
+            woocommerce_wp_text_input(
+                array (
+                    'id'       => '_woogool_variable_brand['.$loop.']',
+                    'label'       => __( '<br>Brand', 'woocommerce' ),
+                    'placeholder' => 'Parent Brand',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product Brand here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_brand', true),
+                    'wrapper_class' => 'form-row-full',
+                )
+            );
+
+            // Variation GTIN field
+            woocommerce_wp_text_input(
+                array (
+                    'id'          => '_woogool_variable_gtin['.$loop.']',
+                    'label'       => __( '<br>GTIN', 'woocommerce' ),
+                    'placeholder' => 'GTIN',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product GTIN here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_gtin', true),
+                    'wrapper_class' => 'form-row-last',
+                )
+            );
+
+            // Variation MPN field
+            woocommerce_wp_text_input(
+                array (
+                    'id'          => '_woogool_variable_mpn['.$loop.']',
+                    'label'       => __( '<br>MPN', 'woocommerce' ),
+                    'placeholder' => 'Manufacturer Product Number',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product UPC here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_mpn', true),
+                    'wrapper_class' => 'form-row-first',
+                )
+            );
+
+            // Variation UPC field
+            woocommerce_wp_text_input(
+                array(
+                    'id'          => '_woogool_variable_upc['.$loop.']',
+                    'label'       => __( '<br>UPC', 'woocommerce' ),
+                    'placeholder' => 'UPC',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product UPC here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_upc', true),
+                    'wrapper_class' => 'form-row-last',
+                )
+            );
+
+            // Variation EAN field
+            woocommerce_wp_text_input(
+                array(
+                    'id'          => '_woogool_variable_ean['.$loop.']',
+                    'label'       => __( '<br>EAN', 'woocommerce' ),
+                    'placeholder' => 'EAN',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product EAN here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_ean', true),
+                    'wrapper_class' => 'form-row-first',
+                )
+            );
+
+            // Variation Unit pricing measure field
+            woocommerce_wp_text_input(
+                array(
+                    'id'          => '_woogool_variable_unit_pricing_measure['.$loop.']',
+                    'label'       => __( '<br>Unit pricing measure', 'woocommerce' ),
+                    'placeholder' => 'Unit pricing measure',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product Unit pricing measure here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_unit_pricing_measure', true),
+                    'wrapper_class' => 'form-row-first',
+                )
+            );
+
+            // Variation Unit pricing base measure field
+            woocommerce_wp_text_input(
+                array(
+                    'id'          => '_woogool_variable_unit_pricing_base_measure['.$loop.']',
+                    'label'       => __( '<br>Unit pricing base measure', 'woocommerce' ),
+                    'placeholder' => 'Unit pricing base measure',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the product Unit pricing base measure here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_unit_pricing_base_measure', true),
+                    'wrapper_class' => 'form-row-first',
+                )
+            );
+
+            // Variation optimized title field
+            woocommerce_wp_text_input(
+                array(
+                    'id'          => '_woogool_optimized_title['.$loop.']',
+                    'label'       => __( '<br>Optimized title', 'woocommerce' ),
+                    'placeholder' => 'Optimized title',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter a optimized product title here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_optimized_title', true),
+                    'wrapper_class' => 'form-row-last',
+                )
+            );
+
+            // Installment month field
+            woocommerce_wp_text_input(
+                array (
+                    'id'          => '_woogool_installment_months['.$loop.']',
+                    'label'       => __( '<br>Installment months', 'woocommerce' ),
+                    'placeholder' => 'Installment months',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the number of montly installments for the buyer here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_installment_months', true),
+                    'wrapper_class' => 'form-row-last',
+                )
+            );
+
+            // Installment amount field
+            woocommerce_wp_text_input(
+                array (
+                    'id'          => '_woogool_installment_amount['.$loop.']',
+                    'label'       => __( '<br>Installment amount', 'woocommerce' ),
+                    'placeholder' => 'Installment amount',
+                    'desc_tip'    => 'true',
+                    'description' => __( 'Enter the installment amount here.', 'woocommerce' ),
+                    'value'       => get_post_meta($variation->ID, '_woogool_installment_amount', true),
+                    'wrapper_class' => 'form-row-last',
+                )
+            );
+
+            // Add product condition drop-down
+            woocommerce_wp_select(
+                array(
+                    'id'        => '_woogool_condition['.$loop.']',
+                    'label'     => __( 'Product condition', 'woocommerce' ),
+                    'placeholder'   => 'Product condition',
+                    'desc_tip'  => 'true',
+                    'description'   => __( 'Select the product condition.', 'woocommerce' ),
+                                    'value'         => get_post_meta($variation->ID, '_woogool_condition', true),
+                                    'wrapper_class' => 'form-row form-row-full',
+                    'options'   => array (
+                        ''      => __( '', 'woocommerce' ),
+                        'new'       => __( 'new', 'woocommerce' ),
+                        'refurbished'   => __( 'refurbished', 'woocommerce' ),
+                        'used'      => __( 'used', 'woocommerce' ),
+                        'damaged'   => __( 'damaged', 'woocommerce' ),
+                    )
+                )
+            );
+
+            // Exclude product from feed
+            woocommerce_wp_checkbox(
+                array(
+                    'id'        => '_woogool_exclude_product['.$loop.']',
+                    'label'     => __( '&nbsp;Exclude from feeds', 'woocommerce' ),
+                    'placeholder'   => 'Exclude from feeds',
+                    'desc_tip'  => 'true',
+                    'description'   => __( 'Check this box if you want this product to be excluded from product feeds.', 'woocommerce' ),
+                                    'value'         => get_post_meta($variation->ID, '_woogool_exclude_product', true),
+                )
+            );
+        //}
+    }

@@ -38,6 +38,32 @@ class WooGool_Admin_Feed {
         add_action( 'template_redirect', array( $this, 'xml_download' ) );
     }
 
+    public function create_xml_file( $feed_id ) {
+        $upload_dir = wp_upload_dir();
+
+        $base      = $upload_dir['basedir'];
+        $file_name = md5( 'woogool' . $feed_id );
+        $file_path = $base . '/woogool-product-feed/' . $file_name . '.xml';
+        
+        // Check if directory in uploads exists, if not create one  
+        if ( ! file_exists( $file_path ) ) {
+            wp_mkdir_p( $file_path );
+
+            return $file_name;
+        }
+
+        return false;
+
+        // Check if file exists, if it does: delete it first so we can create a new updated one
+        // if ( (file_exists( $file )) AND ($header == "true") AND ($feed_config['nr_products_processed'] == 0) ) {
+        //     unlink ( $file );
+        // }
+    }
+
+    public function update_feed_file( $feed_id ) {
+
+    }
+
     function register_post_type() {
         register_post_type( 'new_woogool_feed', array(
             'label'               => __( 'Feed', 'hrm' ),

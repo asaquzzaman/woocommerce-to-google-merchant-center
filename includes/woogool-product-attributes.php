@@ -246,7 +246,7 @@ function woogool_get_custom_attributes() {
 	global $wpdb;
      	$list = array();
      	$sql = "SELECT meta.meta_id, meta.meta_key as name, meta.meta_value as type FROM " . $wpdb->prefix . "postmeta" . " AS meta, " . $wpdb->prefix . "posts" . " AS posts WHERE meta.post_id = posts.id AND posts.post_type LIKE '%product%'
-AND meta.meta_key NOT LIKE 'pyre%' AND meta.meta_key NOT LIKE 'sbg_%' AND meta.meta_key NOT LIKE 'wccaf_%' AND meta.meta_key NOT LIKE 'rp_%' AND (meta.meta_key NOT LIKE '\_%' OR meta.meta_key LIKE '\_woosea%' OR meta.meta_key LIKE '\_yoast%' OR meta.meta_key='_product_attributes') GROUP BY meta.meta_key ORDER BY meta.meta_key ASC;";
+AND meta.meta_key NOT LIKE 'pyre%' AND meta.meta_key NOT LIKE 'sbg_%' AND meta.meta_key NOT LIKE 'wccaf_%' AND meta.meta_key NOT LIKE 'rp_%' AND (meta.meta_key NOT LIKE '\_%' OR meta.meta_key LIKE '\_woogool%' OR meta.meta_key LIKE '\_yoast%' OR meta.meta_key='_product_attributes') GROUP BY meta.meta_key ORDER BY meta.meta_key ASC;";
 	$data = $wpdb->get_results($sql);
 
       	if (count($data)) {

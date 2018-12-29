@@ -254,6 +254,78 @@ exports.default = {
 			}
 
 			return '';
+		},
+		createXmlFile: function createXmlFile(args) {
+			var self = this;
+			var request = {
+				type: 'POST',
+				url: woogool_var.ajaxurl,
+				data: args.data,
+
+				success: function success(res) {
+					if (typeof args.callback === 'function') {
+						args.callback.call(self, res);
+					}
+				}
+			};
+
+			self.httpRequest(request);
+		},
+		generateFeedFile: function generateFeedFile(args) {
+			var self = this;
+
+			this.createXmlFile({
+				data: {
+					feed_id: args.data.feed_id,
+					action: 'woogool-create-xml-file',
+					_wpnonce: woogool_var.nonce
+				},
+
+				callback: function callback($this, res) {
+					if (res.success === false) {
+						// Showing error
+						// res.errors.map( function( value, index ) {
+						//     console.log(value, index);
+						// });
+						return;
+					}
+
+					var pre_define = {
+						data: {
+							feed_id: false,
+							action: 'woogool-generate-feed-file',
+							_wpnonce: woogool_var.nonce
+						},
+						callback: false
+					};
+
+					args = jQuery.extend(true, pre_define, args);
+
+					var request = {
+						type: 'POST',
+						url: woogool_var.ajaxurl,
+						data: args.data,
+
+						success: function success(res) {
+							if (res.success === false) {
+								// Showing error
+								// res.errors.map( function( value, index ) {
+								//     console.log(value, index);
+								// });
+								return;
+							}
+							if (typeof args.callback === 'function') {
+								args.callback.call(self, res);
+							}
+						}
+					};
+
+					for (var i = 0; i <= parseInt(woogool_multi_product_var.request_amount) - 1; i++) {
+						request.data.page = i;
+						self.httpRequest(request);
+					}
+				}
+			});
 		}
 	}
 };
@@ -751,6 +823,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -835,8 +908,21 @@ if (false) {(function () {
 		},
 		setLogic: function setLogic(feed) {
 			this.logic = feed.logic;
+		},
+		createFeedFile: function createFeedFile(feedID) {
+			var self = this;
+
+			var args = {
+				data: {
+					feed_id: feedID
+				},
+				callback: function callback($this, res) {}
+			};
+
+			this.generateFeedFile(args);
 		}
 	}
+
 });
 
 /***/ }),
@@ -5425,6 +5511,21 @@ var render = function() {
               }
             },
             [_vm._v(_vm._s("Save"))]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "button button-primary",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.createFeedFile(80)
+                }
+              }
+            },
+            [_vm._v(_vm._s("Generate Feed File"))]
           )
         ],
         1
