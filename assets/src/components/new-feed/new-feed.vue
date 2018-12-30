@@ -107,7 +107,8 @@
 
 				var args = {
 					data: {
-						feed_id: feedID
+						feed_id: feedID,
+						feed_title: self.header.name
 					},
 					callback ($this, res) {
 

@@ -233,16 +233,16 @@ function woogool_get_query_args() {
 function woogool_get_products( $count = '-1', $offset = 0, $args = array() ) {
     
     $defaults = array(
-        'posts_per_page'   => -1,
+        'posts_per_page'   => $count,
         'post_type'        => 'product',
         'post_status'      => 'publish',
-        'offset'           => 0,
+        'offset'           => $offset,
     );
 
     $args = wp_parse_args( $args, $defaults );
     $query = NEW WP_Query( $args );
 
-    return $query->posts;
+    return $query;
 }
 
 /**
@@ -413,6 +413,14 @@ function woogool_merchan_configure_warning() {
 
 function woogool_is_pro() {
     return apply_filters( 'woogool_filter_is_pro', false );
+}
+
+function woopr() {
+    $args = func_get_args();
+
+    foreach ( $args as $arg ) {
+        echo '<pre>'; print_r( $arg ); '</pre>';
+    }
 }
 
 

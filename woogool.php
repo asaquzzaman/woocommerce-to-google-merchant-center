@@ -128,8 +128,8 @@ if ( ! class_exists('WP_WooGool') ) {
             $this->define( 'WOOGOOL_INCLUDES_PATH', dirname( __FILE__ ) . '/includes' );
             $this->define( 'WOOGOOL_VIEWS_PATH', dirname( __FILE__ ) . '/views' );
             $this->define( 'WOOGOOL_VERSION', self::$version );
-            $this->define( 'WOOGOOL_FEED_PER_PAGE', 50 );
-            $this->define( 'WOOGOOL_REQUEST_AMOUNT', 10 );
+            $this->define( 'WOOGOOL_FEED_PER_PAGE', 2 );
+            $this->define( 'WOOGOOL_REQUEST_AMOUNT', 2 );
         }
 
         /**

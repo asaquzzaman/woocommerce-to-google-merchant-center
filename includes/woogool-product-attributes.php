@@ -1,10 +1,9 @@
 <?php
 
-function woogool_product_attributes () {
+function woogool_product_attributes() {
     $attributes = array(
 		"id"                        => "Product Id",
 		"sku"                       => "SKU", 
-		"sku_id"                    => "SKU_ID",
 		"title"                     => "Product name",
 		"mother_title"              => "Product name mother product",
 		"description"               => "Product description",
@@ -101,7 +100,131 @@ function woogool_product_attributes () {
 	return $attributes;
 }
 
-function woogool_product_attribute_with_optgroups () {
+function woogool_product_attributes_maping_func() {
+	return array(
+		'id'                        => 'get_id',
+		'sku'                       => 'get_sku', 
+		'title'                     => 'get_title',
+		'mother_title'              => 'get_title',
+		'description'               => 'get_description',
+		'short_description'         => 'get_short_description',
+		'price'                     => 'get_price',
+		'regular_price'             => 'get_regular_price',
+		'sale_price'                => 'get_sale_price',
+		// 'net_price'                 => 'Price excl. VAT',
+		// 'net_regular_price'         => 'Regular price excl. VAT',
+		// 'net_sale_price'            => 'Sale price excl. VAT',
+		// 'price_forced'              => 'Price incl. VAT front end',
+		// 'regular_price_forced'      => 'Regular price incl. VAT front end',
+		// 'sale_price_forced'         => 'Sale price incl. VAT front end',
+		// 'sale_price_start_date'     => 'Sale start date',
+		// 'sale_price_end_date'       => 'Sale end date',
+		// 'sale_price_effective_date' => 'Sale price effective date',
+		// 'link'                      => 'Link',
+		// 'currency'                  => 'Currency',
+		// 'categories'                => 'Category',
+		// 'category_link'             => 'Category link',
+		// 'category_path'             => 'Category path',
+		// 'condition'                 => 'Condition',
+		// 'availability'              => 'Availability',
+		// 'quantity'                  => 'Quantity [Stock]',
+		// 'product_type'              => 'Product Type',
+		// 'content_type'              => 'Content Type',
+		// 'exclude_from_catalog'      => 'Excluded from catalog',
+		// 'exclude_from_search'       => 'Excluded from search',
+		// 'exclude_from_all'          => 'Excluded from all (hidden)',
+		// 'publication_date'          => 'Publication date',
+		// 'item_group_id'             => 'Item group ID',
+		// 'weight'                    => 'Weight',
+		// 'width'                     => 'Width',
+		// 'height'                    => 'Height',
+		// 'length'                    => 'Length',
+		// 'shipping'                  => 'Shipping',
+		// 'visibility'                => 'Visibility',
+		// 'rating_total'              => 'Total rating',
+		// 'rating_average'            => 'Average rating',
+	);
+}
+
+function woogool_product_variable_maping_func() {
+	return array(
+
+		'id'                => 'woogool_get_variable_product_id',
+		'sku'               => 'woogool_get_variable_product_sku', 
+		'title'             => 'get_title',
+		'mother_title'      => 'get_title',
+		'description'       => 'woogool_get_variable_product_description',
+		'short_description' => 'get_short_description',
+		'price'             => 'woogool_get_variable_product_price',
+		'regular_price'     => 'woogool_get_variable_product_regular_price',
+		// 'sale_price'                => 'get_sale_price',
+		// 'net_price'                 => 'Price excl. VAT',
+		// 'net_regular_price'         => 'Regular price excl. VAT',
+		// 'net_sale_price'            => 'Sale price excl. VAT',
+		// 'price_forced'              => 'Price incl. VAT front end',
+		// 'regular_price_forced'      => 'Regular price incl. VAT front end',
+		// 'sale_price_forced'         => 'Sale price incl. VAT front end',
+		// 'sale_price_start_date'     => 'Sale start date',
+		// 'sale_price_end_date'       => 'Sale end date',
+		// 'sale_price_effective_date' => 'Sale price effective date',
+		// 'link'                      => 'Link',
+		// 'currency'                  => 'Currency',
+		// 'categories'                => 'Category',
+		// 'category_link'             => 'Category link',
+		// 'category_path'             => 'Category path',
+		// 'condition'                 => 'Condition',
+		// 'availability'              => 'Availability',
+		// 'quantity'                  => 'Quantity [Stock]',
+		// 'product_type'              => 'Product Type',
+		// 'content_type'              => 'Content Type',
+		// 'exclude_from_catalog'      => 'Excluded from catalog',
+		// 'exclude_from_search'       => 'Excluded from search',
+		// 'exclude_from_all'          => 'Excluded from all (hidden)',
+		// 'publication_date'          => 'Publication date',
+		// 'item_group_id'             => 'Item group ID',
+		// 'weight'                    => 'Weight',
+		// 'width'                     => 'Width',
+		// 'height'                    => 'Height',
+		// 'length'                    => 'Length',
+		// 'shipping'                  => 'Shipping',
+		// 'visibility'                => 'Visibility',
+		// 'rating_total'              => 'Total rating',
+		// 'rating_average'            => 'Average rating',
+	);
+}
+
+function woogool_get_variable_product_id( $variable ) {
+	return $variable['variation_id'];
+}
+
+function woogool_get_variable_product_sku( $variable ) {
+	return $variable['sku'];
+}
+
+function woogool_get_variable_product_price( $variable ) {
+	if ( empty( $variable['display_price'] ) ) {
+		return false;
+	}
+	return wc_format_localized_price( $variable['display_price'] ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_variable_product_description( $variable ) {
+	if ( empty( $variable['variation_description'] ) ) {
+		return false;
+	}
+	return wp_strip_all_tags( $variable['variation_description'] );
+}
+
+function woogool_get_variable_product_regular_price( $variable ) {
+	if ( empty( $variable['display_regular_price'] ) ) {
+		return false;
+	}
+	return wc_format_localized_price( $variable['display_regular_price'] ) .' '. get_woocommerce_currency();
+}
+
+
+
+function woogool_product_attribute_with_optgroups() {
 
 	$dynamic_attributes = [];
 	$custom_attributes = [];

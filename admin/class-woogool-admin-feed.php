@@ -13,6 +13,9 @@ class WooGool_Admin_Feed {
      */
     protected static $_instance = null;
 
+    protected $found_posts = 0;
+    protected $fetch_all_product = false;
+
     /**
      * Main woogool Instance
      *
@@ -38,30 +41,147 @@ class WooGool_Admin_Feed {
         add_action( 'template_redirect', array( $this, 'xml_download' ) );
     }
 
-    public function create_xml_file( $feed_id ) {
+    public function create_xml_file( $feed_id, $feed_title ) {
         $upload_dir = wp_upload_dir();
 
         $base      = $upload_dir['basedir'];
+        $dir_path  = $base . '/woogool-product-feed/';
         $file_name = md5( 'woogool' . $feed_id );
-        $file_path = $base . '/woogool-product-feed/' . $file_name . '.xml';
-        
+        $file_path = $dir_path . $file_name . '.xml';
+
+        if( ! is_dir( $dir_path ) ) {
+            wp_mkdir_p( $dir_path );
+        }
+        unlink ( $file_path );
         // Check if directory in uploads exists, if not create one  
         if ( ! file_exists( $file_path ) ) {
-            wp_mkdir_p( $file_path );
+
+            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
+            $xml->addAttribute( 'version', '2.0' );
+            $xml->addChild( 'channel' );
+            $xml->channel->addChild( 'title', htmlspecialchars( $feed_title ) );
+            $xml->channel->addChild( 'link', site_url() );
+            $xml->channel->addChild( 'description', 'WooCommerce Product Feed for google shopping' );
+            $xml->asXML( $file_path );
+
+            update_post_meta( $feed_id, 'feed_file_name', $file_name );
 
             return $file_name;
         }
 
         return false;
-
-        // Check if file exists, if it does: delete it first so we can create a new updated one
-        // if ( (file_exists( $file )) AND ($header == "true") AND ($feed_config['nr_products_processed'] == 0) ) {
-        //     unlink ( $file );
-        // }
     }
 
-    public function update_feed_file( $feed_id ) {
+    public function update_feed_file( $postdata ) {
+        $feed_id      = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false ; 
+        
+        $feed_contents    = get_post_meta( $feed_id, 'content_attributes', true );
+        $active_variation = get_post_meta( $feed_id, 'active_variation', true );
 
+        $page      = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
+        $products  = $this->xml_get_products( $feed_id, $page );
+
+        $file      = $this->get_file_path( $feed_id );
+        $namespace = array( 'g' => 'http://base.google.com/ns/1.0' );
+        $xml       = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
+        
+        
+        foreach ( $products as $key => $product ) {
+            $product_id   = $product->ID;
+            $wc_product   = wc_get_product( $product_id );
+            $product_type = $wc_product->get_type();
+            
+            
+            if ( $product_type == 'variable' ) {
+                $variable   = new WC_Product_Variable( $wc_product );
+                $variations = $variable->get_available_variations();
+                $attrs  = $variable->get_variation_attributes();
+
+
+                foreach ( $variations as $key => $child ) {
+                    $feed = $xml->channel->addChild('item');
+
+                    if ( ! $child['variation_is_active'] || ! $child['variation_is_visible'] ) {
+                        continue;
+                    }
+                    woopr($child);
+                    $feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
+                    
+                    foreach ( $feed_contents as $key => $feed_content ) {
+                        
+                        $feed_value = $this->get_variation_value( $feed_content, $wc_product, $child );
+
+                        if ( $feed_value ) {
+                            $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+                        }
+                    }
+                }
+            } else {
+                $feed = $xml->channel->addChild('item');
+
+                foreach ( $feed_contents as $key => $feed_content ) {
+                    $feed_value = $this->get_value( $feed_content, $wc_product );
+
+                    if ( $feed_value ) {
+                        $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+                    }
+                }
+            }
+        }
+
+        $xml->asXML( $file );
+
+        return array(
+            'recuring' => $this->found_posts,
+            'fetch_all_product' => $this->fetch_all_product
+        );
+    }
+
+    public function get_variation_value( $feed_content, $wc_product, $child ) {
+        $val_func = woogool_product_variable_maping_func();
+        $name     = $feed_content['woogool_suggest'];
+        $value    = '';
+
+        if ( ! array_key_exists( $name, $val_func ) ) {
+            return false;
+        }
+
+        if ( function_exists( $val_func[$name] ) ) {
+            $value = $val_func[$name]( $child );
+        } else if ( method_exists( $wc_product, $val_func[$name] ) ) {
+            $value = $wc_product->$val_func[$name]();
+        }
+        
+        return empty( $value ) ? false : $value;
+    }
+
+    public function get_value( $feed_content, $wc_product ) {
+        $val_func = woogool_product_attributes_maping_func();
+        $name     = $feed_content['woogool_suggest'];
+        $value    = '';
+
+        if ( ! array_key_exists( $name, $val_func ) ) {
+            return false;
+        }
+
+        if ( function_exists( $val_func[$name] ) ) {
+            $value = $val_func[$name]( $child );
+        } else if ( method_exists( $wc_product, $val_func[$name] ) ) {
+            $value = $wc_product->$val_func[$name]();
+        }
+        
+        return empty( $value ) ? false : $value;
+    }
+
+    public function get_file_path( $feed_id ) {
+        $upload_dir = wp_upload_dir();
+
+        $base      = $upload_dir['basedir'];
+        $dir_path  = $base . '/woogool-product-feed/';
+        $file_name = get_post_meta( $feed_id, 'feed_file_name', true );
+        $file_path = $dir_path . $file_name . '.xml';
+
+        return $file_path;
     }
 
     function register_post_type() {
@@ -274,27 +394,37 @@ class WooGool_Admin_Feed {
         // update_post_meta( $post_id, '_woogool_pattern', $woogool_pattern );
     }
 
-    function xml_get_products( $xml_count, $products_cat ) {
-        $products = array();
-        $per_page = WOOGOOL_FEED_PER_PAGE;
+    function xml_get_products( $feed_id, $page ) {
+        $offset   = ( $page - 1 ) * WOOGOOL_FEED_PER_PAGE; 
+        $feed_by_cat = get_post_meta( $feed_id, 'feed_by_category', true );
         
-        if ( empty( $products_cat ) ) {   
-            $products = woogool_get_products( $per_page, $xml_count );
+        if ( $feed_by_cat ) {   
+            $products_cats = get_post_meta( $feed_id, 'categories', true );
+            $products_cats = wp_list_pluck( $products_cats, 'catId' );
 
-        } else {
             $tax_query['tax_query'] = array(
                 array(
                     'taxonomy'         => 'product_cat',
                     'field'            => 'term_id',
-                    'terms'            => $products_cat,
+                    'terms'            => $products_cats,
                     'include_children' => false,
                     'operator'         => 'IN',
-            ));
+                )
+            );
 
-            $products = woogool_get_products( $per_page,  $xml_count, $tax_query );
+            $query = woogool_get_products( WOOGOOL_FEED_PER_PAGE,  $offset, $tax_query );
+            $this->found_posts = $query->found_posts;
+
+        } else {
+            $query = woogool_get_products( WOOGOOL_FEED_PER_PAGE, $offset );
+            $this->found_posts = $query->found_posts;
+        }
+
+        if ( empty( $query->posts ) ) {
+            $this->fetch_all_product = true;
         }
         
-        return $products;
+        return $query->posts;
     }
 
     function xml_download() {
@@ -487,7 +617,7 @@ class WooGool_Admin_Feed {
 
         //$product_id         = $wc_product->id; 
         $product_id         = $wc_product->get_id(); 
-        $variation_product_id       = $attr['variation_id'];
+        $variation_product_id  = $attr['variation_id'];
         
         $size_attr          = $this->get_variable_size_attr( $attr );
         $color_attr         = $this->get_variable_color_attr( $attr ); 

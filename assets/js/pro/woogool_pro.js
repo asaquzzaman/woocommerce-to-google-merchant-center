@@ -180,154 +180,159 @@ module.exports = function normalizeComponent (
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 exports.default = {
-	data: function data() {
-		return {
-			'stage': {
-				step: 'first'
-			}
-		};
-	},
+  data: function data() {
+    return {
+      'stage': {
+        step: 'first'
+      },
+      loopLimit: woogool_multi_product_var.request_amount,
+      loopStart: 1
+    };
+  },
 
-	watch: {
-		stage: {
-			handler: function handler(stage) {
-				window.localStorage.setItem('woogoolStageStep', stage.step);
-			},
+  watch: {
+    stage: {
+      handler: function handler(stage) {
+        window.localStorage.setItem('woogoolStageStep', stage.step);
+      },
 
 
-			deep: true
-		}
-	},
-	created: function created() {
-		var step = localStorage.getItem('woogoolStageStep');
+      deep: true
+    }
+  },
+  created: function created() {
+    var step = localStorage.getItem('woogoolStageStep');
 
-		if (step) {
-			this.stage.step = step;
-		}
-	},
+    if (step) {
+      this.stage.step = step;
+    }
+  },
 
-	methods: {
-		newFeed: function newFeed(args) {
-			var self = this,
-			    pre_define = {
-				data: {
-					feed_id: false,
-					action: 'woogool-new-feed',
-					_wpnonce: woogool_var.nonce
-				},
-				callback: false
-			},
-			    args = jQuery.extend(true, pre_define, args);
+  methods: {
+    newFeed: function newFeed(args) {
+      var self = this,
+          pre_define = {
+        data: {
+          feed_id: false,
+          action: 'woogool-new-feed',
+          _wpnonce: woogool_var.nonce
+        },
+        callback: false
+      },
+          args = jQuery.extend(true, pre_define, args);
 
-			var request = {
-				type: 'POST',
-				url: woogool_var.ajaxurl,
-				data: args.data,
-				// data: {
-				// 	action: 'woogool-new-feed',
-				// 	_wpnonce: woogool_var.nonce,
-				// 	header: this.header,
-				// 	contentAttrs: this.contentAttrs
-				// },
-				success: function success(res) {
-					if (typeof args.callback === 'function') {
-						args.callback.call(self, res);
-					}
-				}
-			};
+      var request = {
+        type: 'POST',
+        url: woogool_var.ajaxurl,
+        data: args.data,
+        // data: {
+        // 	action: 'woogool-new-feed',
+        // 	_wpnonce: woogool_var.nonce,
+        // 	header: this.header,
+        // 	contentAttrs: this.contentAttrs
+        // },
+        success: function success(res) {
+          if (typeof args.callback === 'function') {
+            args.callback.call(self, res);
+          }
+        }
+      };
 
-			this.httpRequest(request);
-		},
-		changeStage: function changeStage(step) {
-			this.stage.step = step;
-		},
-		setBoolen: function setBoolen(value) {
-			if (value.toLowerCase() === 'true') {
-				return true;
-			}
+      this.httpRequest(request);
+    },
+    changeStage: function changeStage(step) {
+      this.stage.step = step;
+    },
+    setBoolen: function setBoolen(value) {
+      if (value.toLowerCase() === 'true') {
+        return true;
+      }
 
-			if (value.toLowerCase() === 'false') {
-				return false;
-			}
+      if (value.toLowerCase() === 'false') {
+        return false;
+      }
 
-			return '';
-		},
-		createXmlFile: function createXmlFile(args) {
-			var self = this;
-			var request = {
-				type: 'POST',
-				url: woogool_var.ajaxurl,
-				data: args.data,
+      return '';
+    },
+    createXmlFile: function createXmlFile(args) {
+      var self = this;
+      var request = {
+        type: 'POST',
+        url: woogool_var.ajaxurl,
+        data: args.data,
 
-				success: function success(res) {
-					if (typeof args.callback === 'function') {
-						args.callback.call(self, res);
-					}
-				}
-			};
+        success: function success(res) {
+          if (typeof args.callback === 'function') {
+            args.callback(self, res);
+          }
+        }
+      };
 
-			self.httpRequest(request);
-		},
-		generateFeedFile: function generateFeedFile(args) {
-			var self = this;
+      self.httpRequest(request);
+    },
+    generateFeedFile: function generateFeedFile(args) {
+      var self = this;
 
-			this.createXmlFile({
-				data: {
-					feed_id: args.data.feed_id,
-					action: 'woogool-create-xml-file',
-					_wpnonce: woogool_var.nonce
-				},
+      this.createXmlFile({
+        data: {
+          feed_id: args.data.feed_id,
+          feed_title: args.data.feed_title,
+          action: 'woogool-create-xml-file',
+          _wpnonce: woogool_var.nonce
+        },
 
-				callback: function callback($this, res) {
-					if (res.success === false) {
-						// Showing error
-						// res.errors.map( function( value, index ) {
-						//     console.log(value, index);
-						// });
-						return;
-					}
+        callback: function callback($this, res) {
 
-					var pre_define = {
-						data: {
-							feed_id: false,
-							action: 'woogool-generate-feed-file',
-							_wpnonce: woogool_var.nonce
-						},
-						callback: false
-					};
+          if (res.success === false) {
+            return;
+          }
+          self.feedLoop(args);
+        }
+      });
+    },
+    feedLoop: function feedLoop(args) {
+      var self = this;
 
-					args = jQuery.extend(true, pre_define, args);
+      var pre_define = {
+        data: {
+          feed_id: false,
+          action: 'woogool-generate-feed-file',
+          _wpnonce: woogool_var.nonce
+        },
+        callback: false
+      };
 
-					var request = {
-						type: 'POST',
-						url: woogool_var.ajaxurl,
-						data: args.data,
+      args = jQuery.extend(true, pre_define, args);
 
-						success: function success(res) {
-							if (res.success === false) {
-								// Showing error
-								// res.errors.map( function( value, index ) {
-								//     console.log(value, index);
-								// });
-								return;
-							}
-							if (typeof args.callback === 'function') {
-								args.callback.call(self, res);
-							}
-						}
-					};
+      var request = {
+        type: 'POST',
+        url: woogool_var.ajaxurl,
+        data: args.data,
 
-					for (var i = 0; i <= parseInt(woogool_multi_product_var.request_amount) - 1; i++) {
-						request.data.page = i;
-						self.httpRequest(request);
-					}
-				}
-			});
-		}
-	}
+        success: function success(res) {
+
+          if (typeof args.callback === 'function') {
+            args.callback(self, res);
+          }
+
+          if (request.data.page >= self.loopLimit && res.data.fetch_all_product !== true) {
+            self.loopStart = parseInt(self.loopLimit) + 1;
+            self.loopLimit = parseInt(self.loopLimit) + parseInt(woogool_multi_product_var.request_amount);
+
+            self.feedLoop(args);
+          }
+        }
+      };
+
+      for (var i = self.loopStart; i <= self.loopLimit; i++) {
+        request.data.page = i;
+        self.httpRequest(request);
+      }
+    }
+  }
 };
 
 /***/ }),
@@ -914,7 +919,8 @@ if (false) {(function () {
 
 			var args = {
 				data: {
-					feed_id: feedID
+					feed_id: feedID,
+					feed_title: self.header.name
 				},
 				callback: function callback($this, res) {}
 			};

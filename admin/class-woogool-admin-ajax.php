@@ -19,13 +19,14 @@ class WooGool_Admin_ajax {
         check_ajax_referer( 'woogool_nonce' );
         $postdata = wp_unslash( $_POST );
         $feed_id = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false;
+        $feed_title = sanitize_text_field( $postdata['feed_title'] );
         
         if ( ! $feed_id ) {
             wp_send_json_error();
             exit();
         }
         
-        $feed = WooGool_Admin_Feed::instance()->create_xml_file( $feed_id );
+        $feed = WooGool_Admin_Feed::instance()->create_xml_file( $feed_id, $feed_title );
 
         if ( ! $feed ) {
             wp_send_json_error();
@@ -51,10 +52,10 @@ class WooGool_Admin_ajax {
             ] ) );
         }
 
-        $feed = WooGool_Admin_Feed::instance()->update_feed_file();
+        $feed = WooGool_Admin_Feed::instance()->update_feed_file( $postdata );
         
         wp_send_json_success(array(
-            'WOOGOOL_FEED_PER_PAGE' => WOOGOOL_FEED_PER_PAGE
+            'fetch_all_product' => $feed['fetch_all_product']
         ));
 
         exit();
