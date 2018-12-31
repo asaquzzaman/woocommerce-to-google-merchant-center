@@ -104,12 +104,12 @@ class WooGool_Admin_Feed {
                     if ( ! $child['variation_is_active'] || ! $child['variation_is_visible'] ) {
                         continue;
                     }
-                    woopr($child);
+                    
                     $feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
                     
                     foreach ( $feed_contents as $key => $feed_content ) {
                         
-                        $feed_value = $this->get_variation_value( $feed_content, $wc_product, $child );
+                        $feed_value = $this->get_variation_value( $feed_content, $wc_product, wc_get_product( $child['variation_id'] ) );
 
                         if ( $feed_value ) {
                             $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
@@ -137,7 +137,7 @@ class WooGool_Admin_Feed {
         );
     }
 
-    public function get_variation_value( $feed_content, $wc_product, $child ) {
+    public function get_variation_value( $feed_content, $wc_product, $wc_variable ) {
         $val_func = woogool_product_variable_maping_func();
         $name     = $feed_content['woogool_suggest'];
         $value    = '';
@@ -147,9 +147,9 @@ class WooGool_Admin_Feed {
         }
 
         if ( function_exists( $val_func[$name] ) ) {
-            $value = $val_func[$name]( $child );
-        } else if ( method_exists( $wc_product, $val_func[$name] ) ) {
-            $value = $wc_product->$val_func[$name]();
+            $value = $val_func[$name]( $wc_variable );
+        } else if ( method_exists( $wc_variable, $val_func[$name] ) ) {
+            $value = $wc_variable->$val_func[$name]();
         }
         
         return empty( $value ) ? false : $value;
@@ -165,7 +165,7 @@ class WooGool_Admin_Feed {
         }
 
         if ( function_exists( $val_func[$name] ) ) {
-            $value = $val_func[$name]( $child );
+            $value = $val_func[$name]( $wc_product );
         } else if ( method_exists( $wc_product, $val_func[$name] ) ) {
             $value = $wc_product->$val_func[$name]();
         }

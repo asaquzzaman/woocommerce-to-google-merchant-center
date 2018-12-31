@@ -108,18 +108,18 @@ function woogool_product_attributes_maping_func() {
 		'mother_title'              => 'get_title',
 		'description'               => 'get_description',
 		'short_description'         => 'get_short_description',
-		'price'                     => 'get_price',
-		'regular_price'             => 'get_regular_price',
-		'sale_price'                => 'get_sale_price',
-		// 'net_price'                 => 'Price excl. VAT',
-		// 'net_regular_price'         => 'Regular price excl. VAT',
-		// 'net_sale_price'            => 'Sale price excl. VAT',
-		// 'price_forced'              => 'Price incl. VAT front end',
-		// 'regular_price_forced'      => 'Regular price incl. VAT front end',
-		// 'sale_price_forced'         => 'Sale price incl. VAT front end',
-		// 'sale_price_start_date'     => 'Sale start date',
-		// 'sale_price_end_date'       => 'Sale end date',
-		// 'sale_price_effective_date' => 'Sale price effective date',
+		'price'                     => 'woogool_get_product_price',
+		'regular_price'             => 'woogool_get_product_regular_price',
+		'sale_price'                => 'woogool_get_product_sale_price',
+		'net_price'                 => 'woogool_get_product_net_price',
+		'net_regular_price'         => 'woogool_get_product_net_regular_price',
+		'net_sale_price'            => 'woogool_get_product_net_sale_price',
+		'price_forced'              => 'woogool_get_product_price_forced',
+		'regular_price_forced'      => 'woogool_get_product_regular_price_forced',
+		'sale_price_forced'         => 'woogool_get_product_sale_price_forced',
+		'sale_price_start_date'     => 'woogool_get_sale_date_from',
+		'sale_price_end_date'       => 'woogool_get_sale_date_to',
+		'sale_price_effective_date' => 'woogool_get_sale_price_effective_date',
 		// 'link'                      => 'Link',
 		// 'currency'                  => 'Currency',
 		// 'categories'                => 'Category',
@@ -145,28 +145,133 @@ function woogool_product_attributes_maping_func() {
 		// 'rating_average'            => 'Average rating',
 	);
 }
+
+function woogool_get_product_price( $wc_product ) {
+	if ( empty( $wc_product->get_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( $wc_product->get_price() ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_product_regular_price( $wc_product ) {
+	if ( empty( $wc_product->get_regular_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( $wc_product->get_regular_price() ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_product_sale_price( $wc_product ) {
+	if ( empty( $wc_product->get_sale_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( $wc_product->get_sale_price() ) .' '. get_woocommerce_currency();
+}
+
+
+
+function woogool_get_product_net_price( $wc_product ) {
+	if ( empty( $wc_product->get_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_price() ) ) ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_product_net_regular_price( $wc_product ) {
+	if ( empty( $wc_product->get_regular_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_regular_price() ) ) ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_product_net_sale_price( $wc_product ) {
+	if ( empty( $wc_product->get_sale_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_sale_price() ) ) ) .' '. get_woocommerce_currency();
+}
+
+
+
+function woogool_get_product_price_forced( $wc_product ) {
+	if ( empty( $wc_product->get_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_price() ) ) ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_product_regular_price_forced( $wc_product ) {
+	if ( empty( $wc_product->get_regular_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_regular_price() ) ) ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_product_sale_price_forced( $wc_product ) {
+	if ( empty( $wc_product->get_sale_price() ) ) {
+		return false;
+	}
+	return wc_format_localized_price( wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_sale_price() ) ) ) .' '. get_woocommerce_currency();
+}
+
+function woogool_get_sale_date_from( $wc_product ) {
+	$date = $wc_product->get_date_on_sale_from();
+
+	if ( empty( $date ) ) {
+		return false;
+	}
+
+	return $date->date('Y-m-d');
+}
+function woogool_get_sale_date_to( $wc_product ) {
+	$date = $wc_product->get_date_on_sale_to();
+
+	if ( empty( $date ) ) {
+		return false;
+	}
+	
+	return $date->date('Y-m-d');
+}
+
+function woogool_get_sale_price_effective_date( $wc_product ) {
+	$start = $wc_product->get_date_on_sale_from();
+	$end   = $wc_product->get_date_on_sale_to();
+
+	if ( ! empty( $start ) && ! empty( $end ) ) {
+		return $start->date( 'Y-m-d' ) .'/'. $end->date( 'Y-m-d' );
+	}
+	
+	if ( ! empty( $start ) ) {
+		return $start->date( 'Y-m-d' );
+	}
+
+	if ( ! empty( $end ) ) {
+		return $end->date( 'Y-m-d' );
+	}
+	
+	return false;
+}
+
 
 function woogool_product_variable_maping_func() {
 	return array(
-
-		'id'                => 'woogool_get_variable_product_id',
-		'sku'               => 'woogool_get_variable_product_sku', 
-		'title'             => 'get_title',
-		'mother_title'      => 'get_title',
-		'description'       => 'woogool_get_variable_product_description',
-		'short_description' => 'get_short_description',
-		'price'             => 'woogool_get_variable_product_price',
-		'regular_price'     => 'woogool_get_variable_product_regular_price',
-		// 'sale_price'                => 'get_sale_price',
-		// 'net_price'                 => 'Price excl. VAT',
-		// 'net_regular_price'         => 'Regular price excl. VAT',
-		// 'net_sale_price'            => 'Sale price excl. VAT',
-		// 'price_forced'              => 'Price incl. VAT front end',
-		// 'regular_price_forced'      => 'Regular price incl. VAT front end',
-		// 'sale_price_forced'         => 'Sale price incl. VAT front end',
-		// 'sale_price_start_date'     => 'Sale start date',
-		// 'sale_price_end_date'       => 'Sale end date',
-		// 'sale_price_effective_date' => 'Sale price effective date',
+		'id'                        => 'get_id',
+		'sku'                       => 'get_sku', 
+		'title'                     => 'get_title',
+		'mother_title'              => 'get_title',
+		'description'               => 'get_description',
+		'short_description'         => 'get_short_description',
+		'price'                     => 'woogool_get_product_price',
+		'regular_price'             => 'woogool_get_product_regular_price',
+		'sale_price'                => 'woogool_get_product_sale_price',
+		'net_price'                 => 'woogool_get_product_net_price',
+		'net_regular_price'         => 'woogool_get_product_net_regular_price',
+		'net_sale_price'            => 'woogool_get_product_net_sale_price',
+		'price_forced'              => 'woogool_get_product_price_forced',
+		'regular_price_forced'      => 'woogool_get_product_regular_price_forced',
+		'sale_price_forced'         => 'woogool_get_product_sale_price_forced',
+		'sale_price_start_date'     => 'woogool_get_sale_date_from',
+		'sale_price_end_date'       => 'woogool_get_sale_date_to',
+		'sale_price_effective_date' => 'woogool_get_sale_price_effective_date',
 		// 'link'                      => 'Link',
 		// 'currency'                  => 'Currency',
 		// 'categories'                => 'Category',
@@ -193,35 +298,74 @@ function woogool_product_variable_maping_func() {
 	);
 }
 
-function woogool_get_variable_product_id( $variable ) {
-	return $variable['variation_id'];
-}
+// function woogool_get_variable_sale_date_from( $wc_product, $variable ) {
+// 	woopr($variable);
+// 	$date = $wc_product->get_date_on_sale_from();
 
-function woogool_get_variable_product_sku( $variable ) {
-	return $variable['sku'];
-}
+// 	if ( empty( $date ) ) {
+// 		return false;
+// 	}
 
-function woogool_get_variable_product_price( $variable ) {
-	if ( empty( $variable['display_price'] ) ) {
-		return false;
-	}
-	return wc_format_localized_price( $variable['display_price'] ) .' '. get_woocommerce_currency();
-}
+// 	return $date->date('Y-m-d');
+// }
 
-function woogool_get_variable_product_description( $variable ) {
-	if ( empty( $variable['variation_description'] ) ) {
-		return false;
-	}
-	return wp_strip_all_tags( $variable['variation_description'] );
-}
+// function woogool_get_variable_sale_date_to( $wc_product, $wc_variable ) {
+// 	woopr( wc_get_product( $variable['variation_id'] ) );
+// 	$date = $wc_product->get_date_on_sale_to();
 
-function woogool_get_variable_product_regular_price( $variable ) {
-	if ( empty( $variable['display_regular_price'] ) ) {
-		return false;
-	}
-	return wc_format_localized_price( $variable['display_regular_price'] ) .' '. get_woocommerce_currency();
-}
+// 	if ( empty( $date ) ) {
+// 		return false;
+// 	}
+	
+// 	return $date->date('Y-m-d');
+// }
 
+
+// function woogool_get_variable_product_price( $wc_product, $wc_variable ) {
+// 	return woogool_get_product_price( $wc_variable );
+// }
+// function woogool_get_variable_product_regular_price( $wc_product, $wc_variable ) {
+// 	return woogool_get_product_regular_price( $wc_variable );
+// }
+
+
+
+// function woogool_get_variable_product_net_price( $wc_product, $wc_variable ) {
+// 	if ( empty( $variable['display_price'] ) ) {
+// 		return false;
+// 	}
+// 	return wc_format_localized_price( wc_get_price_excluding_tax( $wc_product, array( 'price'=> $variable['display_price'] ) ) ) .' '. get_woocommerce_currency();
+// }
+// function woogool_get_variable_product_net_regular_price( $wc_product, $wc_variable ) {
+// 	if ( empty( $variable['display_regular_price'] ) ) {
+// 		return false;
+// 	}
+// 	return wc_format_localized_price( wc_get_price_excluding_tax( $wc_product, array( 'price'=> $variable['display_regular_price'] ) ) ) .' '. get_woocommerce_currency();
+// }
+
+
+
+// function woogool_get_variable_price_forced( $wc_product, $wc_variable ) {
+// 	if ( empty( $variable['display_price'] ) ) {
+// 		return false;
+// 	}
+// 	return wc_format_localized_price( wc_get_price_including_tax( $wc_product, array( 'price'=> $variable['display_price'] ) ) ) .' '. get_woocommerce_currency();
+// }
+// function woogool_get_variable_product_regular_price_forced( $wc_product, $wc_variable ) {
+// 	if ( empty( $variable['display_regular_price'] ) ) {
+// 		return false;
+// 	}
+// 	return wc_format_localized_price( wc_get_price_including_tax( $wc_product, array( 'price'=> $variable['display_regular_price'] ) ) ) .' '. get_woocommerce_currency();
+// }
+
+
+
+// function woogool_get_variable_product_description( $wc_product, $wc_variable ) {
+// 	if ( empty( $variable['variation_description'] ) ) {
+// 		return false;
+// 	}
+// 	return wp_strip_all_tags( $variable['variation_description'] );
+// }
 
 
 function woogool_product_attribute_with_optgroups() {
