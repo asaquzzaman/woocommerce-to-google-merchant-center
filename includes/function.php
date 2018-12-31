@@ -143,7 +143,7 @@ function woogool_get_product( $product_id ) {
 }
 
 function woogool_get_google_product_type() {
-    $google_taxonomy = apply_filters( 'woogool_google_taxonomy_url', 'http://www.google.com/basepages/producttype/taxonomy.en-US.txt' );
+    $google_taxonomy = apply_filters( 'woogool_google_taxonomy_url', 'https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt' );
     $request = wp_remote_get( $google_taxonomy );
     if ( is_wp_error( $request ) || ! isset( $request['response']['code'] ) || '200' != $request['response']['code'] ) {
         return array();

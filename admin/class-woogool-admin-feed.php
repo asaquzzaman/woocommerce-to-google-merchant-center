@@ -75,8 +75,12 @@ class WooGool_Admin_Feed {
     public function update_feed_file( $postdata ) {
         $feed_id      = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false ; 
         
+        $logic            = get_post_meta( $feed_id, 'logic', true );
+        $category_map     = get_post_meta( $feed_id, 'google_categories', true );
         $feed_contents    = get_post_meta( $feed_id, 'content_attributes', true );
         $active_variation = get_post_meta( $feed_id, 'active_variation', true );
+
+        $settings = get_post_meta( $feed_id );
 
         $page      = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
         $products  = $this->xml_get_products( $feed_id, $page );
@@ -109,7 +113,7 @@ class WooGool_Admin_Feed {
                     
                     foreach ( $feed_contents as $key => $feed_content ) {
                         
-                        $feed_value = $this->get_variation_value( $feed_content, $wc_product, wc_get_product( $child['variation_id'] ) );
+                        $feed_value = $this->get_variation_value( $feed_content, $wc_product, wc_get_product( $child['variation_id'] ), $settings );
 
                         if ( $feed_value ) {
                             $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
@@ -120,7 +124,7 @@ class WooGool_Admin_Feed {
                 $feed = $xml->channel->addChild('item');
 
                 foreach ( $feed_contents as $key => $feed_content ) {
-                    $feed_value = $this->get_value( $feed_content, $wc_product );
+                    $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
 
                     if ( $feed_value ) {
                         $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
@@ -137,7 +141,7 @@ class WooGool_Admin_Feed {
         );
     }
 
-    public function get_variation_value( $feed_content, $wc_product, $wc_variable ) {
+    public function get_variation_value( $feed_content, $wc_product, $wc_variable, $settings ) {
         $val_func = woogool_product_variable_maping_func();
         $name     = $feed_content['woogool_suggest'];
         $value    = '';
@@ -147,7 +151,7 @@ class WooGool_Admin_Feed {
         }
 
         if ( function_exists( $val_func[$name] ) ) {
-            $value = $val_func[$name]( $wc_variable );
+            $value = $val_func[$name]( $wc_variable, $settings );
         } else if ( method_exists( $wc_variable, $val_func[$name] ) ) {
             $value = $wc_variable->$val_func[$name]();
         }
@@ -155,7 +159,7 @@ class WooGool_Admin_Feed {
         return empty( $value ) ? false : $value;
     }
 
-    public function get_value( $feed_content, $wc_product ) {
+    public function get_value( $feed_content, $wc_product, $settings ) {
         $val_func = woogool_product_attributes_maping_func();
         $name     = $feed_content['woogool_suggest'];
         $value    = '';
@@ -165,7 +169,7 @@ class WooGool_Admin_Feed {
         }
 
         if ( function_exists( $val_func[$name] ) ) {
-            $value = $val_func[$name]( $wc_product );
+            $value = $val_func[$name]( $wc_product, $settings );
         } else if ( method_exists( $wc_product, $val_func[$name] ) ) {
             $value = $wc_product->$val_func[$name]();
         }
@@ -1241,7 +1245,6 @@ class WooGool_Admin_Feed {
     }
 
     function check_categori_fetch() {
-
         $feed_cat_fetch_time = get_option( 'woogool_google_product_type_fetch_time', false );
         if ( ! $feed_cat_fetch_time ) {
             $this->store_google_product_type();
