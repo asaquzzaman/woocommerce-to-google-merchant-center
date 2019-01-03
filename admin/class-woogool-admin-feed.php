@@ -89,7 +89,6 @@ class WooGool_Admin_Feed {
         $namespace = array( 'g' => 'http://base.google.com/ns/1.0' );
         $xml       = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
         
-        
         foreach ( $products as $key => $product ) {
             $product_id   = $product->ID;
             $wc_product   = wc_get_product( $product_id );
@@ -112,8 +111,8 @@ class WooGool_Admin_Feed {
                     $feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
                     
                     foreach ( $feed_contents as $key => $feed_content ) {
-                        
-                        $feed_value = $this->get_variation_value( $feed_content, $wc_product, wc_get_product( $child['variation_id'] ), $settings );
+
+                        $feed_value = $this->get_value( $feed_content, wc_get_product( $child['variation_id'] ), $settings );
 
                         if ( $feed_value ) {
                             $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
@@ -150,10 +149,16 @@ class WooGool_Admin_Feed {
             return false;
         }
 
+        if( $name == 'custom_attributes_attribute_pa_chrom_book') {
+            woopr($val_func[$name]);
+        }
+
         if ( function_exists( $val_func[$name] ) ) {
             $value = $val_func[$name]( $wc_variable, $settings );
         } else if ( method_exists( $wc_variable, $val_func[$name] ) ) {
             $value = $wc_variable->$val_func[$name]();
+        } else {
+            $value = woogool_get_custom_value( $feed_content, $wc_variable, $settings );
         }
         
         return empty( $value ) ? false : $value;
@@ -164,14 +169,16 @@ class WooGool_Admin_Feed {
         $name     = $feed_content['woogool_suggest'];
         $value    = '';
 
-        if ( ! array_key_exists( $name, $val_func ) ) {
-            return false;
-        }
+        // if ( ! array_key_exists( $name, $val_func ) ) {
+        //     return false;
+        // }
 
         if ( function_exists( $val_func[$name] ) ) {
             $value = $val_func[$name]( $wc_product, $settings );
         } else if ( method_exists( $wc_product, $val_func[$name] ) ) {
             $value = $wc_product->$val_func[$name]();
+        } else {
+            $value = woogool_get_custom_value( $feed_content, $wc_product, $settings );
         }
         
         return empty( $value ) ? false : $value;
