@@ -1552,75 +1552,98 @@ module.exports = function (it) {
 			proAttrs: woogool_multi_product_var.woogool_product_attribute_with_optgroups,
 			filterCondDrops: [{
 				id: 'contains',
-				label: 'Contains'
+				label: 'Contains',
+				sign: 'contain'
 			}, {
 				id: 'does_not_contain',
-				label: 'does not contain'
+				label: 'does not contain',
+				sign: 'not_contain'
 			}, {
 				id: 'is_equal_to',
-				label: 'is equal to'
+				label: 'is equal to',
+				sign: '='
 			}, {
 				id: 'is_not_equal_to',
-				label: 'is not equal to'
+				label: 'is not equal to',
+				sign: '!='
 			}, {
 				id: 'is_greater_than',
-				label: 'is greater than'
+				label: 'is greater than',
+				sign: '>'
 			}, {
 				id: 'is_greater_or_equal_to',
-				label: 'is greater or equal to'
+				label: 'is greater or equal to',
+				sign: '>='
 			}, {
 				id: 'is_less_than',
-				label: 'is less than'
+				label: 'is less than',
+				sign: '<'
 			}, {
 				id: 'is_less_or_equal_to',
-				label: 'is less or equal to'
+				label: 'is less or equal to',
+				sign: '<='
 			}, {
 				id: 'is_empty',
-				label: 'is empty'
+				label: 'is empty',
+				sign: ''
 			}],
 
 			ruleCondDrops: [{
 				id: 'contains',
-				label: 'Contains'
+				label: 'Contains',
+				sign: 'contain'
 			}, {
 				id: 'does_not_contain',
-				label: 'does not contain'
+				label: 'does not contain',
+				sign: 'not_contain'
 			}, {
 				id: 'is_equal_to',
-				label: 'is equal to'
+				label: 'is equal to',
+				sign: '='
 			}, {
 				id: 'is_not_equal_to',
-				label: 'is not equal to'
+				label: 'is not equal to',
+				sign: '!='
 			}, {
 				id: 'is_greater_than',
-				label: 'is greater than'
+				label: 'is greater than',
+				sign: '>'
 			}, {
 				id: 'is_greater_or_equal_to',
-				label: 'is greater or equal to'
+				label: 'is greater or equal to',
+				sign: '>='
 			}, {
 				id: 'is_less_than',
-				label: 'is less than'
+				label: 'is less than',
+				sign: '<'
 			}, {
 				id: 'is_less_or_equal_to',
-				label: 'is less or equal to'
+				label: 'is less or equal to',
+				sign: '<='
 			}, {
 				id: 'is_empty',
-				label: 'is empty'
+				label: 'is empty',
+				sign: ''
 			}, {
 				id: 'multiply',
-				label: 'multiply'
+				label: 'multiply',
+				sign: '*'
 			}, {
 				id: 'divide',
-				label: 'divide'
+				label: 'divide',
+				sign: '/'
 			}, {
 				id: 'plus',
-				label: 'plus'
+				label: 'plus',
+				sign: '+'
 			}, {
 				id: 'minus',
-				label: 'minus'
+				label: 'minus',
+				sign: '-'
 			}, {
 				id: 'replace',
-				label: 'replace'
+				label: 'replace',
+				sign: 'replace'
 			}]
 		};
 	},
@@ -1630,10 +1653,10 @@ module.exports = function (it) {
 		addFields: function addFields(type) {
 			var filter = {
 				type: type,
-				if: '',
-				condition: '',
+				if_cond: 'id',
+				condition: 'condition',
 				value: '',
-				then: '',
+				then: 'exclude',
 				is: ''
 			};
 
@@ -5095,7 +5118,7 @@ var render = function() {
                       staticClass: "woogool-drop",
                       on: {
                         change: function($event) {
-                          _vm.setData(logical, "if", $event)
+                          _vm.setData(logical, "if_cond", $event)
                         }
                       }
                     },
