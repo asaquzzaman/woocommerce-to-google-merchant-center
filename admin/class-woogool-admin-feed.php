@@ -54,7 +54,7 @@ class WooGool_Admin_Feed {
         $cond_fun        = woogool_condition_maping_func();
         $product_val_fun = woogool_product_value_maping_func();
         $compare         = woogool_product_attributes_maping_func();
-        $wc_product      = wc_get_product(143);
+        $wc_product      = wc_get_product(148);
         $dropdowns       = wp_list_pluck( $dropdowns, 'attributes' );
         $product_attrs   = [];
         $logical         = [];
@@ -66,6 +66,7 @@ class WooGool_Admin_Feed {
         }
         
         foreach ( $product_attrs as $func_key => $product_attr ) {
+            //$func_key = 'custom_attributes_attribute_water';
             $call = empty( $product_val_fun[$func_key] ) ? '' : $product_val_fun[$func_key];
 
             if ( function_exists( $call ) ) {
@@ -77,7 +78,7 @@ class WooGool_Admin_Feed {
 
             $product_val[$func_key] = $prod_val;
         }
-         
+         woopr($product_val); die();
         foreach ( $product_attrs as $attr => $label ) {
             
             foreach ( $cond_fun as $logic => $logic_fun ) {
@@ -253,7 +254,7 @@ class WooGool_Admin_Feed {
                     $input_val = is_array( $product_val[$attr2] ) ? implode( '|', $product_val[$attr2] ) : $product_val[$attr2];
 
                     $compare_val = $logic_fun( $product_val[$attr], $input_val );
-                    
+
                     $set_attr['input_val']         = $input_val;
                     $set_attr['product_val']       = $product_val[$attr];
                     $set_attr['product_attr_name'] = $attr;
