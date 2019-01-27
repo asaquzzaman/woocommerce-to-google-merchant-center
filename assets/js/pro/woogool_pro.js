@@ -1526,6 +1526,11 @@ module.exports = function (it) {
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -5232,14 +5237,26 @@ var render = function() {
                 _c("td", { staticClass: "five" }, [
                   _c("input", {
                     staticClass: "woogool-text",
-                    attrs: { type: "text" },
+                    attrs: {
+                      placeholder:
+                        logical.condition == "contains" ||
+                        logical.condition == "does_not_contain"
+                          ? "val_1|val_2|val_3"
+                          : "",
+                      type: "text"
+                    },
                     domProps: { value: logical.value },
                     on: {
                       input: function($event) {
                         _vm.setData(logical, "value", $event)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  logical.condition == "contains" ||
+                  logical.condition == "does_not_contain"
+                    ? _c("div", [_vm._v("Value seperated by |")])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "six" }, [

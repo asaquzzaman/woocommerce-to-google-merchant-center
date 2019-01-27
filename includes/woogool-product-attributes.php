@@ -26,7 +26,7 @@ function woogool_product_attributes() {
 		"category_link"             => "Category link",
 		"category_path"             => "Category path",
 		"condition"                 => "Condition",
-		"availability"              => "Availability",
+		"availability"              => "Stock Availability",
 		"quantity"                  => "Quantity [Stock]",
 		"product_type"              => "Product Type",
 		"content_type"              => "Content Type",
@@ -100,7 +100,7 @@ function woogool_product_attributes() {
 	return $attributes;
 }
 
-function woogool_get_product_id( $wc_product, $settings ) {
+function woogool_get_product_id( $wc_product ) {
 	return $wc_product->get_id();
 }
 function woogool_get_product_compare_id( $wc_product, $settings ) {
@@ -109,7 +109,7 @@ function woogool_get_product_compare_id( $wc_product, $settings ) {
 	return $id;
 }
 
-function woogool_get_product_sku( $wc_product, $settings ) {
+function woogool_get_product_sku( $wc_product ) {
 	return $wc_product->get_sku();
 }
 function woogool_get_product_compare_sku( $wc_product, $settings ) {
@@ -119,7 +119,7 @@ function woogool_get_product_compare_sku( $wc_product, $settings ) {
 	return $sku;
 }
 
-function woogool_get_product_title( $wc_product, $settings ) {
+function woogool_get_product_title( $wc_product ) {
 	return $wc_product->get_title();
 }
 function woogool_get_product_compare_title( $wc_product, $settings ) {
@@ -129,7 +129,7 @@ function woogool_get_product_compare_title( $wc_product, $settings ) {
 	return $title;
 }
 
-function woogool_get_product_mother_title( $wc_product, $settings ) {
+function woogool_get_product_mother_title( $wc_product ) {
 	return $wc_product->get_title();
 }
 function woogool_get_product_compare_mother_title( $wc_product, $settings ) {
@@ -139,7 +139,7 @@ function woogool_get_product_compare_mother_title( $wc_product, $settings ) {
 	return $mother_title;
 }
 
-function woogool_get_product_description( $wc_product, $settings ) {
+function woogool_get_product_description( $wc_product ) {
 	return $wc_product->get_description();
 }
 function woogool_get_product_compare_description( $wc_product, $settings ) {
@@ -149,7 +149,7 @@ function woogool_get_product_compare_description( $wc_product, $settings ) {
 	return $description;
 }
 
-function woogool_get_product_short_description( $wc_product, $settings ) {
+function woogool_get_product_short_description( $wc_product ) {
 	return $wc_product->get_short_description();
 }
 function woogool_get_product_compare_short_description( $wc_product, $settings ) {
@@ -159,7 +159,7 @@ function woogool_get_product_compare_short_description( $wc_product, $settings )
 	return $short_description;
 }
 
-function woogool_get_product_price( $wc_product, $settings ) {
+function woogool_get_product_price( $wc_product ) {
 	return $wc_product->get_price();
 }
 function woogool_get_product_compare_price( $wc_product, $settings ) {
@@ -168,7 +168,7 @@ function woogool_get_product_compare_price( $wc_product, $settings ) {
 	return wc_format_localized_price( $price ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_regular_price( $wc_product, $settings ) {
+function woogool_get_product_regular_price( $wc_product ) {
 	return $wc_product->get_regular_price();
 }
 function woogool_get_product_compare_regular_price( $wc_product, $settings ) {
@@ -177,7 +177,7 @@ function woogool_get_product_compare_regular_price( $wc_product, $settings ) {
 	return wc_format_localized_price( $regular_price ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_sale_price( $wc_product, $settings ) {
+function woogool_get_product_sale_price( $wc_product ) {
 	return $wc_product->get_sale_price();
 }
 function woogool_get_product_compare_sale_price( $wc_product, $settings ) {
@@ -186,7 +186,7 @@ function woogool_get_product_compare_sale_price( $wc_product, $settings ) {
 	return wc_format_localized_price( $sale_price ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_net_price( $wc_product, $settings ) {
+function woogool_get_product_net_price( $wc_product ) {
 	return wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_price() ) );
 }
 function woogool_get_product_compare_net_price( $wc_product, $settings ) {
@@ -195,7 +195,7 @@ function woogool_get_product_compare_net_price( $wc_product, $settings ) {
 	return wc_format_localized_price( $net_price ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_net_regular_price( $wc_product, $settings ) {
+function woogool_get_product_net_regular_price( $wc_product ) {
 	return wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_regular_price() ) );
 }
 function woogool_get_product_compare_net_regular_price( $wc_product, $settings ) {
@@ -204,7 +204,7 @@ function woogool_get_product_compare_net_regular_price( $wc_product, $settings )
 	return wc_format_localized_price( $net_regular_price ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_net_sale_price( $wc_product, $settings ) {
+function woogool_get_product_net_sale_price( $wc_product ) {
 	return wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_sale_price() ) );
 }
 function woogool_get_product_compare_net_sale_price( $wc_product, $settings ) {
@@ -213,7 +213,7 @@ function woogool_get_product_compare_net_sale_price( $wc_product, $settings ) {
 	return wc_format_localized_price( $net_sale_price ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_price_forced( $wc_product, $settings ) {
+function woogool_get_product_price_forced( $wc_product ) {
 	return wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_price() ) );
 }
 function woogool_get_product_compare_price_forced( $wc_product, $settings ) {
@@ -222,7 +222,7 @@ function woogool_get_product_compare_price_forced( $wc_product, $settings ) {
 	return wc_format_localized_price( $price_forced ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_regular_price_forced( $wc_product, $settings ) {
+function woogool_get_product_regular_price_forced( $wc_product ) {
 	return wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_regular_price() ) );
 }
 function woogool_get_product_compare_regular_price_forced( $wc_product, $settings ) {
@@ -231,7 +231,7 @@ function woogool_get_product_compare_regular_price_forced( $wc_product, $setting
 	return wc_format_localized_price( $regular_price_forced ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_sale_price_forced( $wc_product, $settings ) {
+function woogool_get_product_sale_price_forced( $wc_product ) {
 	return wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_sale_price() ) );
 }
 function woogool_get_product_compare_sale_price_forced( $wc_product, $settings ) {
@@ -240,8 +240,10 @@ function woogool_get_product_compare_sale_price_forced( $wc_product, $settings )
 	return wc_format_localized_price( $sale_price_forced ) .' '. get_woocommerce_currency();
 }
 
-function woogool_get_product_sale_date_from( $wc_product, $settings ) {
-	return $wc_product->get_date_on_sale_from();
+function woogool_get_product_sale_date_from( $wc_product ) {
+	$date = $wc_product->get_date_on_sale_from();
+	if ( empty( $date ) ) return '';
+	return $date->date('Y-m-d H:i:s');
 }
 function woogool_get_product_compare_sale_date_from( $wc_product, $settings ) {
 	$date = woogool_get_product_sale_date_from( $wc_product, $settings );
@@ -255,8 +257,10 @@ function woogool_get_product_compare_sale_date_from( $wc_product, $settings ) {
 	return $date;
 }
 
-function woogool_get_product_sale_date_to( $wc_product, $settings ) {
-	return $wc_product->get_date_on_sale_to();
+function woogool_get_product_sale_date_to( $wc_product ) {
+	$date = $wc_product->get_date_on_sale_to();
+	if ( empty( $date ) ) return '';
+	return $date->date('Y-m-d H:i:s');
 }
 function woogool_get_product_compare_sale_date_to( $wc_product, $settings ) {
 	$date = woogool_get_product_sale_date_to( $wc_product, $settings );
@@ -265,12 +269,11 @@ function woogool_get_product_compare_sale_date_to( $wc_product, $settings ) {
 		return false;
 	}
 	
-	$date = $date->date('Y-m-d');
 	$date = woogool_compare_with_logical_value( $wc_product, $settings, 'sale_price_end_date', $date );
 	return $date;
 }
 
-function woogool_get_product_sale_price_effective_date( $wc_product, $settings ) {
+function woogool_get_product_sale_price_effective_date( $wc_product ) {
 	$start = $wc_product->get_date_on_sale_from();
 	$end   = $wc_product->get_date_on_sale_to();
 
@@ -292,31 +295,31 @@ function woogool_get_product_compare_sale_price_effective_date( $wc_product, $se
 	return woogool_get_product_sale_price_effective_date( $wc_product, $settings );
 }
 
-function woogool_get_product_link( $wc_product, $settings ) {
+function woogool_get_product_link( $wc_product ) {
 	return $wc_product->get_permalink();
 }
-function woogool_get_product_compare_link( $wc_product, $settings ) {
+function woogool_get_product_compare_link( $wc_product ) {
 	return woogool_get_product_link( $wc_product, $settings );
 }
 
-function woogool_get_product_currency( $wc_product, $settings ) {
+function woogool_get_product_currency( $wc_product ) {
 	return get_woocommerce_currency();
 }
 function woogool_get_product_compare_currency( $wc_product, $settings ) {
 	return woogool_get_product_currency( $wc_product, $settings );
 }
 
-function woogool_get_product_category_slugs() {
-	$slugs = [];
-	$visibility_list = wp_get_post_terms( $wc_product->get_id(), 'product_visibility', array( 'fields' => 'all' ) );
-	
-	foreach( $visibility_list as $visibility_single ) {
-		$slugs[$visibility_single->slug] = $visibility_single->title;
+function woogool_get_product_category_slugs( $wc_product ) {
+	$product_cats = $wc_product->get_category_ids();
+	$cat_slug = [];
+	foreach ( $product_cats as $key => $cat_id ) {
+		$cat = get_term_by( 'id', $cat_id, 'product_cat' );
+		$cat_slug[] = $cat->slug;
 	}
 
-	return $slugs;
+	return $cat_slug;
 }
-function woogool_get_product_category_ids( $wc_product, $settings ) {
+function woogool_get_product_category_ids( $wc_product ) {
 	return $wc_product->get_category_ids();
 }
 function woogool_get_product_compare_categories( $wc_product, $settings ) {
@@ -339,7 +342,19 @@ function woogool_get_product_compare_categories( $wc_product, $settings ) {
 	return implode( '||', $filter_maps );
 }
 
-function woogool_get_product_categorie_links( $wc_product, $settings ) {
+function woogool_get_product_categorie_links( $wc_product ) {
+
+	$product_cats = $wc_product->get_category_ids();
+	$cat_links = [];
+	foreach ( $product_cats as $key => $cat_id ) {
+		$cat = get_term_by( 'id', $cat_id, 'product_cat' );
+		$cat_links[] = get_category_link( $cat->term_id );
+	}
+
+	return $cat_links;
+}
+
+function woogool_get_product_compare_categorie_links( $wc_product, $settings ) {
 	$google_cats  = maybe_unserialize( reset( $settings['google_categories'] ) );
 	$product_cats = $wc_product->get_category_ids();
 	$maps         = array();
@@ -350,14 +365,10 @@ function woogool_get_product_categorie_links( $wc_product, $settings ) {
 		}
 	}
 
-	return $maps;
-}
-function woogool_get_product_compare_categorie_links( $wc_product, $settings ) {
-	$maps = woogool_get_product_categorie_links( $wc_product, $settings );
 	return implode( '||', $maps );
 }
 
-function woogool_get_product_condition( $wc_product, $settings ) {
+function woogool_get_product_condition( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_condition', true );
 }
 function woogool_get_product_compare_condition( $wc_product, $settings ) {
@@ -365,7 +376,7 @@ function woogool_get_product_compare_condition( $wc_product, $settings ) {
 	return empty( $condition ) ? false : $condition;
 }
 
-function woogool_get_product_availability( $wc_product, $settings ) {
+function woogool_get_product_availability( $wc_product ) {
 	return $wc_product->get_stock_status();
 }
 function woogool_get_product_compare_availability( $wc_product, $settings ) {
@@ -377,7 +388,7 @@ function woogool_get_product_compare_availability( $wc_product, $settings ) {
 	return 'out of stock';
 }
 
-function woogool_get_product_stock_quantity( $wc_product, $settings ) {
+function woogool_get_product_stock_quantity( $wc_product ) {
 	return $wc_product->get_stock_quantity();
 }
 function woogool_get_product_compare_stock_quantity( $wc_product, $settings ) {
@@ -386,7 +397,7 @@ function woogool_get_product_compare_stock_quantity( $wc_product, $settings ) {
 	return $quantity ? $quantity : '00';
 }
 
-function woogool_get_product_exclude_from_catalog( $wc_product, $settings ) {
+function woogool_get_product_exclude_from_catalog( $wc_product ) {
 	$catalog = 'no';
 	
 	$visibility_list = wp_get_post_terms( $wc_product->get_id(), 'product_visibility', array( 'fields' => 'all' ) );
@@ -400,7 +411,7 @@ function woogool_get_product_exclude_from_catalog( $wc_product, $settings ) {
 	return $catalog;
 }
 
-function woogool_get_product_exclude_from_search( $wc_product, $settings ) {
+function woogool_get_product_exclude_from_search( $wc_product ) {
 	$search = 'no';
 	
 	$visibility_list = wp_get_post_terms( $wc_product->get_id(), 'product_visibility', array( 'fields' => 'all' ) );
@@ -414,7 +425,7 @@ function woogool_get_product_exclude_from_search( $wc_product, $settings ) {
 	return $search;
 }
 
-function woogool_get_product_exclude_from_all( $wc_product, $settings ) {
+function woogool_get_product_exclude_from_all( $wc_product ) {
 	$search = 'no';
 	$catalog = 'no';
 	$all    = 'no';
@@ -438,14 +449,18 @@ function woogool_get_product_exclude_from_all( $wc_product, $settings ) {
 	return $all;
 }
 
-function woogool_get_product_publication_date( $wc_product, $settings ) {
+function woogool_get_product_group_id( $wc_product ) {
+	return $wc_product->get_parent_id();
+}
+
+function woogool_get_product_publication_date( $wc_product ) {
 	return get_the_date( 'd-m-y G:i:s', $wc_product->get_id() );
 }
 function woogool_get_product_compare_publication_date( $wc_product, $settings ) {
 	return woogool_get_product_publication_date( $wc_product, $settings );
 }
 
-function woogool_get_product_weight( $wc_product, $settings ) {
+function woogool_get_product_weight( $wc_product ) {
 	return $wc_product->get_weight();
 }
 function woogool_get_product_compare_weight( $wc_product, $settings ) {
@@ -453,116 +468,116 @@ function woogool_get_product_compare_weight( $wc_product, $settings ) {
 	return $weight .' '. strtolower( get_option( 'woocommerce_weight_unit', 'kg' ) );
 }
 
-function woogool_get_product_width( $wc_product, $settings ) {
+function woogool_get_product_width( $wc_product ) {
 	return $wc_product->get_width();
 }
 function woogool_get_product_compare_width( $wc_product, $settings ) {
 	return woogool_get_product_width( $wc_product, $settings ) .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
 }
 
-function woogool_get_product_height( $wc_product, $settings ) {
+function woogool_get_product_height( $wc_product ) {
 	return $wc_product->get_height();
 }
 function woogool_get_product_compare_height( $wc_product, $settings ) {
 	return woogool_get_product_height( $wc_product, $settings ) .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
 }
 
-function woogool_get_product_length( $wc_product, $settings ) {
-	return $wc_product->get_length() .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
+function woogool_get_product_length( $wc_product ) {
+	return $wc_product->get_length();
 }
 function woogool_get_product_compare_length( $wc_product, $settings ) {
 	return woogool_get_product_length( $wc_product, $settings ) .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_ean( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_ean( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_ean', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_ean( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_ean( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_mpn( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_mpn( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_mpn', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_mpn( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_mpn( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_gtin( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_gtin( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_gtin', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_gtin( $wc_product, $settings ) {
 	return ucfirst( googool_get_product_custom_attributes__woogool_gtin( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_upc( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_upc( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_upc', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_upc( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_upc( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_brand( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_brand( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_brand', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_brand( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_brand( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_condition($wc_product, $settings) {
+function woogool_get_product_custom_attributes__woogool_condition($wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_condition', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_condition($wc_product, $settings) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_condition($wc_product, $settings) );
 }
 
-function woogool_get_product_custom_attributes__woogool_optimized_title( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_optimized_title( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_optimized_title', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_optimized_title( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_optimized_title( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_unit_pricing_measure( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_unit_pricing_measure( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_unit_pricing_measure', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_unit_pricing_measure( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_unit_pricing_measure( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_unit_pricing_base_measure( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_unit_pricing_base_measure( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_unit_pricing_base_measure', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_unit_pricing_base_measure( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_unit_pricing_base_measure( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_installment_months( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_installment_months( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_installment_months', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_installment_months( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_installment_months( $wc_product, $settings ) );
 }
 
-function woogool_get_product_custom_attributes__woogool_installment_amount( $wc_product, $settings ) {
+function woogool_get_product_custom_attributes__woogool_installment_amount( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_installment_amount', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_installment_amount( $wc_product, $settings ) {
 	return ucfirst( woogool_get_product_custom_attributes__woogool_installment_amount( $wc_product, $settings ) );
 }
 
-function woogool_get_product_compare_is_visible( $wc_product, $settings ) {
+function woogool_get_product_is_visible( $wc_product ) {
 	return $wc_product->is_visible();
 }
 function woogool_get_product_compare_is_visible( $wc_product, $settings ) {
 	return $wc_product->is_visible();
 }
 
-function woogool_get_product_image( $wc_product, $settings ) {
+function woogool_get_product_image( $wc_product ) {
 	return wp_get_attachment_url( $wc_product->get_image_id() );
 }
 
-function woogool_get_product_feature_image( $wc_product, $settings ) {
+function woogool_get_product_feature_image( $wc_product ) {
 	$feature_image = 0;
 
 	if ( has_post_thumbnail( $wc_product->get_id() ) ) {
@@ -588,7 +603,7 @@ function woogool_get_product_image_url($image_url = ""){
 	return $image_url;
 }
 
-function woogool_get_product_image_1( $wc_product, $settings ) {
+function woogool_get_product_image_1( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[0] ) ) {
 		return false;
@@ -596,7 +611,7 @@ function woogool_get_product_image_1( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[0] );
 }
-function woogool_get_product_image_2( $wc_product, $settings ) {
+function woogool_get_product_image_2( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[1] ) ) {
 		return false;
@@ -604,7 +619,7 @@ function woogool_get_product_image_2( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[1] );
 }
-function woogool_get_product_image_3( $wc_product, $settings ) {
+function woogool_get_product_image_3( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[2] ) ) {
 		return false;
@@ -612,7 +627,7 @@ function woogool_get_product_image_3( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[2] );
 }
-function woogool_get_product_image_4( $wc_product, $settings ) {
+function woogool_get_product_image_4( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[3] ) ) {
 		return false;
@@ -620,7 +635,7 @@ function woogool_get_product_image_4( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[3] );
 }
-function woogool_get_product_image_5( $wc_product, $settings ) {
+function woogool_get_product_image_5( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[4] ) ) {
 		return false;
@@ -628,7 +643,7 @@ function woogool_get_product_image_5( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[4] );
 }
-function woogool_get_product_image_6( $wc_product, $settings ) {
+function woogool_get_product_image_6( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[5] ) ) {
 		return false;
@@ -636,7 +651,7 @@ function woogool_get_product_image_6( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[5] );
 }
-function woogool_get_product_image_7( $wc_product, $settings ) {
+function woogool_get_product_image_7( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[6] ) ) {
 		return false;
@@ -644,7 +659,7 @@ function woogool_get_product_image_7( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[6] );
 }
-function woogool_get_product_image_8( $wc_product, $settings ) {
+function woogool_get_product_image_8( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[7] ) ) {
 		return false;
@@ -652,7 +667,7 @@ function woogool_get_product_image_8( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[7] );
 }
-function woogool_get_product_image_9( $wc_product, $settings ) {
+function woogool_get_product_image_9( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[8] ) ) {
 		return false;
@@ -660,7 +675,7 @@ function woogool_get_product_image_9( $wc_product, $settings ) {
 
 	return wp_get_attachment_url( $images[8] );
 }
-function woogool_get_product_image_10( $wc_product, $settings ) {
+function woogool_get_product_image_10( $wc_product ) {
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[9] ) ) {
 		return false;
@@ -669,26 +684,21 @@ function woogool_get_product_image_10( $wc_product, $settings ) {
 	return wp_get_attachment_url( $images[9] );
 }
 
-function woogool_get_product_custom_value( $feed_content, $wc_product, $settings ) {
-	$attributes = $wc_product->get_attributes();
+function woogool_get_product_dynamic_value( $wc_product, $attr ) {
+	$attr_value = $wc_product->get_attribute( $attr );
 
-	if ( empty( $attributes ) ) {
-		return false;
-	}
-
-	if ( strpos( $feed_content['woogool_suggest'], 'custom_attributes_attribute_' ) !== false ) {
-		$attr = explode( 'custom_attributes_attribute_', $feed_content['woogool_suggest'] );
-		$attr_name = $attr[1];
-		
-		if ( is_array( $attributes ) ) {
-			return empty( $attributes[$attr_name] ) ? false : $attributes[$attr_name]; 
-		}
-	}
-	
-	return false;
+	return $attr_value;
 }
 
-function woogool_get_product_tags( $wc_product, $settings ) {
+function woogool_get_product_compare_dynamic_value( $wc_product, $settings, $attr ) {
+	$attr_value = woogool_get_product_dynamic_value( $wc_product, $attr );
+
+	$attr_value = woogool_compare_with_logical_value( $wc_product, $settings, $attr, $attr_value );
+
+	return $attr_value;
+}
+
+function woogool_get_product_tags( $wc_product ) {
 	$tags = [];
 
 	$product_tags = get_the_terms( $wc_product->get_id(), 'product_tag' );
@@ -732,7 +742,16 @@ function woogool_compare_with_logical_value( $wc_product, $settings, $key, $prod
 	$value_map = woogool_product_value_maping_func();
 
 	foreach ( $logic as $log_key => $logic_attr ) {
-		if ( $logic_attr['type'] == 'filter' ) {
+		$if_cond = $logic_attr['if_cond'];
+
+		//if ( ! isset( $value_map[$if_cond] ) ) continue;
+
+		if ( 
+			isset( $logic_attr['type'] ) 
+				&&  
+			$logic_attr['type'] == 'filter' 
+		) 
+		{
 			continue;
 		}
 
@@ -741,12 +760,13 @@ function woogool_compare_with_logical_value( $wc_product, $settings, $key, $prod
 				||
 			$logic_attr['then'] == $key
 		) {
+			$call = empty( $value_map[$if_cond] ) ? '' : $value_map[$if_cond];
 
-			$if_cond = $logic_attr['if_cond'];
-
-			if ( function_exists( $value_map[$if_cond] ) ) {
-            	$product_val = $value_map[$if_cond]( $wc_product );
-        	} 
+			if ( function_exists( $call ) ) {
+            	$product_val = $call( $wc_product );
+        	} else {
+        		$product_val = woogool_get_product_dynamic_value( $wc_product, $key );
+        	}
 
 			$logic_val = $logic_attr['value'];
 			
@@ -759,18 +779,18 @@ function woogool_compare_with_logical_value( $wc_product, $settings, $key, $prod
 	return $product_val;
 }
 
-function woogool_get_product_type($wc_product, $settings) {
+function woogool_get_product_type($wc_product) {
 	return $wc_product->get_type();
 }
 function woogool_get_product_compare_type($wc_product, $settings) {
 	return woogool_get_produt_type($wc_product, $settings);
 }
 
-function woogool_get_product_rating_count($wc_product, $settings) {
-	return $wc_product->get_rating_count;
+function woogool_get_product_rating_count($wc_product) {
+	return $wc_product->get_rating_count();
 }
 
-function woogool_get_product_average_rating($wc_product, $settings) {
+function woogool_get_product_average_rating($wc_product) {
 	return $wc_product->get_average_rating();
 }
 
@@ -865,6 +885,10 @@ function woogool_product_attribute_with_optgroups() {
 	if( is_array( woogool_get_custom_attributes() ) ) {
 		$custom_attributes = woogool_get_custom_attributes();
     }
+    
+    if( isset( $custom_attributes['custom_attributes__woogool_exclude_product'] ) ) {
+    	unset( $custom_attributes['custom_attributes__woogool_exclude_product'] );
+    }
 
     $attributes = array (
     	'main_attributes' => array (
@@ -892,12 +916,12 @@ function woogool_product_attribute_with_optgroups() {
 				"currency"                  => "Currency",
 				"categories"                => "Category (Slug)",
 				"category_link"             => "Category link",
-				"category_path"             => "Category path",
+				//"category_path"             => "Category path",
 				"condition"                 => "Condition",
-				"availability"              => "Availability",
+				"availability"              => "Stock Availability",
 				"quantity"                  => "Quantity [Stock]",
 				"product_type"              => "Product Type",
-				"content_type"              => "Content Type",
+				//"content_type"              => "Content Type",
 				"exclude_from_catalog"      => "Excluded from catalog",
 				"exclude_from_search"       => "Excluded from search",
 				"exclude_from_all"          => "Excluded from all (hidden)",
@@ -907,43 +931,43 @@ function woogool_product_attribute_with_optgroups() {
 				"width"                     => "Width",
 				"height"                    => "Height",
 				"length"                    => "Length",
-				"shipping"                  => "Shipping",
+				//"shipping"                  => "Shipping",
 				"visibility"                => "Visibility",
 				"rating_total"              => "Total rating",
 				"rating_average"            => "Average rating",
 			)
     	),
 
-    	'image_attributes' => array (
+   //  	'image_attributes' => array (
 
-    		'label' => 'Image attributes',
-    		'attributes' => array(
-				"image"         => "Main image",
-				"feature_image" => "Featured image",
-				"image_1"       => "Additional image 1",
-				"image_2"       => "Additional image 2",
-				"image_3"       => "Additional image 3",
-				"image_4"       => "Additional image 4",
-				"image_5"       => "Additional image 5",
-				"image_6"       => "Additional image 6",
-				"image_7"       => "Additional image 7",
-				"image_8"       => "Additional image 8",
-				"image_9"       => "Additional image 9",
-				"image_10"      => "Additional image 10",
-			)
-    	),
+   //  		'label' => 'Image attributes',
+   //  		'attributes' => array(
+			// 	"image"         => "Main image",
+			// 	"feature_image" => "Featured image",
+			// 	"image_1"       => "Additional image 1",
+			// 	"image_2"       => "Additional image 2",
+			// 	"image_3"       => "Additional image 3",
+			// 	"image_4"       => "Additional image 4",
+			// 	"image_5"       => "Additional image 5",
+			// 	"image_6"       => "Additional image 6",
+			// 	"image_7"       => "Additional image 7",
+			// 	"image_8"       => "Additional image 8",
+			// 	"image_9"       => "Additional image 9",
+			// 	"image_10"      => "Additional image 10",
+			// )
+   //  	),
 
     	'dynamic_attributes' => array (
     		'label' => 'Dynamic attributes',
     		'attributes' => $dynamic_attributes,
     	),
 
-    	'google_category_taxonomy' => array (
-    		'label' => 'Google category taxonomy',
-    		'attributes' => array (
-    			'google_category' => 'Google category',
-    		)
-    	),
+    	// 'google_category_taxonomy' => array (
+    	// 	'label' => 'Google category taxonomy',
+    	// 	'attributes' => array (
+    	// 		'google_category' => 'Google category',
+    	// 	)
+    	// ),
 
     	'custom_field_attributes' => array (
     		'label' => 'Custom field attributes',
@@ -966,7 +990,7 @@ function woogool_get_dynamic_attributes() {
 	global $wpdb;
 	$list = array();
 
-        $no_taxonomies = array("portfolio_category","portfolio_skills","portfolio_tags","nav_menu","post_format","slide-page","element_category","template_category","portfolio_category","portfolio_skills","portfolio_tags","faq_category","slide-page","yst_prominent_words","category","post_tag","nav_menu","link_category","post_format","product_type","product_visibility","product_cat","product_shipping_class","product_tag");
+        $no_taxonomies = array("action-group","portfolio_category","portfolio_skills","portfolio_tags","nav_menu","post_format","slide-page","element_category","template_category","portfolio_category","portfolio_skills","portfolio_tags","faq_category","slide-page","yst_prominent_words","category","post_tag","nav_menu","link_category","post_format","product_type","product_visibility","product_cat","product_shipping_class","product_tag");
      	$taxonomies = get_taxonomies();
  
      	$diff_taxonomies = array_diff($taxonomies, $no_taxonomies);
@@ -1067,7 +1091,7 @@ function woogool_product_value_maping_func() {
 		//'sale_price_effective_date' => 'woogool_get_product_sale_price_effective_date',
 		'link'                        => 'woogool_get_product_link',
 		'currency'                    => 'woogool_get_product_currency',
-		'categories'                  => 'woogool_get_product_categories',
+		'categories'                  => 'woogool_get_product_category_slugs',
 		'category_link'               => 'woogool_get_product_categorie_links',
 		// 'category_path'            => 'Category path',
 		'condition'                   => 'woogool_get_product_condition',
@@ -1076,10 +1100,10 @@ function woogool_product_value_maping_func() {
 		'product_type'                => 'woogool_get_product_type',
 		
 		'exclude_from_catalog'        => 'woogool_get_product_exclude_from_catalog',
-		'exclude_from_search'         => 'woogool_get_product_exclude_exclude_from_search',
+		'exclude_from_search'         => 'woogool_get_product_exclude_from_search',
 		'exclude_from_all'            => 'woogool_get_product_exclude_from_all',
 		'publication_date'            => 'woogool_get_product_publication_date',
-		// 'item_group_id'            => 'Item group ID',
+		'item_group_id'            	  => 'woogool_get_product_group_id',
 		'weight'                      => 'woogool_get_product_weight',
 		'width'                       => 'woogool_get_product_width',
 		'height'                      => 'woogool_get_product_height',
@@ -1124,19 +1148,6 @@ function woogool_product_value_maping_func() {
 }
 
 
-
-function woogool_get_product_actual_categories( $wc_product ) {
-	$product_cats = $wc_product->get_category_ids();
-	$cat_slug = [];
-	foreach ( $product_cats as $key => $cat_id ) {
-		$cat = get_term_by( 'id', $cat_id, 'product_cat' );
-		$cat_slug[] = $cat->slug;
-	}
-
-	return $cat_slug;
-}
-
-
 function woogool_condition_maping_func() {
 	return array(
 		'contains'               => 'woogool_contains',
@@ -1148,28 +1159,34 @@ function woogool_condition_maping_func() {
 		'is_less_than'           => 'woogool_is_less_than',
 		'is_less_or_equal_to'    => 'woogool_is_less_or_equal',
 		'is_empty'               => 'woogool_is_empty',
-		'multiply'               => 'woogool_multiply',
-		'divide'                 => 'woogool_divide',
-		'plus'                   => 'woogool_plus',
-		'minus'                  => 'woogool_minus',
-		'replace'                => 'woogool_replace'
+		// 'multiply'               => 'woogool_multiply',
+		// 'divide'                 => 'woogool_divide',
+		// 'plus'                   => 'woogool_plus',
+		// 'minus'                  => 'woogool_minus',
+		// 'replace'                => 'woogool_replace'
 
 	);
 }
 
 function woogool_divide( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return $product_value;
 	return $product_value / $cond_value;
 }
 function woogool_plus( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return $product_value;
 	return $product_value + $cond_value;
 }
 function woogool_minus( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return $product_value;
 	return $product_value - $cond_value;
 }
 function woogool_replace( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return $product_value;
+
 	return $cond_value;
 }
 function woogool_multiply( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return $product_value;
 	return $product_value * $cond_value;
 }
 
@@ -1178,18 +1195,26 @@ function woogool_is_empty( $product_value ) {
 }
 
 function woogool_is_greater_than( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return false;
+
 	return $product_value > $cond_value ? true : false;
 }
 
 function woogool_is_greater_or_equal( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return false;
+
 	return $product_value >= $cond_value ? true : false;
 }
 
 function woogool_is_less_than( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return false;
+
 	return $product_value < $cond_value ? true : false;
 }
 
 function woogool_is_less_or_equal( $product_value, $cond_value ) {
+	if ( empty( $cond_value ) ) return false;
+
 	return $product_value <= $cond_value ? true : false;
 }
 
@@ -1204,35 +1229,33 @@ function woogool_is_need_condition_value_convert_array( $value, $key ) {
 }
 
 function woogool_contains( $product_value, $cond_value ) {
-	if ( empty( $cond_value ) ) {
-		return true;
-	}
+	if ( empty( $cond_value ) ) return false;
 
 	if( ! is_array( $product_value ) ) {
 		$product_value = array( $product_value );
 	} 
 
-	$cond_value = explode( '|', preg_replace('/\s+/', '', $cond_value ) );
-
-	if( is_array( $product_value ) && is_array( $cond_value ) ) {
+	$cond_value = explode( '|', $cond_value ); //preg_replace('/\s+/', '', $cond_value )
+	
+ 	if( is_array( $product_value ) && is_array( $cond_value ) ) {
 		$result = array_intersect( $product_value, $cond_value );
 
 		return ! empty( $result ) ? true : false;
 	} 
 	
-	return true;
+	return false;
 }
 
 function woogool_does_not_contain( $product_value, $cond_value ) {
 	if ( empty( $cond_value ) ) {
-		return true;
+		return false;
 	}
 	
 	if( ! is_array( $product_value ) ) {
 		$product_value = array( $product_value );
 	} 
 
-	$cond_value = explode( '|', preg_replace('/\s+/', '', $cond_value ) );
+	$cond_value = explode( '|', $cond_value ); //preg_replace('/\s+/', '', $cond_value ) 
 	
 	if( is_array( $product_value ) && is_array( $cond_value ) ) {
 		$result = array_intersect( $product_value, $cond_value );
@@ -1240,18 +1263,16 @@ function woogool_does_not_contain( $product_value, $cond_value ) {
 		return empty( $result ) ? true : false;
 	} 
 	
-	return true;
+	return false;
 }
 
 function woogool_is_not_equal( $product_value, $cond_value ) {
 	if ( empty( $cond_value ) ) {
-		return true;
+		return false;
 	}
 
-	if( is_array( $product_value ) && is_array( $cond_value ) ) {
-		$result = array_diff( $product_value, $cond_value );
-
-		return ! empty( $result ) ? true : false;
+	if ( is_array( $product_value ) ) {
+		$product_value = implode( '|', $product_value );
 	} 
 	
 	return $product_value != $cond_value ? true : false;
@@ -1259,13 +1280,11 @@ function woogool_is_not_equal( $product_value, $cond_value ) {
 
 function woogool_is_equal( $product_value, $cond_value ) {
 	if ( empty( $cond_value ) ) {
-		return true;
+		return false;
 	}
 
-	if( is_array( $product_value ) && is_array( $cond_value ) ) {
-		$result = array_diff( $product_value, $cond_value );
-
-		return empty( $result ) ? true : false;
+	if ( is_array( $product_value ) ) {
+		$product_value = implode( '|', $product_value );
 	} 
 	
 	return $product_value == $cond_value ? true : false;

@@ -68,7 +68,12 @@
 						</td>
 						
 						<td class="five">
-							<input :value="logical.value" @input="setData(logical, 'value', $event)" class="woogool-text" type="text">
+							<input :placeholder="logical.condition=='contains' || logical.condition=='does_not_contain'? 'val_1|val_2|val_3' : ''" 
+								:value="logical.value" 
+								@input="setData(logical, 'value', $event)" 
+								class="woogool-text" type="text">
+								
+							<div v-if="logical.condition=='contains' || logical.condition=='does_not_contain'">Value seperated by |</div>
 						</td>
 						
 						<td class="six">
