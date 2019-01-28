@@ -102,16 +102,18 @@
 				this.logic = feed.logic;
 			},
 
-			createFeedFile (feedID) {
+			createFeedFile (feedID, offset) {
 				var self = this;
+				offset = offset || 0;
 
 				var args = {
 					data: {
 						feed_id: feedID,
-						feed_title: self.header.name
+						feed_title: self.header.name,
+						offset: offset
 					},
 					callback ($this, res) {
-
+						
 					}
 				}
 

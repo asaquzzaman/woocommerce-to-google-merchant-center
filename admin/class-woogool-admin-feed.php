@@ -6,6 +6,7 @@ class WooGool_Admin_Feed {
 
     private $google_cat = array();
     private $feed_settings = array();
+    protected $start_time = 0;
     
     /**
      * @var The single instance of the class
@@ -45,7 +46,7 @@ class WooGool_Admin_Feed {
     function test() {
        //$this->auto_test_filter();
        // $this->auto_test_rule();
-        $this->auto_test_value();
+       // $this->auto_test_value();
     }
 
     public function auto_test_value() {
@@ -78,7 +79,7 @@ class WooGool_Admin_Feed {
 
             $product_val[$func_key] = $prod_val;
         }
-         woopr($product_val); die();
+         
         foreach ( $product_attrs as $attr => $label ) {
             
             foreach ( $cond_fun as $logic => $logic_fun ) {
@@ -298,26 +299,89 @@ class WooGool_Admin_Feed {
         return false;
     }
 
+    /**
+     * Memory exceeded
+     *
+     * Ensures the batch process never exceeds 90%
+     * of the maximum WordPress memory.
+     *
+     * @return bool
+     */
+    protected function memory_exceeded() {
+        $memory_limit   = $this->get_memory_limit() * 0.9; // 90% of max memory
+        $current_memory = memory_get_usage( true );
+        $return         = false;
+
+        if ( $current_memory >= $memory_limit ) {
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Get memory limit
+     *
+     * @return int
+     */
+    protected function get_memory_limit() {
+        if ( function_exists( 'ini_get' ) ) {
+            $memory_limit = ini_get( 'memory_limit' );
+        } else {
+            // Sensible default.
+            $memory_limit = '128M';
+        }
+
+        if ( ! $memory_limit || -1 === intval( $memory_limit ) ) {
+            // Unlimited, set to 32GB.
+            $memory_limit = '32000M';
+        }
+
+        return intval( $memory_limit ) * 1024 * 1024;
+    }
+
+    /**
+     * Time exceeded.
+     *
+     * Ensures the batch never exceeds a sensible time limit.
+     * A timeout limit of 30s is common on shared hosting.
+     *
+     * @return bool
+     */
+    public function time_exceeded() {
+        $finish = $this->start_time +  20; // 20 seconds
+        $return = false;
+
+        if ( time() >= $finish ) {
+            $return = true;
+        }
+
+        return $return;
+    }
+
     public function update_feed_file( $postdata ) {
-        $feed_id      = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false ; 
-        
+        $this->start_time = time();
+        $feed_id          = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false ; 
+        $offset           = empty( $postdata['offset'] ) ? 0 : intval( $postdata['offset'] );
         $logic            = get_post_meta( $feed_id, 'logic', true );
         
         $category_map     = get_post_meta( $feed_id, 'google_categories', true );
         $feed_contents    = get_post_meta( $feed_id, 'content_attributes', true );
         $active_variation = get_post_meta( $feed_id, 'active_variation', true );
+        
+        $settings         = get_post_meta( $feed_id );
+        
+        $page             = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
+        $products         = $this->xml_get_products( $feed_id, $page=false, $offset );
 
-        $settings = get_post_meta( $feed_id );
-
-        $page      = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
-        $products  = $this->xml_get_products( $feed_id, $page );
-        $file      = $this->get_file_path( $feed_id );
-        $namespace = array( 'g' => 'http://base.google.com/ns/1.0' );
-        $xml       = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
+        $file             = $this->get_file_path( $feed_id );
+        $namespace        = array( 'g' => 'http://base.google.com/ns/1.0' );
+        $xml              = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
         
         foreach ( $products as $key => $product ) {
-            $product_id   = $product->ID;
-            $wc_product   = wc_get_product( $product_id );
+            $offset     = $offset + 1;
+            $product_id = $product->ID;
+            $wc_product = wc_get_product( $product_id );
 
             if ( $this->is_exclude_from_filter( $wc_product, $logic ) ) {
                 continue;
@@ -328,7 +392,7 @@ class WooGool_Admin_Feed {
             if ( $product_type == 'variable' ) {
                 $variable   = new WC_Product_Variable( $wc_product );
                 $variations = $variable->get_available_variations();
-                $attrs  = $variable->get_variation_attributes();
+                $attrs      = $variable->get_variation_attributes();
 
                 foreach ( $variations as $key => $child ) {
                     
@@ -370,18 +434,25 @@ class WooGool_Admin_Feed {
         if ( method_exists( $xml, 'asXML') ) {
             $xml->asXML( $file );
         }
-        
-        return array(
-            'recuring' => $this->found_posts,
-            'fetch_all_product' => $this->fetch_all_product
-        );
+
+        if ( $this->time_exceeded() || $this->memory_exceeded() ) {
+            return [
+                'has_product' => empty( $products ) ? false : true,
+                'offset'      => $offset
+            ];
+        }
+
+        return [
+            'has_product' => empty( $products ) ? false : true,
+            'offset'      => $offset
+        ];
     }
 
     function is_exclude_from_filter( $wc_product, $logic ) {
         
         $val_func  = woogool_product_value_maping_func();
         $cond_func = woogool_condition_maping_func();
-        $exclude   = false;
+        $exclude   = [];
 
         $meta_exclude = get_post_meta( $wc_product->get_id(), '_woogool_exclude_product', true );
 
@@ -395,29 +466,18 @@ class WooGool_Admin_Feed {
             $name = $logic_attr['if_cond'];
             
             if ( function_exists( $val_func[$name] ) ) {
+                
                 $product_value = $val_func[$name]( $wc_product );
                 $cond_name     = $logic_attr['condition'];
                 $cond_value    = $logic_attr['value'];
                 
                 if ( function_exists( $cond_func[$cond_name] ) ) {
-                    $exclude = $cond_func[$cond_name]( $product_value, $cond_value );
+                    $exclude[] = $cond_func[$cond_name]( $product_value, $cond_value );
                 }
             } 
         }
         
-        return $exclude;
-    }
-
-    function filter_wc_product( $wc_product, $logic ) {
-        $val_func = woogool_product_value_maping_func();
-        $name = $logic['if_cond'];
-
-        // if ( function_exists( $val_func[$name] ) ) {
-
-        //     $value = $val_func[$name]( $wc_product, $logic );
-        // } 
-
-        return $wc_product;
+        return  in_array( false, $exclude ) ? true : false;
     }
 
     public function get_value( $feed_content, $wc_product, $settings ) {
@@ -430,7 +490,7 @@ class WooGool_Admin_Feed {
         if ( function_exists( $call ) ) {
             $value = $call( $wc_product, $settings );
         } else {
-            $value = woogool_get_product_compare_dynamic_value( $wc_product, $settings, $feed_content );
+            $value = woogool_get_product_compare_dynamic_value( $wc_product, $settings, $name );
         }
         
         return empty( $value ) ? false : $value;
@@ -657,8 +717,11 @@ class WooGool_Admin_Feed {
         // update_post_meta( $post_id, '_woogool_pattern', $woogool_pattern );
     }
 
-    function xml_get_products( $feed_id, $page ) {
-        $offset   = ( $page - 1 ) * WOOGOOL_FEED_PER_PAGE; 
+    function xml_get_products( $feed_id, $page=false, $offset=false ) {
+        if ( $offset === false ) {
+            $offset   = ( $page - 1 ) * WOOGOOL_FEED_PER_PAGE;
+        } 
+         
         $feed_by_cat = get_post_meta( $feed_id, 'feed_by_category', true );
         
         if ( $feed_by_cat && $feed_by_cat !== 'false' ) {   

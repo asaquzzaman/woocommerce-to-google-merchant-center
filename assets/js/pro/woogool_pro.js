@@ -265,7 +265,7 @@ exports.default = {
         data: args.data,
 
         success: function success(res) {
-          if (typeof args.callback === 'function') {
+          if (typeof args.callback !== 'undefined') {
             args.callback(self, res);
           }
         }
@@ -300,6 +300,7 @@ exports.default = {
         data: {
           feed_id: false,
           action: 'woogool-generate-feed-file',
+          offset: 0,
           _wpnonce: woogool_var.nonce
         },
         callback: false
@@ -314,23 +315,32 @@ exports.default = {
 
         success: function success(res) {
 
-          if (typeof args.callback === 'function') {
-            args.callback(self, res);
-          }
-
-          if (request.data.page >= self.loopLimit && res.data.fetch_all_product !== true) {
-            self.loopStart = parseInt(self.loopLimit) + 1;
-            self.loopLimit = parseInt(self.loopLimit) + parseInt(woogool_multi_product_var.request_amount);
-
+          if (res.data.has_product) {
+            args.data.offset = res.data.offset;
             self.feedLoop(args);
           }
+          // if( typeof args.callback === 'function' ) {
+          //     args.callback( self,  res );
+          // }
+
+          // if( 
+          // 	request.data.page >= self.loopLimit
+          // 	&&
+          // 	res.data.fetch_all_product !== true 
+          // ) {
+          // 	self.loopStart = parseInt(self.loopLimit) + 1;
+          // 	self.loopLimit = parseInt(self.loopLimit) + parseInt(woogool_multi_product_var.request_amount);
+
+          // 	self.feedLoop(args);
+          // }
         }
       };
+      self.httpRequest(request);
 
-      for (var i = self.loopStart; i <= self.loopLimit; i++) {
-        request.data.page = i;
-        self.httpRequest(request);
-      }
+      // for (var i = self.loopStart; i <= self.loopLimit; i++) {
+      // 	request.data.page = i;
+      // 	self.httpRequest(request);
+      // }
     }
   }
 };
@@ -914,13 +924,15 @@ if (false) {(function () {
 		setLogic: function setLogic(feed) {
 			this.logic = feed.logic;
 		},
-		createFeedFile: function createFeedFile(feedID) {
+		createFeedFile: function createFeedFile(feedID, offset) {
 			var self = this;
+			offset = offset || 0;
 
 			var args = {
 				data: {
 					feed_id: feedID,
-					feed_title: self.header.name
+					feed_title: self.header.name,
+					offset: offset
 				},
 				callback: function callback($this, res) {}
 			};

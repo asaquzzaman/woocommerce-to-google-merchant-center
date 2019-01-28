@@ -54,9 +54,7 @@ class WooGool_Admin_ajax {
 
         $feed = WooGool_Admin_Feed::instance()->update_feed_file( $postdata );
         
-        wp_send_json_success(array(
-            'fetch_all_product' => $feed['fetch_all_product']
-        ));
+        wp_send_json_success($feed);
 
         exit();
     }
