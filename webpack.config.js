@@ -22,7 +22,7 @@ if (isProduction) {
 
 // extract css into its own file
 const extractCss = new ExtractTextPlugin({
-    filename: "../css/pm-style.css"
+    filename: "../css/woogool-style.css"
 });
 
 plugins.push( extractCss );

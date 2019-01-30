@@ -174,179 +174,6 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  data: function data() {
-    return {
-      'stage': {
-        step: 'first'
-      },
-      loopLimit: woogool_multi_product_var.request_amount,
-      loopStart: 1
-    };
-  },
-
-  watch: {
-    stage: {
-      handler: function handler(stage) {
-        window.localStorage.setItem('woogoolStageStep', stage.step);
-      },
-
-
-      deep: true
-    }
-  },
-  created: function created() {
-    var step = localStorage.getItem('woogoolStageStep');
-
-    if (step) {
-      this.stage.step = step;
-    }
-  },
-
-  methods: {
-    newFeed: function newFeed(args) {
-      var self = this,
-          pre_define = {
-        data: {
-          feed_id: false,
-          action: 'woogool-new-feed',
-          _wpnonce: woogool_var.nonce
-        },
-        callback: false
-      },
-          args = jQuery.extend(true, pre_define, args);
-
-      var request = {
-        type: 'POST',
-        url: woogool_var.ajaxurl,
-        data: args.data,
-        // data: {
-        // 	action: 'woogool-new-feed',
-        // 	_wpnonce: woogool_var.nonce,
-        // 	header: this.header,
-        // 	contentAttrs: this.contentAttrs
-        // },
-        success: function success(res) {
-          if (typeof args.callback === 'function') {
-            args.callback.call(self, res);
-          }
-        }
-      };
-
-      this.httpRequest(request);
-    },
-    changeStage: function changeStage(step) {
-      this.stage.step = step;
-    },
-    setBoolen: function setBoolen(value) {
-      if (value.toLowerCase() === 'true') {
-        return true;
-      }
-
-      if (value.toLowerCase() === 'false') {
-        return false;
-      }
-
-      return '';
-    },
-    createXmlFile: function createXmlFile(args) {
-      var self = this;
-      var request = {
-        type: 'POST',
-        url: woogool_var.ajaxurl,
-        data: args.data,
-
-        success: function success(res) {
-          if (typeof args.callback !== 'undefined') {
-            args.callback(self, res);
-          }
-        }
-      };
-
-      self.httpRequest(request);
-    },
-    generateFeedFile: function generateFeedFile(args) {
-      var self = this;
-
-      this.createXmlFile({
-        data: {
-          feed_id: args.data.feed_id,
-          feed_title: args.data.feed_title,
-          action: 'woogool-create-xml-file',
-          _wpnonce: woogool_var.nonce
-        },
-
-        callback: function callback($this, res) {
-
-          if (res.success === false) {
-            return;
-          }
-          self.feedLoop(args);
-        }
-      });
-    },
-    feedLoop: function feedLoop(args) {
-      var self = this;
-
-      var pre_define = {
-        data: {
-          feed_id: false,
-          action: 'woogool-generate-feed-file',
-          offset: 0,
-          _wpnonce: woogool_var.nonce
-        },
-        callback: false
-      };
-
-      args = jQuery.extend(true, pre_define, args);
-
-      var request = {
-        type: 'POST',
-        url: woogool_var.ajaxurl,
-        data: args.data,
-
-        success: function success(res) {
-
-          if (res.data.has_product) {
-            args.data.offset = res.data.offset;
-            self.feedLoop(args);
-          }
-          // if( typeof args.callback === 'function' ) {
-          //     args.callback( self,  res );
-          // }
-
-          // if( 
-          // 	request.data.page >= self.loopLimit
-          // 	&&
-          // 	res.data.fetch_all_product !== true 
-          // ) {
-          // 	self.loopStart = parseInt(self.loopLimit) + 1;
-          // 	self.loopLimit = parseInt(self.loopLimit) + parseInt(woogool_multi_product_var.request_amount);
-
-          // 	self.feedLoop(args);
-          // }
-        }
-      };
-      self.httpRequest(request);
-
-      // for (var i = self.loopStart; i <= self.loopLimit; i++) {
-      // 	request.data.page = i;
-      // 	self.httpRequest(request);
-      // }
-    }
-  }
-};
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports) {
 
 /*
@@ -428,59 +255,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.5.7' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(7)(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-/* 8 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -499,7 +274,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(74)
+var listToStyles = __webpack_require__(42)
 
 /*
 type StyleObject = {
@@ -708,6 +483,231 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  data: function data() {
+    return {
+      'stage': {
+        step: 'first'
+      },
+      loopLimit: woogool_multi_product_var.request_amount,
+      loopStart: 1
+    };
+  },
+
+  watch: {
+    stage: {
+      handler: function handler(stage) {
+        window.localStorage.setItem('woogoolStageStep', stage.step);
+      },
+
+
+      deep: true
+    }
+  },
+  created: function created() {
+    var step = localStorage.getItem('woogoolStageStep');
+
+    if (step) {
+      this.stage.step = step;
+    }
+  },
+
+  methods: {
+    newFeed: function newFeed(args) {
+      var self = this,
+          pre_define = {
+        data: {
+          feed_id: false,
+          action: 'woogool-new-feed',
+          _wpnonce: woogool_var.nonce
+        },
+        callback: false
+      },
+          args = jQuery.extend(true, pre_define, args);
+
+      var request = {
+        type: 'POST',
+        url: woogool_var.ajaxurl,
+        data: args.data,
+        // data: {
+        // 	action: 'woogool-new-feed',
+        // 	_wpnonce: woogool_var.nonce,
+        // 	header: this.header,
+        // 	contentAttrs: this.contentAttrs
+        // },
+        success: function success(res) {
+          if (typeof args.callback === 'function') {
+            args.callback.call(self, res);
+          }
+        }
+      };
+
+      this.httpRequest(request);
+    },
+    changeStage: function changeStage(step) {
+      this.stage.step = step;
+    },
+    setBoolen: function setBoolen(value) {
+      if (value.toLowerCase() === 'true') {
+        return true;
+      }
+
+      if (value.toLowerCase() === 'false') {
+        return false;
+      }
+
+      return '';
+    },
+    createXmlFile: function createXmlFile(args) {
+      var self = this;
+      var request = {
+        type: 'POST',
+        url: woogool_var.ajaxurl,
+        data: args.data,
+
+        success: function success(res) {
+          if (typeof args.callback !== 'undefined') {
+            args.callback(self, res);
+          }
+        }
+      };
+
+      self.httpRequest(request);
+    },
+    generateFeedFile: function generateFeedFile(args) {
+      var self = this;
+
+      this.createXmlFile({
+        data: {
+          feed_id: args.data.feed_id,
+          feed_title: args.data.feed_title,
+          action: 'woogool-create-xml-file',
+          _wpnonce: woogool_var.nonce
+        },
+
+        callback: function callback($this, res) {
+
+          if (res.success === false) {
+            return;
+          }
+          self.feedLoop(args);
+        }
+      });
+    },
+    feedLoop: function feedLoop(args) {
+      var self = this;
+
+      var pre_define = {
+        data: {
+          feed_id: false,
+          action: 'woogool-generate-feed-file',
+          offset: 0,
+          _wpnonce: woogool_var.nonce
+        },
+        callback: false
+      };
+
+      args = jQuery.extend(true, pre_define, args);
+
+      var request = {
+        type: 'POST',
+        url: woogool_var.ajaxurl,
+        data: args.data,
+
+        success: function success(res) {
+
+          if (res.data.has_product) {
+            args.data.offset = res.data.offset;
+            self.feedLoop(args);
+          }
+          // if( typeof args.callback === 'function' ) {
+          //     args.callback( self,  res );
+          // }
+
+          // if( 
+          // 	request.data.page >= self.loopLimit
+          // 	&&
+          // 	res.data.fetch_all_product !== true 
+          // ) {
+          // 	self.loopStart = parseInt(self.loopLimit) + 1;
+          // 	self.loopLimit = parseInt(self.loopLimit) + parseInt(woogool_multi_product_var.request_amount);
+
+          // 	self.feedLoop(args);
+          // }
+        }
+      };
+      self.httpRequest(request);
+
+      // for (var i = self.loopStart; i <= self.loopLimit; i++) {
+      // 	request.data.page = i;
+      // 	self.httpRequest(request);
+      // }
+    }
+  }
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var core = module.exports = { version: '2.5.7' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Thank's IE8 for his funny defineProperty
+module.exports = !__webpack_require__(8)(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+
+/***/ }),
 /* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -818,9 +818,9 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_header_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_new_feed_form_header_vue__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_content_vue__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_logic_vue__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_new_feed_form_content_vue__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_new_feed_form_logic_vue__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_new_feed_mixin__);
 //
 //
@@ -948,8 +948,84 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1110,9 +1186,9 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_assign__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_assign__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_assign___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_assign__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_new_feed_mixin__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_new_feed_mixin__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_new_feed_mixin__);
 
 //
@@ -1360,7 +1436,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(58);
+var cof = __webpack_require__(61);
 // eslint-disable-next-line no-prototype-builtins
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
@@ -1395,7 +1471,7 @@ module.exports = function (it) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__);
 //
 //
@@ -1778,7 +1854,7 @@ exports.default = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_common_do_action_vue__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_common_do_action_vue__ = __webpack_require__(88);
 //
 //
 //
@@ -3338,21 +3414,21 @@ var _router = __webpack_require__(32);
 
 var _router2 = _interopRequireDefault(_router);
 
-var _store = __webpack_require__(79);
+var _store = __webpack_require__(81);
 
 var _store2 = _interopRequireDefault(_store);
 
-__webpack_require__(80);
+__webpack_require__(82);
 
 var _mixin = __webpack_require__(22);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _App = __webpack_require__(81);
+var _App = __webpack_require__(83);
 
 var _App2 = _interopRequireDefault(_App);
 
-__webpack_require__(89);
+__webpack_require__(91);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3399,7 +3475,7 @@ var _router3 = __webpack_require__(37);
 
 var _router4 = _interopRequireDefault(_router3);
 
-var _init = __webpack_require__(77);
+var _init = __webpack_require__(79);
 
 var _init2 = _interopRequireDefault(_init);
 
@@ -3589,7 +3665,7 @@ wpspearWooGoolRegisterChildrenRoute('woogool_root', [{
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_new_feed_vue__ = __webpack_require__(12);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5be1668f_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_new_feed_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5be1668f_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_new_feed_vue__ = __webpack_require__(78);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -3641,8 +3717,12 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_form_header_vue__ = __webpack_require__(13);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0c604002_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_header_vue__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0c604002_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_header_vue__ = __webpack_require__(43);
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(40)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -3652,7 +3732,7 @@ var normalizeComponent = __webpack_require__(0)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -3688,6 +3768,79 @@ if (false) {(function () {
 
 /***/ }),
 /* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(41);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("1764d776", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0c604002\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/less-loader/dist/cjs.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form-header.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0c604002\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/less-loader/dist/cjs.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form-header.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.woogool-feed-step-1 {\n  margin-top: 10px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap {\n  display: flex;\n  align-items: center;\n  margin-bottom: 8px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .feed-name-field {\n  width: 380px;\n  height: 32px;\n  padding: 7px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .woogool-label {\n  width: 250px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .header-multiselect {\n  width: 380px;\n  min-height: auto;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .header-multiselect .multiselect__select {\n  display: none;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .header-multiselect .multiselect__input {\n  border: none;\n  box-shadow: none;\n  margin: 0;\n  font-size: 14px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .header-multiselect .multiselect__element .multiselect__option {\n  font-weight: normal;\n  white-space: normal;\n  padding: 6px 12px;\n  line-height: 25px;\n  font-size: 14px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .header-multiselect .multiselect__tags {\n  min-height: auto;\n  padding: 3px;\n  border-color: #ddd;\n  border-radius: 3px;\n}\n.woogool-feed-step-1 .woogool-individual-field-wrap .header-multiselect .multiselect__tags .multiselect__tag {\n  margin-bottom: 0;\n  overflow: visible;\n  border-radius: 3px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3697,196 +3850,226 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "woogool-feed-step-1" },
     [
       _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-        _c("label", { staticClass: "woogool-label" }, [_vm._v("Feed name")]),
+        _c(
+          "label",
+          { staticClass: "woogool-label", attrs: { for: "feed-name-field" } },
+          [_vm._v("Feed name")]
+        ),
         _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.header.name,
-              expression: "header.name"
-            }
-          ],
-          staticClass: "woogool-field",
-          attrs: { type: "text" },
-          domProps: { value: _vm.header.name },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+        _c("div", { staticClass: "field-action-wrap" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.header.name,
+                expression: "header.name"
               }
-              _vm.$set(_vm.header, "name", $event.target.value)
+            ],
+            staticClass: "woogool-field feed-name-field",
+            attrs: { id: "feed-name-field", type: "text" },
+            domProps: { value: _vm.header.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.header, "name", $event.target.value)
+              }
             }
-          }
-        })
+          })
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-        _c("label", { staticClass: "woogool-label" }, [
-          _vm._v("Enable product variations")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.header.activeVariation,
-              expression: "header.activeVariation"
-            }
-          ],
-          staticClass: "woogool-field",
-          attrs: { type: "checkbox" },
-          domProps: {
-            checked: Array.isArray(_vm.header.activeVariation)
-              ? _vm._i(_vm.header.activeVariation, null) > -1
-              : _vm.header.activeVariation
+        _c(
+          "label",
+          {
+            staticClass: "woogool-label",
+            attrs: { for: "enable-product-variation" }
           },
-          on: {
-            change: function($event) {
-              var $$a = _vm.header.activeVariation,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 &&
-                    _vm.$set(_vm.header, "activeVariation", $$a.concat([$$v]))
+          [_vm._v("Enable product variations")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "field-action-wrap" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.header.activeVariation,
+                expression: "header.activeVariation"
+              }
+            ],
+            staticClass: "woogool-field",
+            attrs: { id: "enable-product-variation", type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.header.activeVariation)
+                ? _vm._i(_vm.header.activeVariation, null) > -1
+                : _vm.header.activeVariation
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.header.activeVariation,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 &&
+                      _vm.$set(_vm.header, "activeVariation", $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      _vm.$set(
+                        _vm.header,
+                        "activeVariation",
+                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                      )
+                  }
                 } else {
-                  $$i > -1 &&
-                    _vm.$set(
-                      _vm.header,
-                      "activeVariation",
-                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                    )
+                  _vm.$set(_vm.header, "activeVariation", $$c)
                 }
-              } else {
-                _vm.$set(_vm.header, "activeVariation", $$c)
               }
             }
-          }
-        })
+          })
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-        _c("label", { staticClass: "woogool-label" }, [
-          _vm._v("Feed by category")
-        ]),
+        _c(
+          "label",
+          { staticClass: "woogool-label", attrs: { for: "feed-by-category" } },
+          [_vm._v("Feed by category")]
+        ),
         _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.header.feedByCatgory,
-              expression: "header.feedByCatgory"
-            }
-          ],
-          staticClass: "woogool-field",
-          attrs: { type: "checkbox" },
-          domProps: {
-            checked: Array.isArray(_vm.header.feedByCatgory)
-              ? _vm._i(_vm.header.feedByCatgory, null) > -1
-              : _vm.header.feedByCatgory
-          },
-          on: {
-            change: function($event) {
-              var $$a = _vm.header.feedByCatgory,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 &&
-                    _vm.$set(_vm.header, "feedByCatgory", $$a.concat([$$v]))
+        _c("div", { staticClass: "field-action-wrap" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.header.feedByCatgory,
+                expression: "header.feedByCatgory"
+              }
+            ],
+            staticClass: "woogool-field",
+            attrs: { id: "feed-by-category", type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.header.feedByCatgory)
+                ? _vm._i(_vm.header.feedByCatgory, null) > -1
+                : _vm.header.feedByCatgory
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.header.feedByCatgory,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 &&
+                      _vm.$set(_vm.header, "feedByCatgory", $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      _vm.$set(
+                        _vm.header,
+                        "feedByCatgory",
+                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                      )
+                  }
                 } else {
-                  $$i > -1 &&
-                    _vm.$set(
-                      _vm.header,
-                      "feedByCatgory",
-                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                    )
+                  _vm.$set(_vm.header, "feedByCatgory", $$c)
                 }
-              } else {
-                _vm.$set(_vm.header, "feedByCatgory", $$c)
               }
             }
-          }
-        })
+          })
+        ])
       ]),
       _vm._v(" "),
       _vm.header.feedByCatgory
-        ? _c(
-            "div",
-            [
-              _c("label", [_vm._v("Feed by category")]),
-              _vm._v(" "),
-              _c("vue-woogool-multiselect", {
-                attrs: {
-                  options: _vm.categories,
-                  multiple: true,
-                  "close-on-select": true,
-                  "clear-on-select": true,
-                  "show-labels": true,
-                  searchable: true,
-                  placeholder: "Select Category",
-                  "select-label": "",
-                  "selected-label": "selected",
-                  "deselect-label": "",
-                  label: "catName",
-                  "track-by": "catId",
-                  "allow-empty": true
-                },
-                model: {
-                  value: _vm.header.categories,
-                  callback: function($$v) {
-                    _vm.$set(_vm.header, "categories", $$v)
+        ? _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+            _c("label", { staticClass: "woogool-label" }, [
+              _vm._v("Feed by category")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "field-action-wrap" },
+              [
+                _c("vue-woogool-multiselect", {
+                  staticClass: "header-multiselect",
+                  attrs: {
+                    options: _vm.categories,
+                    multiple: true,
+                    "close-on-select": true,
+                    "clear-on-select": true,
+                    "show-labels": true,
+                    searchable: true,
+                    placeholder: "Select Category",
+                    "select-label": "",
+                    "selected-label": "selected",
+                    "deselect-label": "",
+                    label: "catName",
+                    "track-by": "catId",
+                    "allow-empty": true
                   },
-                  expression: "header.categories"
-                }
-              })
-            ],
-            1
-          )
+                  model: {
+                    value: _vm.header.categories,
+                    callback: function($$v) {
+                      _vm.$set(_vm.header, "categories", $$v)
+                    },
+                    expression: "header.categories"
+                  }
+                })
+              ],
+              1
+            )
+          ])
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "div",
-        [
-          _c("label", [_vm._v("Category Maping")]),
-          _vm._v(" "),
-          _c("vue-woogool-multiselect", {
-            attrs: {
-              options: _vm.categories,
-              multiple: true,
-              "close-on-select": true,
-              "clear-on-select": true,
-              "show-labels": true,
-              searchable: true,
-              placeholder: "Category maping",
-              "select-label": "",
-              "selected-label": "selected",
-              "deselect-label": "",
-              label: "catName",
-              "track-by": "catId",
-              "allow-empty": true
-            },
-            model: {
-              value: _vm.header.googleCategories,
-              callback: function($$v) {
-                _vm.$set(_vm.header, "googleCategories", $$v)
+      _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+        _c("label", { staticClass: "woogool-label" }, [
+          _vm._v("Category Maping")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "field-action-wrap" },
+          [
+            _c("vue-woogool-multiselect", {
+              staticClass: "header-multiselect",
+              attrs: {
+                options: _vm.categories,
+                multiple: true,
+                "close-on-select": true,
+                "clear-on-select": true,
+                "show-labels": true,
+                searchable: true,
+                placeholder: "Category maping",
+                "select-label": "",
+                "selected-label": "selected",
+                "deselect-label": "",
+                label: "catName",
+                "track-by": "catId",
+                "allow-empty": true
               },
-              expression: "header.googleCategories"
-            }
-          })
-        ],
-        1
-      ),
+              model: {
+                value: _vm.header.googleCategories,
+                callback: function($$v) {
+                  _vm.$set(_vm.header, "googleCategories", $$v)
+                },
+                expression: "header.googleCategories"
+              }
+            })
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
       _vm._l(_vm.header.googleCategories, function(catElement, index) {
         return _c(
@@ -3897,92 +4080,100 @@ var render = function() {
               _vm._v(_vm._s(catElement.catName))
             ]),
             _vm._v(" "),
-            _c("vue-woogool-multiselect", {
-              attrs: {
-                options: _vm.googleCategories,
-                multiple: false,
-                "close-on-select": true,
-                "clear-on-select": true,
-                "show-labels": true,
-                searchable: true,
-                placeholder: "Category maping",
-                "select-label": "",
-                "selected-label": "selected",
-                "deselect-label": "",
-                label: "",
-                "track-by": "id",
-                "allow-empty": true
-              },
-              on: {
-                input: function($event) {
-                  _vm.setGoogleCat(catElement, $event)
-                }
-              },
-              model: {
-                value: catElement.googleCat,
-                callback: function($$v) {
-                  _vm.$set(catElement, "googleCat", $$v)
-                },
-                expression: "catElement.googleCat"
-              }
-            }),
-            _vm._v(" "),
-            _c("span", [
-              _vm._v(
-                "Google category for the " +
-                  _vm._s(catElement.catName.toLowerCase()) +
-                  " item"
-              )
-            ])
-          ],
-          1
+            _c(
+              "div",
+              { staticClass: "field-action-wrap" },
+              [
+                _c("vue-woogool-multiselect", {
+                  staticClass: "header-multiselect",
+                  attrs: {
+                    options: _vm.googleCategories,
+                    multiple: false,
+                    "close-on-select": true,
+                    "clear-on-select": true,
+                    "show-labels": true,
+                    searchable: true,
+                    placeholder: "Category maping",
+                    "select-label": "",
+                    "selected-label": "selected",
+                    "deselect-label": "",
+                    label: "",
+                    "allow-empty": true
+                  },
+                  on: {
+                    input: function($event) {
+                      _vm.setGoogleCat(catElement, $event)
+                    }
+                  },
+                  model: {
+                    value: catElement.googleCat,
+                    callback: function($$v) {
+                      _vm.$set(catElement, "googleCat", $$v)
+                    },
+                    expression: "catElement.googleCat"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", [
+                  _vm._v(
+                    "Google category for the " +
+                      _vm._s(catElement.catName.toLowerCase()) +
+                      " item"
+                  )
+                ])
+              ],
+              1
+            )
+          ]
         )
       }),
       _vm._v(" "),
       _c("div", { staticClass: "woogool-individual-field-wrap" }, [
-        _c("label", { staticClass: "woogool-label" }, [
+        _c("label", { staticClass: "woogool-label", attrs: { for: "" } }, [
           _vm._v("Refresh interval")
         ]),
         _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.header.refresh,
-                expression: "header.refresh"
+        _c("div", { staticClass: "field-action-wrap" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.header.refresh,
+                  expression: "header.refresh"
+                }
+              ],
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.header,
+                    "refresh",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
               }
-            ],
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.$set(
-                  _vm.header,
-                  "refresh",
-                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                )
-              }
-            }
-          },
-          [
-            _c("option", { attrs: { value: "1" } }, [_vm._v("Daily")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "2" } }, [_vm._v("Hourly")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "3" } }, [_vm._v("Weekly")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
-          ]
-        )
+            },
+            [
+              _c("option", { attrs: { value: "1" } }, [_vm._v("Daily")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "2" } }, [_vm._v("Hourly")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "3" } }, [_vm._v("Weekly")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "4" } }, [_vm._v("Monthly")])
+            ]
+          )
+        ])
       ]),
       _vm._v(" "),
       _c("div", [
@@ -4017,13 +4208,13 @@ if (false) {
 }
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_form_content_vue__ = __webpack_require__(14);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_248174d4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_content_vue__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_248174d4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_content_vue__ = __webpack_require__(73);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -4069,37 +4260,37 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(43), __esModule: true };
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(44);
-module.exports = __webpack_require__(4).Object.assign;
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.3.1 Object.assign(target, source)
-var $export = __webpack_require__(45);
-
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(55) });
-
-
-/***/ }),
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(3);
-var core = __webpack_require__(4);
-var ctx = __webpack_require__(46);
-var hide = __webpack_require__(48);
+module.exports = { "default": __webpack_require__(46), __esModule: true };
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(47);
+module.exports = __webpack_require__(5).Object.assign;
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.1 Object.assign(target, source)
+var $export = __webpack_require__(48);
+
+$export($export.S + $export.F, 'Object', { assign: __webpack_require__(58) });
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(4);
+var core = __webpack_require__(5);
+var ctx = __webpack_require__(49);
+var hide = __webpack_require__(51);
 var has = __webpack_require__(15);
 var PROTOTYPE = 'prototype';
 
@@ -4161,11 +4352,11 @@ module.exports = $export;
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(47);
+var aFunction = __webpack_require__(50);
 module.exports = function (fn, that, length) {
   aFunction(fn);
   if (that === undefined) return fn;
@@ -4187,7 +4378,7 @@ module.exports = function (fn, that, length) {
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
@@ -4197,12 +4388,12 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(49);
-var createDesc = __webpack_require__(54);
-module.exports = __webpack_require__(6) ? function (object, key, value) {
+var dP = __webpack_require__(52);
+var createDesc = __webpack_require__(57);
+module.exports = __webpack_require__(7) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
@@ -4211,15 +4402,15 @@ module.exports = __webpack_require__(6) ? function (object, key, value) {
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(50);
-var IE8_DOM_DEFINE = __webpack_require__(51);
-var toPrimitive = __webpack_require__(53);
+var anObject = __webpack_require__(53);
+var IE8_DOM_DEFINE = __webpack_require__(54);
+var toPrimitive = __webpack_require__(56);
 var dP = Object.defineProperty;
 
-exports.f = __webpack_require__(6) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = __webpack_require__(7) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -4233,10 +4424,10 @@ exports.f = __webpack_require__(6) ? Object.defineProperty : function defineProp
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(5);
+var isObject = __webpack_require__(6);
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
@@ -4244,20 +4435,20 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(6) && !__webpack_require__(7)(function () {
-  return Object.defineProperty(__webpack_require__(52)('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(7) && !__webpack_require__(8)(function () {
+  return Object.defineProperty(__webpack_require__(55)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(5);
-var document = __webpack_require__(3).document;
+var isObject = __webpack_require__(6);
+var document = __webpack_require__(4).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
@@ -4266,11 +4457,11 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 53 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(5);
+var isObject = __webpack_require__(6);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function (it, S) {
@@ -4284,7 +4475,7 @@ module.exports = function (it, S) {
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -4298,21 +4489,21 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
-var getKeys = __webpack_require__(56);
-var gOPS = __webpack_require__(67);
-var pIE = __webpack_require__(68);
-var toObject = __webpack_require__(69);
+var getKeys = __webpack_require__(59);
+var gOPS = __webpack_require__(70);
+var pIE = __webpack_require__(71);
+var toObject = __webpack_require__(72);
 var IObject = __webpack_require__(17);
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(7)(function () {
+module.exports = !$assign || __webpack_require__(8)(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -4339,12 +4530,12 @@ module.exports = !$assign || __webpack_require__(7)(function () {
 
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(57);
-var enumBugKeys = __webpack_require__(66);
+var $keys = __webpack_require__(60);
+var enumBugKeys = __webpack_require__(69);
 
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
@@ -4352,13 +4543,13 @@ module.exports = Object.keys || function keys(O) {
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var has = __webpack_require__(15);
 var toIObject = __webpack_require__(16);
-var arrayIndexOf = __webpack_require__(59)(false);
-var IE_PROTO = __webpack_require__(62)('IE_PROTO');
+var arrayIndexOf = __webpack_require__(62)(false);
+var IE_PROTO = __webpack_require__(65)('IE_PROTO');
 
 module.exports = function (object, names) {
   var O = toIObject(object);
@@ -4375,7 +4566,7 @@ module.exports = function (object, names) {
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -4386,14 +4577,14 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = __webpack_require__(16);
-var toLength = __webpack_require__(60);
-var toAbsoluteIndex = __webpack_require__(61);
+var toLength = __webpack_require__(63);
+var toAbsoluteIndex = __webpack_require__(64);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIObject($this);
@@ -4415,7 +4606,7 @@ module.exports = function (IS_INCLUDES) {
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
@@ -4427,7 +4618,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(19);
@@ -4440,22 +4631,22 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(63)('keys');
-var uid = __webpack_require__(65);
+var shared = __webpack_require__(66)('keys');
+var uid = __webpack_require__(68);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var core = __webpack_require__(4);
-var global = __webpack_require__(3);
+var core = __webpack_require__(5);
+var global = __webpack_require__(4);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
 
@@ -4463,20 +4654,20 @@ var store = global[SHARED] || (global[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: core.version,
-  mode: __webpack_require__(64) ? 'pure' : 'global',
+  mode: __webpack_require__(67) ? 'pure' : 'global',
   copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
 });
 
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = true;
 
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -4487,7 +4678,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -4497,21 +4688,21 @@ module.exports = (
 
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
@@ -4522,7 +4713,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4957,17 +5148,17 @@ if (false) {
 }
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_form_logic_vue__ = __webpack_require__(20);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0ee82c0e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_logic_vue__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0ee82c0e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_form_logic_vue__ = __webpack_require__(77);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(72)
+  __webpack_require__(75)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -5013,17 +5204,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(73);
+var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(8)("29c1f79a", content, false, {});
+var update = __webpack_require__(2)("29c1f79a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -5039,10 +5230,10 @@ if(false) {
 }
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -5053,40 +5244,7 @@ exports.push([module.i, "\n.wp-list-table .first {\n  width: 1em;\n}\n.wp-list-t
 
 
 /***/ }),
-/* 74 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5494,7 +5652,7 @@ if (false) {
 }
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5604,14 +5762,14 @@ if (false) {
 }
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_init_vue__ = __webpack_require__(21);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4784381d_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_init_vue__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4784381d_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_init_vue__ = __webpack_require__(80);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -5657,7 +5815,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5679,7 +5837,7 @@ if (false) {
 }
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5696,7 +5854,7 @@ exports.default = new woogool.Vuex.Store({
 });
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5734,19 +5892,19 @@ woogool.Vue.directive('woogool-tooltip', {
 });
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(23);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_31ad00d8_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_31ad00d8_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(90);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(82)
   __webpack_require__(84)
+  __webpack_require__(86)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -5792,17 +5950,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(83);
+var content = __webpack_require__(85);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(8)("f9913afa", content, false, {});
+var update = __webpack_require__(2)("f9913afa", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -5818,10 +5976,10 @@ if(false) {
 }
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -5832,17 +5990,17 @@ exports.push([module.i, "\n.hrm-h1 {\n    margin: 0 !important;\n    padding: 0 
 
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(87);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(8)("1112ca3c", content, false, {});
+var update = __webpack_require__(2)("1112ca3c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -5858,10 +6016,10 @@ if(false) {
 }
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -5872,7 +6030,7 @@ exports.push([module.i, "\n#nprogress .bar {\n    z-index: 99999;\n}\n\n", ""]);
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5923,7 +6081,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -5932,10 +6090,10 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 87;
+webpackEmptyContext.id = 89;
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5973,7 +6131,7 @@ if (false) {
 }
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
