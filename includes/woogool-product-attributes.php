@@ -507,7 +507,7 @@ function woogool_get_product_custom_attributes__woogool_gtin( $wc_product ) {
 	return get_post_meta( $wc_product->get_id(), '_woogool_gtin', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_gtin( $wc_product, $settings ) {
-	return ucfirst( googool_get_product_custom_attributes__woogool_gtin( $wc_product, $settings ) );
+	return ucfirst( woogool_get_product_custom_attributes__woogool_gtin( $wc_product, $settings ) );
 }
 
 function woogool_get_product_custom_attributes__woogool_upc( $wc_product ) {

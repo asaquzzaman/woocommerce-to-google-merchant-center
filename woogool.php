@@ -130,6 +130,7 @@ if ( ! class_exists('WP_WooGool') ) {
             $this->define( 'WOOGOOL_VERSION', self::$version );
             $this->define( 'WOOGOOL_FEED_PER_PAGE', 2 );
             $this->define( 'WOOGOOL_REQUEST_AMOUNT', 2 );
+            $this->define( 'WOOGOOL_DEBUG', true );
         }
 
         /**
