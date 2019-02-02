@@ -1,11 +1,12 @@
 <template>
 	<div>
-		<table class="wp-list-table widefat striped posts">
+		<table class="wp-list-table woogool-map-table widefat striped posts">
 			<thead>
 				<tr>
-					<th></th>
+					
 					<th>Google Shopping Attributes</th>
 					<th>Product Attributes</th>
+					<th></th>
 
 				</tr>
 			</thead>
@@ -17,10 +18,7 @@
 				
 					<tr :key="gkey" v-if="gAttrTr.type == 'default'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
-						</td>
-						<td>
-							<select @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
+							<select class="map-drop-down-left" @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<optgroup 
 									v-for="(googleAttributeTd, key) in googleAttributes"
 									:label="googleAttributeTd.label">
@@ -35,7 +33,7 @@
 							</select>
 						</td>
 						<td>
-							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option 
 									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
 									:value="proMetaKey"
@@ -44,15 +42,16 @@
 								</option>
 							</select>
 						</td>
+
+						<td>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
+						</td>
 					</tr>
 			
 					<!-- For extra map fields -->
 					<tr :key="gkey" v-if="gAttrTr.type == 'mapping'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
-						</td>
-						<td>
-							<select @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
+							<select class="map-drop-down-left" @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<option value=""></option>
 								<optgroup 
 									v-for="(googleAttributeTd, key) in googleAttributes"
@@ -68,7 +67,7 @@
 							</select>
 						</td>
 						<td>
-							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
@@ -78,18 +77,19 @@
 								</option>
 							</select>
 						</td>
+
+						<td>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
+						</td>
 					</tr>
 
 					<!-- For custom fields -->
 					<tr :key="gkey" v-if="gAttrTr.type == 'custom'">
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span>X</span></a>
+							<input class="custom-field-text" :value="gAttrTr.name" type="text" @input="setCustomText(gAttrTr, gkey, $event)">
 						</td>
 						<td>
-							<input :value="gAttrTr.name" type="text" @input="setCustomText(gAttrTr, gkey, $event)">
-						</td>
-						<td>
-							<select @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, pmKey) in woogoolAttributes"
@@ -99,6 +99,10 @@
 								</option>
 							</select>
 						</td>
+
+						<td>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
+						</td>
 					</tr>
 
 				</template>
@@ -106,15 +110,35 @@
 			</tbody>
 
 		</table>
-		<div>
-			<a href="#" class="button button-primary" @click.prevent="changeStage('first')">{{ 'Prev' }}</a>
-			<a href="#" class="button button-primary" @click.prevent="addCustomField('first')">{{ 'Add custom field' }}</a>
-			<a href="#" class="button button-primary" @click.prevent="addMappingField()">{{ 'Add mapping field' }}</a>
-			<a href="#" class="button button-primary" @click.prevent="changeStage('third')">{{ 'Next' }}</a>
-		</div>
 	</div>
 </template>
+<style lang="less">
+	.woogool-map-table {
+		border: none !important;
+		box-shadow: none !important;
 
+		th {
+			border-bottom: none !important;
+			font-weight: 600;
+			margin: 0 !important;
+			padding: 12px !important;
+		}
+		td {
+			vertical-align: middle;
+		}
+
+		.map-drop-down {
+			width: 100%;
+			height: 32px;
+		}
+		.map-drop-down-left {
+			height: 32px;
+		} 
+		.custom-field-text {
+			width: 462px;
+		}
+	}
+</style>
 <script>
 	import Mixin from '@components/new-feed/mixin'
 
@@ -204,20 +228,6 @@
 				}
 
 				this.gAttrs.splice(key, 1);
-			},
-
-			addMappingField () {
-				this.gAttrs.push({
-					'type': 'mapping',
-					'format': 'required'
-				});
-			},
-
-			addCustomField () {
-				this.gAttrs.push({
-					'type': 'custom',
-					'format': 'required'
-				});
 			}
 		}
 	}

@@ -1,10 +1,246 @@
-.woogool-clearfix:after {
-     visibility: hidden;
-     display: block;
-     font-size: 0;
-     content: " ";
-     clear: both;
-     height: 0;
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?5gajjh');
+  src:  url('fonts/icomoon.eot?5gajjh#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?5gajjh') format('truetype'),
+    url('fonts/icomoon.woff?5gajjh') format('woff'),
+    url('fonts/icomoon.svg?5gajjh#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-woogool-unlock:before {
+  content: "\e90c";
+}
+.icon-woogool-check-circle:before {
+  content: "\e919";
+}
+.icon-woogool-capability:before {
+  content: "\e91c";
+  color: #ccc;
+}
+.icon-woogool-integration:before {
+  content: "\e932";
+  color: #ccc;
+}
+.icon-woogool-switch-project:before {
+  content: "\e931";
+  color: #9ea3a7;
+}
+.icon-woogool-enter:before {
+  content: "\e92e";
+  color: #5d5d5d;
+}
+.icon-woogool-navigation:before {
+  content: "\e92f";
+  color: #5d5d5d;
+}
+.icon-woogool-invoice:before {
+  content: "\e92d";
+}
+.icon-woogool-gantchart:before {
+  content: "\e930";
+  color: #c9c9c9;
+}
+.icon-woogool-activity:before {
+  content: "\e92c";
+  color: #c9c9c9;
+}
+.icon-woogool-search:before {
+  content: "\e92b";
+  color: #95a5a6;
+}
+.icon-woogool-settings:before {
+  content: "\e92a";
+  color: #c9c9c9;
+}
+.icon-woogool-task-count:before {
+  content: "\e926";
+  color: #d6d6d6;
+}
+.icon-woogool-comment:before {
+  content: "\e927";
+  color: #d6d6d6;
+}
+.icon-woogool-left-arrow:before {
+  content: "\e928";
+  color: #95a5a6;
+}
+.icon-woogool-move:before {
+  content: "\e929";
+  color: #d7dee2;
+}
+.icon-woogool-drag-drop:before {
+  content: "\e923";
+  color: #d7dee2;
+}
+.icon-woogool-kanboard-view:before {
+  content: "\e924";
+  color: #d7dee2;
+}
+.icon-woogool-list-view:before {
+  content: "\e925";
+  color: #1a9ed4;
+}
+.icon-woogool-task-filter:before {
+  content: "\e922";
+  color: #fff;
+}
+.icon-woogool-file:before {
+  content: "\e91e";
+  color: #f39c12;
+}
+.icon-woogool-mileston:before {
+  content: "\e91f";
+  color: #9b59b6;
+}
+.icon-woogool-discussion:before {
+  content: "\e920";
+  color: #1abc9c;
+}
+.icon-woogool-task-list:before {
+  content: "\e921";
+  color: #e9485e;
+}
+.icon-woogool-overview:before {
+  content: "\e91d";
+  color: #3b80f4;
+}
+.icon-woogool-archive:before {
+  content: "\e91b";
+}
+.icon-woogool-copy-files:before {
+  content: "\e918";
+}
+.icon-woogool-undo-arrow:before {
+  content: "\e91a";
+}
+.icon-woogool-cross:before {
+  content: "\e917";
+  color: #e9485e;
+}
+.icon-woogool-single-user:before {
+  content: "\e916";
+  color: #d4d6d6;
+}
+.icon-woogool-up-arrow:before {
+  content: "\e915";
+  color: #788383;
+}
+.icon-woogool-stop:before {
+  content: "\e914";
+}
+.icon-woogool-rigth-arrow:before {
+  content: "\e912";
+  color: #d4d6d6;
+}
+.icon-woogool-play:before {
+  content: "\e913";
+  color: #d4d6d6;
+}
+.icon-woogool-copy:before {
+  content: "\e903";
+  color: #d4d6d6;
+}
+.icon-woogool-private:before {
+  content: "\e902";
+  color: #d4d6d6;
+}
+.icon-woogool-delete:before {
+  content: "\e901";
+  color: #e9485e;
+}
+.icon-woogool-user:before {
+  content: "\e900";
+  color: #ababab;
+}
+.icon-woogool-align-left:before {
+  content: "\e904";
+  color: #d6d6d6;
+}
+.icon-woogool-calendar:before {
+  content: "\e905";
+  color: #d4d6d6;
+}
+.icon-woogool-clip:before {
+  content: "\e906";
+  color: #d4d6d6;
+}
+.icon-woogool-completed:before {
+  content: "\e907";
+  color: #7ed321;
+}
+.icon-woogool-down-arrow:before {
+  content: "\e908";
+  color: #ccd4d9;
+}
+.icon-woogool-incomplete:before {
+  content: "\e909";
+  color: #d6d6d6;
+}
+.icon-woogool-more-options:before {
+  content: "\e90a";
+  color: #d6d6d6;
+}
+.icon-woogool-pencil:before {
+  content: "\e90b";
+  color: #d6d6d6;
+}
+.icon-woogool-smile:before {
+  content: "\e90d";
+  color: #d4d6d6;
+}
+.icon-woogool-sorting:before {
+  content: "\e90e";
+  color: #d4d6d6;
+}
+.icon-woogool-star:before {
+  content: "\e90f";
+  color: #d6d6d6;
+}
+.icon-woogool-tag:before {
+  content: "\e910";
+  color: #d4d6d6;
+}
+.icon-woogool-watch:before {
+  content: "\e911";
+  color: #d4d6d6;
+}
+.icon-woogool-eye:before {
+  content: "\e9ce";
+}
+.icon-woogool-loop:before {
+  content: "\ea2e";
+}
+.icon-woogool-filter:before {
+  content: "\ea5b";
+}
+
+
+
+
+
+.woogool-clearfix {
+    visibility: hidden;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }
 
 
@@ -70,10 +306,7 @@
 	font-size: 15px;
 	top: 5px;
 }
-.woogool-clearfix { display: inline-block; }
-/* start commented backslash hack \*/
-.woogool-clearfix { height: 1%; }
-.woogool-clearfix { display: block; }
+
 
 input[type="checkbox"], input[type="radio"] {
 	width: 16px !important;

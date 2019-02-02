@@ -10,15 +10,49 @@ class WooGool_Admin_ajax {
         add_action( 'wp_ajax_change_product', array( $this, 'change_product' ) );
         add_action( 'wp_ajax_woogool-new-feed', array( $this, 'new_feed' ) );
         add_action( 'wp_ajax_woogool-get-feed', array( $this, 'get_feed' ) );
+        add_action( 'wp_ajax_woogool-get-feeds', array( $this, 'get_feeds' ) );
+        add_action( 'wp_ajax_woogool-get-feed-delete', array( $this, 'delete_feed' ) );
+        add_action( 'wp_ajax_woogool-download-feed_file', array( $this, 'download_feed_file' ) );
         add_action( 'wp_ajax_woogool-new-feed-continue', array( $this, 'new_feed_continue' ) );
         add_action( 'wp_ajax_woogool-generate-feed-file', array( $this, 'update_feed_file' ) );
         add_action( 'wp_ajax_woogool-create-xml-file', array( $this, 'create_xml_file' ) );
     }
 
+    function download_feed_file() {
+        check_ajax_referer( 'woogool_nonce' );
+
+        $postdata = wp_unslash( $_GET );
+        $feed_id  = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false;
+
+        if ( ! $feed_id ) {
+            wp_send_json_error();
+        }
+
+        $file       = get_post_meta( $feed_id, 'feed_file_name', true );
+        $wp_dir     = wp_upload_dir();
+        $upload_dir = $wp_dir['baseurl'] . '/woogool-product-feed';
+        $mime_type  = 'application/xml';
+        $file_path  = $upload_dir . '/' . $file . '.xml';
+
+        wp_safe_redirect( $file_path );
+        exit();
+        // serve the file with right header
+        //if ( is_readable( $file_path ) ) {
+            
+            // header( 'Content-Type: ' . $mime_type );
+            // header( 'Content-Transfer-Encoding: binary' );
+            // header( 'Content-Disposition: inline; filename=' . basename( $file_path ) );
+            // readfile( $file_path );
+        //}
+
+        // wp_send_json_success();
+    }
+
     function create_xml_file() {
         check_ajax_referer( 'woogool_nonce' );
-        $postdata = wp_unslash( $_POST );
-        $feed_id = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false;
+
+        $postdata   = wp_unslash( $_POST );
+        $feed_id    = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false;
         $feed_title = sanitize_text_field( $postdata['feed_title'] );
         
         if ( ! $feed_id ) {
@@ -71,6 +105,30 @@ class WooGool_Admin_ajax {
         wp_send_json_success( array( 'postdata' => $postdata, 'woogool_continue' => $woogool_continue, 'redirect' => $redirect_url, 'count' => $res['count'] ) );
     }
 
+    function get_feeds() {
+        check_ajax_referer( 'woogool_nonce' );
+
+        $feeds = new WP_Query (
+            [
+                'post_type'      => 'new_woogool_feed',
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+                'meta_key'       => '',
+                'meta_value'     => '',
+            ]
+        );
+
+        foreach ( $feeds->posts as $key => $post ) {
+            $post->feed_url = woogool_get_feed_file_url( $post->ID );
+        }
+
+        wp_send_json_success( 
+            [
+                'posts' => $feeds->posts
+            ]
+        );
+    }
+
     function get_feed() {
         check_ajax_referer( 'woogool_nonce' );
         $post_id   = empty( $_POST['post_id'] ) ? 0 : intval( $_POST['post_id'] );
@@ -89,6 +147,21 @@ class WooGool_Admin_ajax {
             'contentAttrs' => get_post_meta( $post_id, 'content_attributes', true ),
             'logic' => get_post_meta( $post_id, 'logic', true ),
         ]);
+    }
+
+    function delete_feed() {
+        check_ajax_referer( 'woogool_nonce' );
+
+        $feed_id = empty( intval( $_POST['feed_id'] ) ) ? false : $_POST['feed_id'];
+
+        if ( $feed_id ) {
+
+            wp_delete_post( $feed_id );
+            wp_send_json_success();
+
+        }
+
+        wp_send_json_error();
     }
 
     function new_feed() {

@@ -92,11 +92,11 @@
 	                :allow-empty="true">
 						
 				</vue-woogool-multiselect>
-				<span>Google category for the {{ catElement.catName.toLowerCase() }} item</span>
+				<span class="help-text">Google category for the {{ catElement.catName.toLowerCase() }} item</span>
 			</div>
 		</div>
 
-		<div class="woogool-individual-field-wrap">
+		<!-- <div class="woogool-individual-field-wrap">
 			<label for="" class="woogool-label">Refresh interval</label>
 			<div class="field-action-wrap">
 				<select v-model="header.refresh">
@@ -106,22 +106,31 @@
 					<option value="4">Monthly</option>
 				</select>
 			</div>
-		</div>
+		</div> -->
 
-		<div>
-			<a href="#" class="button button-primary" @click.prevent="changeStage('second')">{{ 'Next' }}</a>
-		</div>
 	</div>
 </template>
 
 <style lang="less">
 	.woogool-feed-step-1 {
-		margin-top: 10px;
+		padding: 10px;
+   		padding-top: 18px;
+
+		.header-next-btn-wrap {
+			float: left;
+		}
 
 		.woogool-individual-field-wrap {
 			display: flex;
 			align-items: center;
-			margin-bottom: 8px;
+			margin-bottom: 20px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+			.help-text {
+				font-style: italic;
+    			font-size: 12px;
+			}
 
 			.feed-name-field {
 				width: 380px;
@@ -130,6 +139,7 @@
 			}
 			.woogool-label {
 				width: 250px;
+				font-size: 14px;
 			}
 			.header-multiselect {
 				width: 380px;

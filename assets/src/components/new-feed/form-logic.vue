@@ -3,13 +3,14 @@
 		<table class="wp-list-table widefat fixed striped posts">
 			<thead>
 				<tr>
-					<th class="first"></th>
+					
 					<th class="second">TYPE</th>
 					<th class="third">IF</th>
 					<th class="fourth">CONDITION</th>
 					<th class="five">VALUE</th>
 					<th class="six">THEN</th>
 					<th class="seven">is</th>
+					<th class="first"></th>
 				</tr>
 			</thead>
 
@@ -17,9 +18,6 @@
 				<template v-for="(logical, key) in logic">
 
 					<tr>
-						<td class="first">
-							<a href="#" @click.prevent="removeAttr(key)"><span>X</span></a>
-						</td>
 						
 						<td class="second">
 							{{ ucfirst(logical.type) }}
@@ -113,18 +111,15 @@
 								<input :value="logical.is" @input="setData(logical, 'is', $event)" class="woogool-text" type="text">
 							</div>
 						</td>
+
+						<td class="first">
+							<a href="#" @click.prevent="removeAttr(key)"><span class="icon-woogool-delete"></span></a>
+						</td>
 					</tr>
 
 				</template>
 			</tbody>
 		</table>
-		
-		<div>
-			<a href="#" class="button button-primary" @click.prevent="changeStage('second')">{{ 'Prev' }}</a>
-			<a href="#" class="button button-primary" @click.prevent="addFields('filter')">{{ '+ Filter' }}</a>
-			<a href="#" class="button button-primary" @click.prevent="addFields('rule')">{{ '+ Rule' }}</a>
-			<a href="#" class="button button-primary" @click.prevent="addFields('value')">{{ '+ Value' }}</a>
-		</div>
 	</div>
 </template>
 
@@ -292,18 +287,6 @@
 		},
 
 		methods: {
-			addFields (type) {
-				var filter = {
-					type: type,
-					if_cond: 'id',
-					condition: 'condition',
-					value: '',
-					then: 'exclude',
-					is: ''
-				}
-
-				this.logic.push(filter);
-			},
 
 			removeAttr (key) {
 				if(!confirm('Are you sure')) {

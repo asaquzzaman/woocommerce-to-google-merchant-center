@@ -50,10 +50,7 @@ class WooGool_Admin_Feed {
     public function create_xml_file( $feed_id, $feed_title ) {
         $upload_dir = wp_upload_dir();
 
-        $base      = $upload_dir['basedir'];
-        $dir_path  = $base . '/woogool-product-feed/';
-        $file_name = md5( 'woogool' . $feed_id );
-        $file_path = $dir_path . $file_name . '.xml';
+        $file_path = woogool_get_feed_file_path( $feed_id ); 
 
         if( ! is_dir( $dir_path ) ) {
             wp_mkdir_p( $dir_path );

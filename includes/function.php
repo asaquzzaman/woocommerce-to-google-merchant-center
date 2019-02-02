@@ -430,6 +430,23 @@ function woogool_log($type = '', $msg = '') {
     }
 }
 
+function woogool_get_feed_file_path( $feed_id ) {
+    $upload_dir = wp_upload_dir();
+    $base       = $upload_dir['basedir'];
+    $dir_path   = $base . '/woogool-product-feed/';
+    $file_name  = md5( 'woogool' . $feed_id );
+
+    return $dir_path . $file_name . '.xml';
+}
+
+function woogool_get_feed_file_url( $feed_id ) {
+    $upload_dir = wp_upload_dir();
+    $base       = $upload_dir['baseurl'];
+    $dir_path   = $base . '/woogool-product-feed/';
+    $file_name  = md5( 'woogool' . $feed_id );
+    
+    return $dir_path . $file_name . '.xml';
+}
 
 
 
