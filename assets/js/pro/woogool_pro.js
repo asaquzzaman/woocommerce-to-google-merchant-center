@@ -777,7 +777,6 @@ module.exports = function (exec) {
       var args = {
         data: {
           feed_id: feedID,
-          feed_title: 'test',
           offset: offset
         },
         callback: function callback($this, res) {}
@@ -1030,10 +1029,25 @@ if (false) {(function () {
 				},
 				callback: function callback(res) {
 					self.feed_id = res.data.feed_id;
+					self.createFeedFile(res.data.feed_id);
 				}
 			};
 
 			self.newFeed(args);
+		},
+		createFeedFile: function createFeedFile(feedID, offset) {
+			var self = this;
+			offset = offset || 0;
+
+			var args = {
+				data: {
+					feed_id: feedID,
+					offset: offset
+				},
+				callback: function callback($this, res) {}
+			};
+
+			this.generateFeedFile(args);
 		},
 		getFeed: function getFeed(postId) {
 			var self = this;
@@ -3951,7 +3965,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { staticClass: "second" }, [_vm._v("Feed Name")]),
+        _c("th", [_vm._v("Feed Name")]),
         _vm._v(" "),
         _c("th", { staticClass: "third" }, [_vm._v("Action")])
       ])

@@ -110,7 +110,7 @@ class WooGool_Admin_ajax {
 
         $feeds = new WP_Query (
             [
-                'post_type'      => 'new_woogool_feed',
+                'post_type'      => 'woogool_feed',
                 'posts_per_page' => -1,
                 'post_status'    => 'publish',
                 'meta_key'       => '',

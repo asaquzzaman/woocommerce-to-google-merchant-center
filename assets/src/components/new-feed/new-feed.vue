@@ -124,11 +124,29 @@
 					},
 					callback (res) {
 						self.feed_id = res.data.feed_id;
+						self.createFeedFile( res.data.feed_id );
 					}
 				}
 				
 				self.newFeed(args);
 			},
+
+			createFeedFile (feedID, offset) {
+	            var self = this;
+	            offset = offset || 0;
+
+	            var args = {
+	                data: {
+	                    feed_id: feedID,
+	                    offset: offset
+	                },
+	                callback ($this, res) {
+	                    
+	                }
+	            }
+
+	            this.generateFeedFile(args);
+	        },
 			getFeed (postId) {
 				var self = this;
 				var request = {

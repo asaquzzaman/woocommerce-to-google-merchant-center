@@ -89,7 +89,7 @@ if ( ! class_exists('WP_WooGool') ) {
         }
 
         function update() {
-            require_once dirname(__FILE__) . '/admin/updates/update-2.0.php';
+            //require_once dirname(__FILE__) . '/admin/updates/update-2.0.php';
         }
 
         function init() {

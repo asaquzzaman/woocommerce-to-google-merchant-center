@@ -49,7 +49,9 @@ class WooGool_Admin_Feed {
 
     public function create_xml_file( $feed_id, $feed_title ) {
         $upload_dir = wp_upload_dir();
-
+        $base      = $upload_dir['basedir'];
+        $dir_path  = $base . '/woogool-product-feed/';
+        $file_name = md5( 'woogool' . $feed_id );
         $file_path = woogool_get_feed_file_path( $feed_id ); 
 
         if( ! is_dir( $dir_path ) ) {
@@ -333,7 +335,7 @@ class WooGool_Admin_Feed {
     }
 
     function register_post_type() {
-        register_post_type( 'new_woogool_feed', array(
+        register_post_type( 'woogool_feed', array(
             'label'               => __( 'Feed', 'hrm' ),
             'public'              => false,
             'show_in_admin_bar'   => false,
@@ -375,7 +377,7 @@ class WooGool_Admin_Feed {
     function insert_feed( $post ) {
 
         $arg = array(
-            'post_type'    => 'new_woogool_feed',
+            'post_type'    => 'woogool_feed',
             'post_title'   => $post['header']['name'],
             'post_content' => '',//$xml_content,
             'post_status'  => 'publish'

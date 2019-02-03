@@ -7,7 +7,7 @@
 				<thead>
 					<tr>
 						
-						<th class="second">Feed Name</th>
+						<th>Feed Name</th>
 						<th class="third">Action</th>
 					</tr>
 				</thead>
@@ -123,7 +123,6 @@
 	            var args = {
 	                data: {
 	                    feed_id: feedID,
-	                    feed_title: 'test',
 	                    offset: offset
 	                },
 	                callback ($this, res) {
