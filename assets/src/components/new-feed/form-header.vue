@@ -87,7 +87,8 @@
 	                select-label=""
 	                selected-label="selected"
 	                deselect-label=""
-	                label=""
+	                label="label"
+	                track-by="id"
 	                
 	                :allow-empty="true">
 						
@@ -215,6 +216,7 @@
 			
 			this.googleCategories = woogool_multi_product_var.google_categories;
 
+		
 
 			jQuery.each(woogool_multi_product_var.product_categories, function(index, cat) {
 				self.categories.push({

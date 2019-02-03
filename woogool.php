@@ -251,7 +251,6 @@ if ( ! class_exists('WP_WooGool') ) {
             wp_enqueue_script( 'woogool-library', plugins_url( '/assets/js/pro/library.js', __FILE__ ), array( 'woogool-multiselect' ), time(), true );
             wp_enqueue_script( 'woogool-pro', plugins_url( '/assets/js/pro/woogool_pro.js', __FILE__ ), array( 'woogool-library' ), time(), true );
 
-
             wp_localize_script( 'woogool-pro', 'woogool_multi_product_var', array(
                 'product_categories'         => woogool_get_products_terms_dropdown_array(),
                 'google_categories'          => get_option( 'woogool_google_product_type' ),
@@ -265,8 +264,6 @@ if ( ! class_exists('WP_WooGool') ) {
 
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
             wp_enqueue_style( 'woogool-vue-multiselect', plugins_url( '/assets/css/vue-multiselect/vue-multiselect.min.css', __FILE__ ), false, time(), 'all' );
-
-
         }
 
         /**

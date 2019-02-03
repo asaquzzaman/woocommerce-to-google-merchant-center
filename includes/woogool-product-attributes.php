@@ -62,19 +62,6 @@ function woogool_product_attributes() {
 
 	$attributes = array_merge( $attributes, $images );
 
-	// if ( is_array( woogool_get_dynamic_attributes() ) ) {
- //    	$dynamic_attributes = woogool_get_dynamic_attributes();
-		
-	// 	array_walk (
-	// 		$dynamic_attributes, 
-	// 		function( &$value, $key ) { 
-	// 			$value .= ' (Dynamic attribute)'; 
-	// 		} 
-	// 	);
-		
-	// 	$attributes = array_merge($attributes, $dynamic_attributes);
-	// }
-
     if( is_array( woogool_get_custom_attributes() ) ) {
 		$custom_attributes = woogool_get_custom_attributes();
 		
@@ -330,7 +317,7 @@ function woogool_get_product_compare_categories( $wc_product, $settings ) {
 
 	foreach ( $google_cats as $key => $google_cat ) {
 		if ( in_array( $google_cat['catId'], $product_cats ) ) {
-			$maps[] = $google_cat['googleCat'];
+			$maps[] = $google_cat['googleCat']['id'];
 		}
 	}
 	

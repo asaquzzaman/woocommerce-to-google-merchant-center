@@ -1260,6 +1260,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -4485,7 +4486,8 @@ var render = function() {
                     "select-label": "",
                     "selected-label": "selected",
                     "deselect-label": "",
-                    label: "",
+                    label: "label",
+                    "track-by": "id",
                     "allow-empty": true
                   },
                   on: {

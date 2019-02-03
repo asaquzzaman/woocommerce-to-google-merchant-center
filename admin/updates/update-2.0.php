@@ -42,7 +42,7 @@ function woogool_update_meta() {
 	die();
 }
 
- woogool_update_meta();
+ //woogool_update_meta();
 
 function woogool_feed_by_category( $post ) {
 	$cats = empty( $post['_products_cat']->meta_value ) ? false : maybe_unserialize( $post['_products_cat']->meta_value ); 
@@ -106,7 +106,29 @@ function woogool_content_attributes( $post ) {
 
 
 function woogool_feed_file_name( $post ) {
+	$upload_dir = wp_upload_dir();
 
+    $file_path = woogool_get_feed_file_path( $post->ID ); 
+
+    if( ! is_dir( $dir_path ) ) {
+        wp_mkdir_p( $dir_path );
+    }
+    unlink ( $file_path );
+    // Check if directory in uploads exists, if not create one  
+    if ( ! file_exists( $file_path ) ) {
+
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
+        $xml->addAttribute( 'version', '2.0' );
+        $xml->addChild( 'channel' );
+        $xml->channel->addChild( 'title', htmlspecialchars( $post->post_title ) );
+        $xml->channel->addChild( 'link', site_url() );
+        $xml->channel->addChild( 'description', 'WooCommerce Product Feed for google shopping' );
+        $xml->asXML( $file_path );
+
+        return $file_name;
+    }
+
+    return '';
 }
 
 

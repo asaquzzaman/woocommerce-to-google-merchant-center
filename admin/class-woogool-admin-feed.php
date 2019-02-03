@@ -1392,7 +1392,9 @@ class WooGool_Admin_Feed {
     }
 
     function check_categori_fetch() {
-        $feed_cat_fetch_time = get_option( 'woogool_google_product_type_fetch_time', false );
+        
+        $feed_cat_fetch_time = get_option( 'woogool_google_product_cat_fetch_time', false );
+        
         if ( ! $feed_cat_fetch_time ) {
             $this->store_google_product_type();
             return;
@@ -1414,7 +1416,7 @@ class WooGool_Admin_Feed {
         $cat = woogool_get_google_product_type();
         $cat = $cat ? $cat : array();
         update_option( 'woogool_google_product_type', $cat );
-        update_option( 'woogool_google_product_type_fetch_time', current_time( 'mysql' ) );
+        update_option( 'woogool_google_product_cat_fetch_time', current_time( 'mysql' ) );
     }
 
     function feed_meta_box( $post_type ) {

@@ -149,12 +149,23 @@ function woogool_get_google_product_type() {
         return array();
     }
     $taxonomies = explode( "\n", $request['body'] );
-    // Strip the comment at the top
-    array_shift( $taxonomies );
-    // Strip the extra newline at the end
-    array_pop( $taxonomies );
-   // $taxonomies = array_merge( array( __( '-Select-', 'woogool' ) ), $taxonomies );
-    return $taxonomies;
+    unset( $taxonomies[0] );
+    $stores = [];
+    
+    foreach ( $taxonomies as $key => $taxonomie ) {
+        if ( strpos( $taxonomie , '-' ) !== false ) {
+            $txon        = explode( '-', $taxonomie );
+            $id          = trim( $txon[0] );
+            $label       = trim( $taxonomie );
+            
+            $stores[] = [
+                'id' => $id,
+                'label' => $label
+            ];
+        }
+    }
+
+    return $stores;
 }
 
 function woogool_get_feeds() {
