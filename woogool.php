@@ -79,13 +79,17 @@ if ( ! class_exists('WP_WooGool') ) {
 
             add_action( 'admin_menu', array( $this, 'admin_menu' ) );
             //add_filter( 'manage_edit-product_columns', array( $this, 'product_columns_head' ), 20, 1 );
-            //add_action( 'manage_product_posts_custom_column', array( $this, 'product_columns' ), 10, 2 );
+            add_action( 'admin_init', array( $this, 'update' ) );
             
             add_action( 'admin_init', array( $this, 'delete_product' ) );
             add_action( 'settings_text_field', array( $this, 'settings_text_field' ), 10, 2 );
             add_action( 'admin_enqueue_scripts', array( $this, 'scripts') );
 
             do_action( 'woogool_after_loaded' );
+        }
+
+        function update() {
+            require_once dirname(__FILE__) . '/admin/updates/update-2.0.php';
         }
 
         function init() {
