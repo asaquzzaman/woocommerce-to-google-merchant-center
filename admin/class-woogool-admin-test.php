@@ -1,6 +1,6 @@
 <?php
 
-class WooGool_Admin_Feed {
+class WooGool_Admin_Test {
     
     private $number_per_page = 20;
 
@@ -41,6 +41,119 @@ class WooGool_Admin_Feed {
        //$this->auto_test_filter();
        // $this->auto_test_rule();
        // $this->auto_test_value();
+       //$this->auto_test_product_value();
+    }
+
+    public function auto_test_product_value() {
+        //$meta = get_post_meta(160);
+        
+        $title = 'Test by WooGool team';
+
+        $arg = array(
+            'post_type'    => 'woogool_feed',
+            'post_title'   => $title,
+            'post_content' => '',
+            'post_status'  => 'publish'
+        );
+        
+        $feed_id = wp_insert_post( $arg );
+
+        WooGool_Admin_Feed::instance()->create_xml_file( $feed_id, $title );
+
+        $categories = $this->get_categories();
+
+        $metas = [
+            'feed_by_category'   => true,
+            'active_variation'   => true,
+            'refresh'            => 1,
+            'categories'         => $categories,
+            'google_categories'  => $this->get_google_categories( $categories ),
+            'content_attributes' => $this->get_content_attributes(),
+            'logic'              => []
+        ];
+
+        
+        foreach ( $metas as $meta_key => $meta_value ) {
+            update_post_meta( $feed_id, $meta_key, $meta_value );
+        }
+    }
+
+    public function get_content_attributes() {
+    
+        $shopping_attributes = woogool_shopping_attributes();
+        $product_attributes = woogool_product_attributes();
+        $shoppings = [];
+        $bazars = [];
+        $returns = [];
+
+        foreach ( $shopping_attributes as $key => $shopping_attribute ) {
+            $shoppings = array_merge( $shoppings, $shopping_attribute['attributes'] );
+        }
+
+        foreach ( $shoppings as $key => $shopping ) {
+            $bazars[] = $shopping;
+        }
+        
+        foreach ( $product_attributes as $product_key => $product_attribute ) {
+            $shopping_key = rand( 0, ( count( $bazars ) - 1 ) );
+            $shopping = $bazars[$shopping_key];
+           
+            $shopping['format'] = 'required';
+            $shopping['woogool_suggest'] = $product_key;
+            $shopping['type'] = 'default';
+            
+            $returns[] = $shopping;
+        }
+        $returns[] = [
+            'type'            => 'custom',
+            'format'          => 'required',
+            'name'            => 'This is custom filed 1',
+            'woogool_suggest' => 'title'
+        ];
+
+        $returns[] = [
+            'type'            => 'custom',
+            'format'          => 'required',
+            'name'            => 'This is custom filed 2',
+            'woogool_suggest' => 'description'
+        ];
+
+        return $returns;
+    }
+
+    public function get_google_categories( $categories ) {
+        $googel_cats = get_option( 'woogool_google_product_type' );
+        $returns = [];
+
+        foreach ( $categories as $key => $categorie ) {
+            $categorie['googleCat'] = [
+                'id'    => $googel_cats[$key]['id'],
+                'label' => $googel_cats[$key]['label']
+            ];
+
+            $returns[] = $categorie;
+        }
+
+        return $returns;
+    }
+
+    public function get_categories() {
+        $cat_args = array(
+            'order'      => 'asc',
+            'hide_empty' => false,
+        );
+
+        $returns = [];
+        $categories = get_terms( 'product_cat', $cat_args );
+
+        foreach ( $categories as $key => $categorie ) {
+            $returns[] = [
+                'catId' => $categorie->term_id,
+                'catName' => $categorie->name,
+            ];
+        }
+
+        return $returns;
     }
 
     public function auto_test_value() {

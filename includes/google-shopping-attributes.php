@@ -158,18 +158,21 @@ function woogool_shopping_attributes () {
 					"name"      => "brand",
 					"feed_name" => "g:brand",
 					"format"    => "required",
+					"woogool_suggest" => "_woogool_brand",
 				),
 				"gtin" => array (
 					'label'     => 'Gtin',
 					"name"      => "gtin",
 					"feed_name" => "g:gtin",
 					"format"    => "required",
+					"woogool_suggest" => "_woogool_gtin",
 				),
 				"mpn" => array (
 					'label'     => 'MPN',
 					"name"      => "mpn",
 					"feed_name" => "g:mpn",
 					"format"    => "required",
+					"woogool_suggest" => "_woogool_mpn",
 				),
 				"identifier_exists" => array (
 					'label'       => 'Identifier exists',
@@ -188,7 +191,7 @@ function woogool_shopping_attributes () {
 					"name"        => "condition",
 					"feed_name"   => "g:condition",
 					"format"      => "required",
-					"woogool_suggest" => "condition",
+					"woogool_suggest" => "_woogool_condition",
 				),
 				"adult" => array(
 					'label'     => 'Adult',
@@ -356,7 +359,7 @@ function woogool_shopping_attributes () {
 					'label'     => 'Shipping',
 					"name"      => "shipping",
 					"feed_name" => "g:shipping",
-					"format"    => "required",
+					"format"    => "optional",
 				),
 				"shipping_label" => array(
 					'label'     => 'Shipping label',

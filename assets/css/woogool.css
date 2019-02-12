@@ -402,12 +402,11 @@ input[type="checkbox"], input[type="radio"] {
 .woogool-product-info {
 	margin-top: 9px;
 }
-.woogool-form .woogool-spinner {
+.woogool-spinner {
 	background: url( 'images/loading.gif' ) no-repeat;
 	height: 16px;
 	width: 16px;
 	display: inline-block;
-	margin: 15px 0 0 15px;
 }
 .woogool-submit-notification {
 	padding: 7px !important;

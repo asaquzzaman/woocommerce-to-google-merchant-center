@@ -27,6 +27,7 @@
 
 
 				<div class="save-btn-wrap">
+					<span v-if="isActiveSpinner" class="woogool-spinner"></span>
 					<a href="#" class="button button-primary save-btn" @click.prevent="submit()">{{ 'Save' }}</a>
 					<div class="woogool-clearfix"></div>
 				</div>
@@ -64,6 +65,11 @@
 
     		.save-btn-wrap {
     			padding-right: 10px;
+    			display: flex;
+    			align-items: center;
+    			.woogool-spinner {
+    				margin-right: 10px;
+    			}
     		}
     	}
 	}
@@ -93,7 +99,8 @@
 					categories: []
 				},
 				gAttrs: [],
-				logic: []
+				logic: [],
+				isActiveSpinner: false
 			}
 		},
 		components: {
@@ -113,8 +120,20 @@
 			
 		},
 		methods: {
+			isValidate () {
+				if(this.header.name === '') {
+					alert('Feed name is required!');
+					return false;
+				}
+
+				return true;
+			},
+
 			submit () {
 				var self = this;
+				if(!this.isValidate()) {
+					return;
+				}
 				var args = {
 					data: {
 						feed_id: self.feed_id,
@@ -127,7 +146,7 @@
 						self.createFeedFile( res.data.feed_id );
 					}
 				}
-				
+				self.isActiveSpinner = true;
 				self.newFeed(args);
 			},
 

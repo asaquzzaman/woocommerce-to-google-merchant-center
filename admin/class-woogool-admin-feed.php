@@ -150,6 +150,7 @@ class WooGool_Admin_Feed {
         $active_variation = get_post_meta( $feed_id, 'active_variation', true );
         
         $settings         = get_post_meta( $feed_id );
+        
         $postdata['page'] = empty( $postdata['page'] ) ? 0 : $postdata['page'];
         $page             = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
         $products         = $this->xml_get_products( $feed_id, $page=false, $offset );

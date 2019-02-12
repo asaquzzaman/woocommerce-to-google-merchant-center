@@ -94,6 +94,10 @@ export default {
                     if(res.data.has_product) {
                         args.data.offset = res.data.offset;
                         self.feedLoop(args);
+                    } else {
+                        if(typeof self.isActiveSpinner !== 'undefined') {
+                            self.isActiveSpinner = false;
+                        }
                     }
                     // if( typeof args.callback === 'function' ) {
                     //     args.callback( self,  res );

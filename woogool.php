@@ -238,6 +238,9 @@ if ( ! class_exists('WP_WooGool') ) {
             
             //version update
             new WooGool_Admin_Upgrade();
+
+            //Test case
+            new WooGool_Admin_Test();
         }
 
         function scripts_multiple_products() {

@@ -975,6 +975,12 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -997,7 +1003,8 @@ if (false) {(function () {
 				categories: []
 			},
 			gAttrs: [],
-			logic: []
+			logic: [],
+			isActiveSpinner: false
 		};
 	},
 
@@ -1018,8 +1025,19 @@ if (false) {(function () {
 	},
 
 	methods: {
+		isValidate: function isValidate() {
+			if (this.header.name === '') {
+				alert('Feed name is required!');
+				return false;
+			}
+
+			return true;
+		},
 		submit: function submit() {
 			var self = this;
+			if (!this.isValidate()) {
+				return;
+			}
 			var args = {
 				data: {
 					feed_id: self.feed_id,
@@ -1032,7 +1050,7 @@ if (false) {(function () {
 					self.createFeedFile(res.data.feed_id);
 				}
 			};
-
+			self.isActiveSpinner = true;
 			self.newFeed(args);
 		},
 		createFeedFile: function createFeedFile(feedID, offset) {
@@ -2053,6 +2071,10 @@ exports.default = {
                     if (res.data.has_product) {
                         args.data.offset = res.data.offset;
                         self.feedLoop(args);
+                    } else {
+                        if (typeof self.isActiveSpinner !== 'undefined') {
+                            self.isActiveSpinner = false;
+                        }
                     }
                     // if( typeof args.callback === 'function' ) {
                     //     args.callback( self,  res );
@@ -4108,7 +4130,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.woogool-new-feed-form {\n  background: #f8f8f8;\n  border: 1px solid #ddd;\n  border-top: none;\n}\n.woogool-new-feed-form .button-group {\n  display: flex;\n  margin-bottom: 12px;\n  margin-top: 12px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .button,\n.woogool-new-feed-form .button-group .third-btn-wrap .button {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .second-btn,\n.woogool-new-feed-form .button-group .third-btn-wrap .second-btn {\n  margin-right: 3px;\n}\n.woogool-new-feed-form .button-group .btn-wrap {\n  padding-left: 10px;\n  flex: 1;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap {\n  padding-right: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.woogool-new-feed-form {\n  background: #f8f8f8;\n  border: 1px solid #ddd;\n  border-top: none;\n}\n.woogool-new-feed-form .button-group {\n  display: flex;\n  margin-bottom: 12px;\n  margin-top: 12px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .button,\n.woogool-new-feed-form .button-group .third-btn-wrap .button {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .second-btn,\n.woogool-new-feed-form .button-group .third-btn-wrap .second-btn {\n  margin-right: 3px;\n}\n.woogool-new-feed-form .button-group .btn-wrap {\n  padding-left: 10px;\n  flex: 1;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap {\n  padding-right: 10px;\n  display: flex;\n  align-items: center;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .woogool-spinner {\n  margin-right: 10px;\n}\n", ""]);
 
 // exports
 
@@ -6193,6 +6215,10 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "save-btn-wrap" }, [
+              _vm.isActiveSpinner
+                ? _c("span", { staticClass: "woogool-spinner" })
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "a",
                 {
