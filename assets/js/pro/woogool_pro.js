@@ -770,14 +770,14 @@ module.exports = function (exec) {
 
       this.httpRequest(request);
     },
-    createFeedFile: function createFeedFile(feedID, offset) {
+    createFeedFile: function createFeedFile(feedID, feed) {
       var self = this;
-      offset = offset || 0;
 
       var args = {
         data: {
+          feed_title: feed.post_title,
           feed_id: feedID,
-          offset: offset
+          offset: 0
         },
         callback: function callback($this, res) {}
       };
@@ -3941,7 +3941,7 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       $event.preventDefault()
-                                      _vm.createFeedFile(feed.ID)
+                                      _vm.createFeedFile(feed.ID, feed)
                                     }
                                   }
                                 },
@@ -6089,21 +6089,6 @@ var render = function() {
                     }
                   },
                   [_vm._v(_vm._s("Prev"))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "button second-btn button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.addCustomField("first")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("Add custom field"))]
                 ),
                 _vm._v(" "),
                 _c(

@@ -27,7 +27,7 @@
 									Edit
 								</router-link>|
 								<a href="#" @click.prevent="deleteFeed(feed.ID)">Delete</a>|
-								<a href="#" @click.prevent="createFeedFile(feed.ID)">Refresh</a>|
+								<a href="#" @click.prevent="createFeedFile(feed.ID, feed)">Refresh</a>|
 								<!-- @click.prevent="downloadFeedFile(feed.ID) -->
 								<a :href="feed.feed_url" target="_blank" ref="noopener">Download</a> 
 							</td>
@@ -116,14 +116,14 @@
 	            this.httpRequest(request);
 			},
 
-			createFeedFile (feedID, offset) {
+			createFeedFile (feedID, feed) {
 	            var self = this;
-	            offset = offset || 0;
-
+	            
 	            var args = {
 	                data: {
+	                	feed_title: feed.post_title,
 	                    feed_id: feedID,
-	                    offset: offset
+	                    offset: 0
 	                },
 	                callback ($this, res) {
 	                    

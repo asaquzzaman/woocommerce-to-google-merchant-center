@@ -50,7 +50,7 @@ class WooGool_Admin_ajax {
 
     function create_xml_file() {
         check_ajax_referer( 'woogool_nonce' );
-
+        
         $postdata   = wp_unslash( $_POST );
         $feed_id    = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false;
         $feed_title = sanitize_text_field( $postdata['feed_title'] );

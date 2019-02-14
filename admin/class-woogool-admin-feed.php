@@ -146,7 +146,7 @@ class WooGool_Admin_Feed {
         $logic            = get_post_meta( $feed_id, 'logic', true );
         
         $category_map     = get_post_meta( $feed_id, 'google_categories', true );
-        $feed_contents    = get_post_meta( $feed_id, 'content_attributes', true );
+        $feed_contents    = get_post_meta( $feed_id, 'content_attributes', true ); 
         $active_variation = get_post_meta( $feed_id, 'active_variation', true );
         
         $settings         = get_post_meta( $feed_id );

@@ -13,7 +13,7 @@
 
 				<div class="btn-wrap second-btn-wrap" v-show="stage.step == 'second'">
 					<a href="#" class="button button-primary" @click.prevent="changeStage('first')">{{ 'Prev' }}</a>
-					<a href="#" class="button second-btn button-primary" @click.prevent="addCustomField('first')">{{ 'Add custom field' }}</a>
+					<!-- <a href="#" class="button second-btn button-primary" @click.prevent="addCustomField('first')">{{ 'Add custom field' }}</a> -->
 					<a href="#" class="button button-primary" @click.prevent="addMappingField()">{{ 'Add mapping field' }}</a>
 					<a href="#" class="button button-primary" @click.prevent="changeStage('third')">{{ 'Next' }}</a>
 				</div>
