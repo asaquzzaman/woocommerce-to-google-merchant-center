@@ -154,7 +154,7 @@ class WooGool_Admin_Feed {
         $postdata['page'] = empty( $postdata['page'] ) ? 0 : $postdata['page'];
         $page             = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
         $products         = $this->xml_get_products( $feed_id, $page=false, $offset );
-
+        
         $file             = $this->get_file_path( $feed_id );
         $namespace        = array( 'g' => 'http://base.google.com/ns/1.0' );
         $xml              = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
@@ -246,13 +246,15 @@ class WooGool_Admin_Feed {
         if ( $this->time_exceeded() || $this->memory_exceeded() ) {
             return [
                 'has_product' => empty( $products ) ? false : true,
-                'offset'      => $offset
+                'offset'      => $offset,
+                'found_posts' => $this->found_posts
             ];
         }
 
         return [
             'has_product' => empty( $products ) ? false : true,
-            'offset'      => $offset
+            'offset'      => $offset,
+            'found_posts' => $this->found_posts
         ];
     }
 

@@ -55,9 +55,8 @@ export default {
             };
 
             this.httpRequest(request);
-
-          
 		},
+        
 		changeStage (step) {
 			this.stage.step = step;
 		},

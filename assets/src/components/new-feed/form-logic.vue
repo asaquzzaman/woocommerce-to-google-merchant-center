@@ -31,7 +31,7 @@
 									<option
 										v-for="(attribute, attrKey) in proAttrTd.attributes"
 										:value="attrKey" 
-										:selected="logical.if == attrKey ? 'selected' : ''">
+										:selected="logical.if_cond == attrKey ? 'selected' : ''">
 										{{ attribute }} 
 									</option>
 								</optgroup>

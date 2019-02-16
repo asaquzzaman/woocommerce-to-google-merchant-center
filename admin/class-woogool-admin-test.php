@@ -2,20 +2,11 @@
 
 class WooGool_Admin_Test {
     
-    private $number_per_page = 20;
-
-    private $google_cat = array();
-    private $feed_settings = array();
-    protected $start_time = 0;
-    
     /**
      * @var The single instance of the class
      * 
      */
     protected static $_instance = null;
-
-    protected $found_posts = 0;
-    protected $fetch_all_product = false;
 
     /**
      * Main woogool Instance
@@ -32,19 +23,49 @@ class WooGool_Admin_Test {
     }
 
     function __construct() {
-  
         add_action( 'admin_init', array( $this, 'test' ) );
 
     }
 
     function test() {
+
+        $this->auto_test_product_value();
        //$this->auto_test_filter();
        // $this->auto_test_rule();
        // $this->auto_test_value();
-       //$this->auto_test_product_value();
+       //$this->auto_test_feed_form_generator();
     }
 
     public function auto_test_product_value() {
+        $dropdowns       = woogool_product_attribute_with_optgroups();
+        $product_val_fun = woogool_product_value_maping_func();
+        $wc_product      = wc_get_product(142);
+        $dropdowns       = wp_list_pluck( $dropdowns, 'attributes' );
+        $product_attrs   = [];
+        $product_val     = [];
+
+        
+        foreach ( $dropdowns as $key => $dropdown ) {
+            $product_attrs = array_merge( $product_attrs, $dropdowns[$key] );
+        }
+        
+        foreach ( $product_attrs as $func_key => $product_attr ) {
+            $call = empty( $product_val_fun[$func_key] ) ? '' : $product_val_fun[$func_key];
+
+            if ( function_exists( $call ) ) {
+                $prod_val = $call( $wc_product );
+                
+            } else {
+                $prod_val = woogool_get_product_dynamic_value( $wc_product, $func_key );
+            };
+
+            $product_val[$func_key] = $prod_val;
+        }
+
+        woogool_log('product_value', $product_val);
+    }
+
+    public function auto_test_feed_form_generator() {
         //$meta = get_post_meta(160);
         
         $title = 'Test by WooGool team';
@@ -104,19 +125,6 @@ class WooGool_Admin_Test {
             
             $returns[] = $shopping;
         }
-        $returns[] = [
-            'type'            => 'custom',
-            'format'          => 'required',
-            'name'            => 'This is custom filed 1',
-            'woogool_suggest' => 'title'
-        ];
-
-        $returns[] = [
-            'type'            => 'custom',
-            'format'          => 'required',
-            'name'            => 'This is custom filed 2',
-            'woogool_suggest' => 'description'
-        ];
 
         return $returns;
     }

@@ -166,6 +166,14 @@
 			}
 		},
 
+		watch: {
+			'$route' (route) {
+	            if(route.name === 'new_feed') {
+	            	this.setDefaultAttr();
+	            }
+	        }
+		},
+
 		created () {
 			this.setDefaultAttr();
 		},

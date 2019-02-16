@@ -64,6 +64,11 @@ export default {
                     if(res.success === false) {
                         return;
                     }
+
+                    // if(typeof args.callback === 'function') {
+                    //     args.callback(res);
+                    // }
+
                     self.feedLoop(args);
                 }
             });
@@ -99,9 +104,9 @@ export default {
                             self.isActiveSpinner = false;
                         }
                     }
-                    // if( typeof args.callback === 'function' ) {
-                    //     args.callback( self,  res );
-                    // }
+                    if( typeof args.callback === 'function' ) {
+                        args.callback(res);
+                    }
 
                     // if( 
                     //  request.data.page >= self.loopLimit

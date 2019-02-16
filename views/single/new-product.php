@@ -1,4 +1,4 @@
-<?php
+<?php 
 $is_access_premission = WooGool()->individual->check_authenticate();
 
 if ( ! $is_access_premission ) {

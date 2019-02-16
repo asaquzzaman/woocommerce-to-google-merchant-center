@@ -1,7 +1,18 @@
 <template>
 	<div class="">
 		<feed-header></feed-header>
-		<form class="woogool-new-feed-form" action="" @submit.prevent="submit()" method="post">
+
+		<div v-if="loading" class="loadmoreanimation">
+	        <div class="load-spinner">
+	            <div class="rect1"></div>
+	            <div class="rect2"></div>
+	            <div class="rect3"></div>
+	            <div class="rect4"></div>
+	            <div class="rect5"></div>
+	        </div>
+	    </div>
+
+		<form v-if="!loading" class="woogool-new-feed-form" action="" @submit.prevent="submit()" method="post">
 			<form-header v-show="stage.step == 'first'" :header="header" :stage="stage"></form-header>
 			<form-content v-show="stage.step == 'second'" :gAttrs="gAttrs"  :stage="stage"></form-content>
 			<form-logic v-show="stage.step == 'third'" :logic="logic" :stage="stage"></form-logic>
@@ -27,8 +38,17 @@
 
 
 				<div class="save-btn-wrap">
+					<div v-if="isActiveSpinner" :class="refreshStatus ? 'progress-bar-left-normal progress-wrap': 'progress-bar-left-minues progress-wrap'">
+						<div :class="'progress-bar'">
+							<div class="bar completed" :style="'width:'+ width +'%'"></div>
+						</div> 
+						<span class="number">{{ width+'%' }}</span>
+					</div>
+
 					<span v-if="isActiveSpinner" class="woogool-spinner"></span>
-					<a href="#" class="button button-primary save-btn" @click.prevent="submit()">{{ 'Save' }}</a>
+					<a v-if="feed_id" href="#" class="button button-secondary cancel-btn" @click.prevent="cancel()">{{ 'Cancel' }}</a>
+					<a v-if="feed_id" href="#" class="button button-primary save-btn" @click.prevent="submit()">{{ 'Update' }}</a>
+					<a v-if="!feed_id" href="#" class="button button-primary save-btn" @click.prevent="submit()">{{ 'Save' }}</a>
 					<div class="woogool-clearfix"></div>
 				</div>
 			</div>
@@ -70,8 +90,43 @@
     			.woogool-spinner {
     				margin-right: 10px;
     			}
+    			.cancel-btn {
+    				margin-right: 10px;
+    			}
     		}
     	}
+
+    	.progress-bar {
+			width: 52px;
+		    background: #D7DEE2;
+		    height: 5px;
+		    border-radius: 3px;
+		   	margin: 3px 0 0 0;
+		}
+		.completed {
+	    	background: #1A9ED4;
+		    height: 5px;
+		    border-radius: 3px;
+	    }
+		.progress-bar-left-normal {
+			position: relative;
+		    left: 0;
+		}
+		.progress-bar-left-minues {
+			position: relative;
+		    left: -9999em;
+		}
+		.progress-wrap {
+			display: flex;
+			align-items: center;
+			margin-right: 10px;
+
+			.number {
+				line-height: 1;
+				font-size: 10px;
+				margin-left: 10px;
+			}
+		}
 	}
 
 </style>
@@ -100,8 +155,29 @@
 				},
 				gAttrs: [],
 				logic: [],
-				isActiveSpinner: false
+				isActiveSpinner: false,
+				width: 0,
+				refreshStatus: false,
+				loading: true
 			}
+		},
+		watch: {
+			'$route' (route) {
+                if(route.name === 'new_feed') {
+                	this.feed_id = false;
+                	this.header = jQuery.extend({}, this.header, {
+						feedByCatgory: false,
+						name: '',
+						activeVariation: false,
+						feedCategories: [],
+						refresh: 1,
+						googleCategories: [],
+						categories: []
+					});
+					this.gAttrs = [];
+					this.logic = [];
+                }
+            }
 		},
 		components: {
 			'feed-header': Header,
@@ -116,10 +192,17 @@
 			if(feed_id) {
 				this.getFeed(feed_id);
 				this.feed_id = feed_id;
+			} else {
+				this.loading = false;
 			}
 			
 		},
 		methods: {
+			cancel () {
+				this.$router.push({
+					name: 'feed_lists'
+				});
+			},
 			isValidate () {
 				if(this.header.name === '') {
 					alert('Feed name is required!');
@@ -142,6 +225,7 @@
                 		logic: self.logic	
 					},
 					callback (res) {
+						self.refreshStatus = true;
 						self.feed_id = res.data.feed_id;
 						self.createFeedFile( res.data.feed_id );
 					}
@@ -153,18 +237,34 @@
 			createFeedFile (feedID, offset) {
 	            var self = this;
 	            offset = offset || 0;
+	            self.width = 0;
 
 	            var args = {
 	                data: {
 	                    feed_id: feedID,
 	                    offset: offset
 	                },
-	                callback ($this, res) {
-	                    
+	                callback (res) {
+	                    let totalPosts = res.data.found_posts;
+	                	let offset = res.data.offset;
+	                	let percent = self.getProgressPercentage(totalPosts, offset);
+
+	                	self.width = percent;
+
+	                	if(percent >= 100) {
+	                		self.refreshStatus = false;
+	                	}
 	                }
 	            }
 
 	            this.generateFeedFile(args);
+	        },
+	        getProgressPercentage(total, set) {
+	        	if(total <= 0) return 100;
+
+                let progress        = ( 100 * set ) / total;
+
+            	return isNaN( progress ) ? 0 : progress.toFixed(0);
 	        },
 			getFeed (postId) {
 				var self = this;
@@ -177,6 +277,7 @@
 	                	_wpnonce: woogool_var.nonce,
 	                },
 	                success (res) {
+	                	self.loading = false;
 	                    self.setHeader(res.data);
 	                    self.setContentAttrs(res.data);
 	                    self.setLogic(res.data);

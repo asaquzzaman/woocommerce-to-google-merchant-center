@@ -701,112 +701,183 @@ module.exports = function (exec) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  data: function data() {
-    return {
-      feeds: []
-    };
-  },
+	data: function data() {
+		return {
+			feeds: [],
+			loading: true,
+			width: 0
+		};
+	},
 
-  components: {
-    'feed-header': __WEBPACK_IMPORTED_MODULE_0__components_header_vue__["a" /* default */]
-  },
+	components: {
+		'feed-header': __WEBPACK_IMPORTED_MODULE_0__components_header_vue__["a" /* default */]
+	},
 
-  created: function created() {
-    this.getFeeds();
-  },
+	created: function created() {
+		this.getFeeds();
+	},
 
 
-  methods: {
-    getFeeds: function getFeeds() {
-      var self = this;
+	methods: {
+		getFeeds: function getFeeds() {
+			var self = this;
 
-      var request = {
-        type: 'GET',
-        url: woogool_var.ajaxurl,
-        data: {
-          action: 'woogool-get-feeds',
-          _wpnonce: woogool_var.nonce
-        },
+			var request = {
+				type: 'GET',
+				url: woogool_var.ajaxurl,
+				data: {
+					action: 'woogool-get-feeds',
+					_wpnonce: woogool_var.nonce
+				},
 
-        success: function success(res) {
-          if (res.success === true) {
-            self.feeds = res.data.posts;
-          }
-        }
-      };
+				success: function success(res) {
+					self.loading = false;
+					self.addMeta(res.data.posts);
+					if (res.success === true) {
+						self.feeds = res.data.posts;
+					}
+				}
+			};
 
-      this.httpRequest(request);
-    },
-    deleteFeed: function deleteFeed(feedId) {
-      var self = this;
+			this.httpRequest(request);
+		},
+		addMeta: function addMeta(metas) {
+			metas.forEach(function (meta, index) {
+				meta['refreshStatus'] = false;
+			});
+		},
+		deleteFeed: function deleteFeed(feedId) {
+			var self = this;
 
-      if (!confirm('Are you sure!')) {
-        return;
-      }
+			if (!confirm('Are you sure!')) {
+				return;
+			}
 
-      var request = {
-        type: 'POST',
-        url: woogool_var.ajaxurl,
-        data: {
-          feed_id: feedId,
-          action: 'woogool-get-feed-delete',
-          _wpnonce: woogool_var.nonce
-        },
+			var request = {
+				type: 'POST',
+				url: woogool_var.ajaxurl,
+				data: {
+					feed_id: feedId,
+					action: 'woogool-get-feed-delete',
+					_wpnonce: woogool_var.nonce
+				},
 
-        success: function success(res) {
-          if (res.success === true) {
-            var index = self.getIndex(self.feeds, feedId, 'ID');
+				success: function success(res) {
+					if (res.success === true) {
+						var index = self.getIndex(self.feeds, feedId, 'ID');
 
-            if (index !== false) {
-              self.feeds.splice(index, 1);
-            }
-          }
-        }
-      };
+						if (index !== false) {
+							self.feeds.splice(index, 1);
+						}
+					}
+				}
+			};
 
-      this.httpRequest(request);
-    },
-    createFeedFile: function createFeedFile(feedID, feed) {
-      var self = this;
+			this.httpRequest(request);
+		},
+		createFeedFile: function createFeedFile(feedID, feed) {
+			var self = this;
+			feed.refreshStatus = true;
+			self.width = 0;
 
-      var args = {
-        data: {
-          feed_title: feed.post_title,
-          feed_id: feedID,
-          offset: 0
-        },
-        callback: function callback($this, res) {}
-      };
+			var args = {
+				data: {
+					feed_title: feed.post_title,
+					feed_id: feedID,
+					offset: 0
+				},
+				callback: function callback(res) {
+					var totalPosts = res.data.found_posts;
+					var offset = res.data.offset;
+					var percent = self.getProgressPercentage(totalPosts, offset);
 
-      this.generateFeedFile(args);
-    },
-    downloadFeedFile: function downloadFeedFile(feedID) {
-      var self = this;
-      var url = woogool_var.ajaxurl + '?action=woogool-download-feed_file&feed_id=' + feedID + '&_wpnonce=' + woogool_var.nonce;
+					self.width = percent;
 
-      window.location.href = url;
+					if (percent >= 100) {
+						feed.refreshStatus = false;
+					}
+				}
+			};
 
-      // var request = {
-      //              type: 'POST',
-      //              url: woogool_var.ajaxurl,
-      //              data: {
-      //              	feed_id: feedID,
-      //              	action: 'woogool-download-feed_file',
-      //              	_wpnonce: woogool_var.nonce,
-      //              },
+			this.generateFeedFile(args);
+		},
+		getProgressPercentage: function getProgressPercentage(total, set) {
+			if (total <= 0) return 100;
+			var progress = 100 * set / total;
 
-      //              success (res) {
+			return isNaN(progress) ? 0 : progress.toFixed(0);
+		},
+		downloadFeedFile: function downloadFeedFile(feedID) {
+			var self = this;
+			var url = woogool_var.ajaxurl + '?action=woogool-download-feed_file&feed_id=' + feedID + '&_wpnonce=' + woogool_var.nonce;
 
-      //              },
-      //          };
-
-      //          this.httpRequest(request);
-    }
-  }
+			window.location.href = url;
+		}
+	}
 });
 
 /***/ }),
@@ -981,6 +1052,61 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1004,10 +1130,31 @@ if (false) {(function () {
 			},
 			gAttrs: [],
 			logic: [],
-			isActiveSpinner: false
+			isActiveSpinner: false,
+			width: 0,
+			refreshStatus: false,
+			loading: true
 		};
 	},
 
+	watch: {
+		'$route': function $route(route) {
+			if (route.name === 'new_feed') {
+				this.feed_id = false;
+				this.header = jQuery.extend({}, this.header, {
+					feedByCatgory: false,
+					name: '',
+					activeVariation: false,
+					feedCategories: [],
+					refresh: 1,
+					googleCategories: [],
+					categories: []
+				});
+				this.gAttrs = [];
+				this.logic = [];
+			}
+		}
+	},
 	components: {
 		'feed-header': __WEBPACK_IMPORTED_MODULE_0__components_header_vue__["a" /* default */],
 		'form-header': __WEBPACK_IMPORTED_MODULE_1__components_new_feed_form_header_vue__["a" /* default */],
@@ -1021,10 +1168,17 @@ if (false) {(function () {
 		if (feed_id) {
 			this.getFeed(feed_id);
 			this.feed_id = feed_id;
+		} else {
+			this.loading = false;
 		}
 	},
 
 	methods: {
+		cancel: function cancel() {
+			this.$router.push({
+				name: 'feed_lists'
+			});
+		},
 		isValidate: function isValidate() {
 			if (this.header.name === '') {
 				alert('Feed name is required!');
@@ -1046,6 +1200,7 @@ if (false) {(function () {
 					logic: self.logic
 				},
 				callback: function callback(res) {
+					self.refreshStatus = true;
 					self.feed_id = res.data.feed_id;
 					self.createFeedFile(res.data.feed_id);
 				}
@@ -1056,16 +1211,34 @@ if (false) {(function () {
 		createFeedFile: function createFeedFile(feedID, offset) {
 			var self = this;
 			offset = offset || 0;
+			self.width = 0;
 
 			var args = {
 				data: {
 					feed_id: feedID,
 					offset: offset
 				},
-				callback: function callback($this, res) {}
+				callback: function callback(res) {
+					var totalPosts = res.data.found_posts;
+					var offset = res.data.offset;
+					var percent = self.getProgressPercentage(totalPosts, offset);
+
+					self.width = percent;
+
+					if (percent >= 100) {
+						self.refreshStatus = false;
+					}
+				}
 			};
 
 			this.generateFeedFile(args);
+		},
+		getProgressPercentage: function getProgressPercentage(total, set) {
+			if (total <= 0) return 100;
+
+			var progress = 100 * set / total;
+
+			return isNaN(progress) ? 0 : progress.toFixed(0);
 		},
 		getFeed: function getFeed(postId) {
 			var self = this;
@@ -1078,6 +1251,7 @@ if (false) {(function () {
 					_wpnonce: woogool_var.nonce
 				},
 				success: function success(res) {
+					self.loading = false;
 					self.setHeader(res.data);
 					self.setContentAttrs(res.data);
 					self.setLogic(res.data);
@@ -1527,6 +1701,16 @@ if (false) {(function () {
 			googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields
 		};
 	},
+
+
+	watch: {
+		'$route': function $route(route) {
+			if (route.name === 'new_feed') {
+				this.setDefaultAttr();
+			}
+		}
+	},
+
 	created: function created() {
 		this.setDefaultAttr();
 	},
@@ -2042,6 +2226,11 @@ exports.default = {
                     if (res.success === false) {
                         return;
                     }
+
+                    // if(typeof args.callback === 'function') {
+                    //     args.callback(res);
+                    // }
+
                     self.feedLoop(args);
                 }
             });
@@ -2076,9 +2265,9 @@ exports.default = {
                             self.isActiveSpinner = false;
                         }
                     }
-                    // if( typeof args.callback === 'function' ) {
-                    //     args.callback( self,  res );
-                    // }
+                    if (typeof args.callback === 'function') {
+                        args.callback(res);
+                    }
 
                     // if( 
                     //  request.data.page >= self.loopLimit
@@ -3778,6 +3967,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* empty harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3e0c5eaf_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_feed_lists_vue__ = __webpack_require__(36);
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(97)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -3787,7 +3980,7 @@ var normalizeComponent = __webpack_require__(0)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -3879,6 +4072,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "woogool-feed-lists-wrap" },
     [
       _c("feed-header"),
       _vm._v(" "),
@@ -3898,78 +4092,106 @@ var render = function() {
                         _c("tr", [
                           _c("td", [_vm._v(_vm._s(feed.post_title))]),
                           _vm._v(" "),
-                          _c(
-                            "td",
-                            [
+                          _c("td", [
+                            _c("div", { staticClass: "list-action-wrap" }, [
                               _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "edit_feed",
-                                      params: {
-                                        feed_id: feed.ID
-                                      }
-                                    }
-                                  }
-                                },
+                                "div",
+                                { staticClass: "actions" },
                                 [
-                                  _vm._v(
-                                    "\n\n\t\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t\t"
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "edit_feed",
+                                          params: {
+                                            feed_id: feed.ID
+                                          }
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n\n\t\t\t\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t\t\t\t"
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v("|\n\t\t\t\t\t\t\t\t\t"),
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          _vm.deleteFeed(feed.ID)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Delete")]
+                                  ),
+                                  _vm._v("|\n\t\t\t\t\t\t\t\t\t"),
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          _vm.createFeedFile(feed.ID, feed)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Refresh")]
+                                  ),
+                                  _vm._v("|\n\t\t\t\t\t\t\t\t\t"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "a",
+                                    {
+                                      ref: "noopener",
+                                      refInFor: true,
+                                      attrs: {
+                                        href: feed.feed_url,
+                                        target: "_blank"
+                                      }
+                                    },
+                                    [_vm._v("Download")]
                                   )
-                                ]
+                                ],
+                                1
                               ),
-                              _vm._v("|\n\t\t\t\t\t\t\t"),
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      _vm.deleteFeed(feed.ID)
-                                    }
-                                  }
-                                },
-                                [_vm._v("Delete")]
-                              ),
-                              _vm._v("|\n\t\t\t\t\t\t\t"),
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      _vm.createFeedFile(feed.ID, feed)
-                                    }
-                                  }
-                                },
-                                [_vm._v("Refresh")]
-                              ),
-                              _vm._v("|\n\t\t\t\t\t\t\t"),
                               _vm._v(" "),
                               _c(
-                                "a",
+                                "div",
                                 {
-                                  ref: "noopener",
-                                  refInFor: true,
-                                  attrs: {
-                                    href: feed.feed_url,
-                                    target: "_blank"
-                                  }
+                                  class: feed.refreshStatus
+                                    ? "progress-bar-left-normal progress-wrap"
+                                    : "progress-bar-left-minues progress-wrap"
                                 },
-                                [_vm._v("Download")]
+                                [
+                                  _c("div", { class: "progress-bar" }, [
+                                    _c("div", {
+                                      staticClass: "bar completed",
+                                      style: "width:" + _vm.width + "%"
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "number" }, [
+                                    _vm._v(_vm._s(_vm.width + "%"))
+                                  ])
+                                ]
                               )
-                            ],
-                            1
-                          )
+                            ])
+                          ])
                         ])
                       ]
                     : _vm._e()
                 }),
                 _vm._v(" "),
-                !_vm.feeds.length ? [_vm._m(1)] : _vm._e()
+                _vm.loading ? [_vm._m(1)] : _vm._e(),
+                _vm._v(" "),
+                !_vm.loading && !_vm.feeds.length ? [_vm._m(2)] : _vm._e()
               ],
               2
             )
@@ -3990,6 +4212,28 @@ var staticRenderFns = [
         _c("th", [_vm._v("Feed Name")]),
         _vm._v(" "),
         _c("th", { staticClass: "third" }, [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "2" } }, [
+        _c("div", { staticClass: "loadmoreanimation" }, [
+          _c("div", { staticClass: "load-spinner" }, [
+            _c("div", { staticClass: "rect1" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "rect2" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "rect3" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "rect4" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "rect5" })
+          ])
+        ])
       ])
     ])
   },
@@ -4130,7 +4374,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.woogool-new-feed-form {\n  background: #f8f8f8;\n  border: 1px solid #ddd;\n  border-top: none;\n}\n.woogool-new-feed-form .button-group {\n  display: flex;\n  margin-bottom: 12px;\n  margin-top: 12px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .button,\n.woogool-new-feed-form .button-group .third-btn-wrap .button {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .second-btn,\n.woogool-new-feed-form .button-group .third-btn-wrap .second-btn {\n  margin-right: 3px;\n}\n.woogool-new-feed-form .button-group .btn-wrap {\n  padding-left: 10px;\n  flex: 1;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap {\n  padding-right: 10px;\n  display: flex;\n  align-items: center;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .woogool-spinner {\n  margin-right: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.woogool-new-feed-form {\n  background: #f8f8f8;\n  border: 1px solid #ddd;\n  border-top: none;\n}\n.woogool-new-feed-form .button-group {\n  display: flex;\n  margin-bottom: 12px;\n  margin-top: 12px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .button,\n.woogool-new-feed-form .button-group .third-btn-wrap .button {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .second-btn,\n.woogool-new-feed-form .button-group .third-btn-wrap .second-btn {\n  margin-right: 3px;\n}\n.woogool-new-feed-form .button-group .btn-wrap {\n  padding-left: 10px;\n  flex: 1;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap {\n  padding-right: 10px;\n  display: flex;\n  align-items: center;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .woogool-spinner {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .cancel-btn {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .progress-bar {\n  width: 52px;\n  background: #D7DEE2;\n  height: 5px;\n  border-radius: 3px;\n  margin: 3px 0 0 0;\n}\n.woogool-new-feed-form .completed {\n  background: #1A9ED4;\n  height: 5px;\n  border-radius: 3px;\n}\n.woogool-new-feed-form .progress-bar-left-normal {\n  position: relative;\n  left: 0;\n}\n.woogool-new-feed-form .progress-bar-left-minues {\n  position: relative;\n  left: -9999em;\n}\n.woogool-new-feed-form .progress-wrap {\n  display: flex;\n  align-items: center;\n  margin-right: 10px;\n}\n.woogool-new-feed-form .progress-wrap .number {\n  line-height: 1;\n  font-size: 10px;\n  margin-left: 10px;\n}\n", ""]);
 
 // exports
 
@@ -5672,7 +5916,7 @@ var render = function() {
                               domProps: {
                                 value: attrKey,
                                 selected:
-                                  logical.if == attrKey ? "selected" : ""
+                                  logical.if_cond == attrKey ? "selected" : ""
                               }
                             },
                             [
@@ -5981,59 +6225,25 @@ var render = function() {
     [
       _c("feed-header"),
       _vm._v(" "),
-      _c(
-        "form",
-        {
-          staticClass: "woogool-new-feed-form",
-          attrs: { action: "", method: "post" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              _vm.submit()
-            }
-          }
-        },
-        [
-          _c("form-header", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.stage.step == "first",
-                expression: "stage.step == 'first'"
+      _vm.loading
+        ? _c("div", { staticClass: "loadmoreanimation" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.loading
+        ? _c(
+            "form",
+            {
+              staticClass: "woogool-new-feed-form",
+              attrs: { action: "", method: "post" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  _vm.submit()
+                }
               }
-            ],
-            attrs: { header: _vm.header, stage: _vm.stage }
-          }),
-          _vm._v(" "),
-          _c("form-content", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.stage.step == "second",
-                expression: "stage.step == 'second'"
-              }
-            ],
-            attrs: { gAttrs: _vm.gAttrs, stage: _vm.stage }
-          }),
-          _vm._v(" "),
-          _c("form-logic", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.stage.step == "third",
-                expression: "stage.step == 'third'"
-              }
-            ],
-            attrs: { logic: _vm.logic, stage: _vm.stage }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "button-group" }, [
-            _c(
-              "div",
-              {
+            },
+            [
+              _c("form-header", {
                 directives: [
                   {
                     name: "show",
@@ -6042,29 +6252,10 @@ var render = function() {
                     expression: "stage.step == 'first'"
                   }
                 ],
-                staticClass: "btn-wrap first-btn-wrap"
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.changeStage("second")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("Next"))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
+                attrs: { header: _vm.header, stage: _vm.stage }
+              }),
+              _vm._v(" "),
+              _c("form-content", {
                 directives: [
                   {
                     name: "show",
@@ -6073,59 +6264,10 @@ var render = function() {
                     expression: "stage.step == 'second'"
                   }
                 ],
-                staticClass: "btn-wrap second-btn-wrap"
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.changeStage("first")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("Prev"))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.addMappingField()
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("Add mapping field"))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.changeStage("third")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("Next"))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
+                attrs: { gAttrs: _vm.gAttrs, stage: _vm.stage }
+              }),
+              _vm._v(" "),
+              _c("form-logic", {
                 directives: [
                   {
                     name: "show",
@@ -6134,102 +6276,286 @@ var render = function() {
                     expression: "stage.step == 'third'"
                   }
                 ],
-                staticClass: "btn-wrap third-btn-wrap"
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.changeStage("second")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("Prev"))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "button second-btn button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.addFields("filter")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("+ Filter"))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.addFields("rule")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("+ Rule"))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "button button-primary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.addFields("value")
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s("+ Value"))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "save-btn-wrap" }, [
-              _vm.isActiveSpinner
-                ? _c("span", { staticClass: "woogool-spinner" })
-                : _vm._e(),
+                attrs: { logic: _vm.logic, stage: _vm.stage }
+              }),
               _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "button button-primary save-btn",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.submit()
-                    }
-                  }
-                },
-                [_vm._v(_vm._s("Save"))]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "woogool-clearfix" })
-            ])
-          ])
-        ],
-        1
-      )
+              _c("div", { staticClass: "button-group" }, [
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stage.step == "first",
+                        expression: "stage.step == 'first'"
+                      }
+                    ],
+                    staticClass: "btn-wrap first-btn-wrap"
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.changeStage("second")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("Next"))]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stage.step == "second",
+                        expression: "stage.step == 'second'"
+                      }
+                    ],
+                    staticClass: "btn-wrap second-btn-wrap"
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.changeStage("first")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("Prev"))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.addMappingField()
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("Add mapping field"))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.changeStage("third")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("Next"))]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stage.step == "third",
+                        expression: "stage.step == 'third'"
+                      }
+                    ],
+                    staticClass: "btn-wrap third-btn-wrap"
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.changeStage("second")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("Prev"))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button second-btn button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.addFields("filter")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("+ Filter"))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.addFields("rule")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("+ Rule"))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button button-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.addFields("value")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s("+ Value"))]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "save-btn-wrap" }, [
+                  _vm.isActiveSpinner
+                    ? _c(
+                        "div",
+                        {
+                          class: _vm.refreshStatus
+                            ? "progress-bar-left-normal progress-wrap"
+                            : "progress-bar-left-minues progress-wrap"
+                        },
+                        [
+                          _c("div", { class: "progress-bar" }, [
+                            _c("div", {
+                              staticClass: "bar completed",
+                              style: "width:" + _vm.width + "%"
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "number" }, [
+                            _vm._v(_vm._s(_vm.width + "%"))
+                          ])
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.isActiveSpinner
+                    ? _c("span", { staticClass: "woogool-spinner" })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.feed_id
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "button button-secondary cancel-btn",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.cancel()
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s("Cancel"))]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.feed_id
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "button button-primary save-btn",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.submit()
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s("Update"))]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.feed_id
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "button button-primary save-btn",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.submit()
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s("Save"))]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "woogool-clearfix" })
+                ])
+              ])
+            ],
+            1
+          )
+        : _vm._e()
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "load-spinner" }, [
+      _c("div", { staticClass: "rect1" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "rect2" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "rect3" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "rect4" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "rect5" })
+    ])
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -6617,6 +6943,47 @@ if (false) {
 
 
 woogool.Vue.component('vue-woogool-multiselect', window.VueMultiselect.default);
+
+/***/ }),
+/* 96 */,
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(98);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("3e1cfaa6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e0c5eaf\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/less-loader/dist/cjs.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./feed-lists.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e0c5eaf\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/less-loader/dist/cjs.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./feed-lists.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.woogool-feed-lists-wrap .progress-bar {\n  width: 52px;\n  background: #D7DEE2;\n  height: 5px;\n  border-radius: 3px;\n  margin: 3px 0 0 0;\n}\n.woogool-feed-lists-wrap .completed {\n  background: #1A9ED4;\n  height: 5px;\n  border-radius: 3px;\n}\n.woogool-feed-lists-wrap .progress-bar-left-normal {\n  position: relative;\n  left: 0;\n}\n.woogool-feed-lists-wrap .progress-bar-left-minues {\n  position: relative;\n  left: -9999em;\n}\n.woogool-feed-lists-wrap .progress-wrap {\n  display: flex;\n  align-items: center;\n}\n.woogool-feed-lists-wrap .progress-wrap .number {\n  line-height: 1;\n  font-size: 10px;\n  margin-left: 10px;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

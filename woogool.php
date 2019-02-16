@@ -74,6 +74,7 @@ if ( ! class_exists('WP_WooGool') ) {
          * @return void
          */
         function __construct() {
+
             $this->init();
             $this->instantiate();
 
@@ -84,7 +85,7 @@ if ( ! class_exists('WP_WooGool') ) {
             add_action( 'admin_init', array( $this, 'delete_product' ) );
             add_action( 'settings_text_field', array( $this, 'settings_text_field' ), 10, 2 );
             add_action( 'admin_enqueue_scripts', array( $this, 'scripts') );
-
+        
             do_action( 'woogool_after_loaded' );
         }
 
