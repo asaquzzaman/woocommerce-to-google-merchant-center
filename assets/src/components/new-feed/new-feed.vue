@@ -1,6 +1,9 @@
 <template>
-	<div class="">
+	<div class="woogool-new-feed-warp">
 		<feed-header></feed-header>
+		<div v-if="!is_pro()" class="woogool-notice-warning">
+	        <div>With this free verion you can generate only 20 products feed. For getting unlimited go with <a target="_blank" href="http://wpspear.com/product-feed/">pro version</a></div>
+	    </div>
 
 		<div v-if="loading" class="loadmoreanimation">
 	        <div class="load-spinner">
@@ -59,6 +62,15 @@
 </template>
 
 <style lang="less">
+	.woogool-new-feed-warp {
+		.woogool-notice-warning {
+			margin: 0px 0 1px;
+			background: #fff;
+		    border-left: 4px solid #ffb900;
+		    box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+		    padding: 8px 12px;
+		}
+	}
 	.woogool-new-feed-form {
 		background: #f8f8f8;
     	border: 1px solid #ddd;
@@ -253,6 +265,7 @@
 
 	                	if(percent >= 100) {
 	                		self.refreshStatus = false;
+	                		self.cancel();
 	                	}
 	                }
 	            }
@@ -297,7 +310,7 @@
 				this.gAttrs = feed.contentAttrs;
 			},
 
-			setLogic (feed) {
+			setLogic (feed) {						
 				this.logic = feed.logic;
 			}
 		},

@@ -10,8 +10,9 @@
 		<div class="woogool-individual-field-wrap">
 			<label for="enable-product-variation" class="woogool-label">Enable product variations</label>
 			<div class="field-action-wrap">
-				<input id="enable-product-variation" type="checkbox" v-model="header.activeVariation" class="woogool-field">
+				<input v-if="is_pro()" id="enable-product-variation" type="checkbox" v-model="header.activeVariation" class="woogool-field">
 			</div>
+			<span v-if="!is_pro()">This feature is available for <a target="_blank" href="http://wpspear.com/product-feed/">pro version</a></span>
 		</div>
 
 		<div class="woogool-individual-field-wrap">

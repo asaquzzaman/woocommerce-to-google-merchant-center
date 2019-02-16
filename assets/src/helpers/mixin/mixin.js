@@ -6,6 +6,10 @@ export default {
             return jQuery.ajax(property);
         },
 
+        is_pro() {
+            return parseInt(woogool_var.is_pro) ? true : false;
+        },
+
 		/**
          * Get index from array object element
          *

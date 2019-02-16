@@ -1107,6 +1107,18 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1227,6 +1239,7 @@ if (false) {(function () {
 
 					if (percent >= 100) {
 						self.refreshStatus = false;
+						self.cancel();
 					}
 				}
 			};
@@ -1282,6 +1295,7 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_new_feed_mixin__);
+//
 //
 //
 //
@@ -2166,6 +2180,9 @@ exports.default = {
         httpRequest: function httpRequest(property) {
 
             return jQuery.ajax(property);
+        },
+        is_pro: function is_pro() {
+            return parseInt(woogool_var.is_pro) ? true : false;
         },
 
 
@@ -4374,7 +4391,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.woogool-new-feed-form {\n  background: #f8f8f8;\n  border: 1px solid #ddd;\n  border-top: none;\n}\n.woogool-new-feed-form .button-group {\n  display: flex;\n  margin-bottom: 12px;\n  margin-top: 12px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .button,\n.woogool-new-feed-form .button-group .third-btn-wrap .button {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .second-btn,\n.woogool-new-feed-form .button-group .third-btn-wrap .second-btn {\n  margin-right: 3px;\n}\n.woogool-new-feed-form .button-group .btn-wrap {\n  padding-left: 10px;\n  flex: 1;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap {\n  padding-right: 10px;\n  display: flex;\n  align-items: center;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .woogool-spinner {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .cancel-btn {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .progress-bar {\n  width: 52px;\n  background: #D7DEE2;\n  height: 5px;\n  border-radius: 3px;\n  margin: 3px 0 0 0;\n}\n.woogool-new-feed-form .completed {\n  background: #1A9ED4;\n  height: 5px;\n  border-radius: 3px;\n}\n.woogool-new-feed-form .progress-bar-left-normal {\n  position: relative;\n  left: 0;\n}\n.woogool-new-feed-form .progress-bar-left-minues {\n  position: relative;\n  left: -9999em;\n}\n.woogool-new-feed-form .progress-wrap {\n  display: flex;\n  align-items: center;\n  margin-right: 10px;\n}\n.woogool-new-feed-form .progress-wrap .number {\n  line-height: 1;\n  font-size: 10px;\n  margin-left: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.woogool-new-feed-warp .woogool-notice-warning {\n  margin: 0px 0 1px;\n  background: #fff;\n  border-left: 4px solid #ffb900;\n  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n  padding: 8px 12px;\n}\n.woogool-new-feed-form {\n  background: #f8f8f8;\n  border: 1px solid #ddd;\n  border-top: none;\n}\n.woogool-new-feed-form .button-group {\n  display: flex;\n  margin-bottom: 12px;\n  margin-top: 12px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .button,\n.woogool-new-feed-form .button-group .third-btn-wrap .button {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .second-btn-wrap .second-btn,\n.woogool-new-feed-form .button-group .third-btn-wrap .second-btn {\n  margin-right: 3px;\n}\n.woogool-new-feed-form .button-group .btn-wrap {\n  padding-left: 10px;\n  flex: 1;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap {\n  padding-right: 10px;\n  display: flex;\n  align-items: center;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .woogool-spinner {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .button-group .save-btn-wrap .cancel-btn {\n  margin-right: 10px;\n}\n.woogool-new-feed-form .progress-bar {\n  width: 52px;\n  background: #D7DEE2;\n  height: 5px;\n  border-radius: 3px;\n  margin: 3px 0 0 0;\n}\n.woogool-new-feed-form .completed {\n  background: #1A9ED4;\n  height: 5px;\n  border-radius: 3px;\n}\n.woogool-new-feed-form .progress-bar-left-normal {\n  position: relative;\n  left: 0;\n}\n.woogool-new-feed-form .progress-bar-left-minues {\n  position: relative;\n  left: -9999em;\n}\n.woogool-new-feed-form .progress-wrap {\n  display: flex;\n  align-items: center;\n  margin-right: 10px;\n}\n.woogool-new-feed-form .progress-wrap .number {\n  line-height: 1;\n  font-size: 10px;\n  margin-left: 10px;\n}\n", ""]);
 
 // exports
 
@@ -4564,48 +4581,70 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "field-action-wrap" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.header.activeVariation,
-                expression: "header.activeVariation"
-              }
-            ],
-            staticClass: "woogool-field",
-            attrs: { id: "enable-product-variation", type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.header.activeVariation)
-                ? _vm._i(_vm.header.activeVariation, null) > -1
-                : _vm.header.activeVariation
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.header.activeVariation,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 &&
-                      _vm.$set(_vm.header, "activeVariation", $$a.concat([$$v]))
-                  } else {
-                    $$i > -1 &&
-                      _vm.$set(
-                        _vm.header,
-                        "activeVariation",
-                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                      )
+          _vm.is_pro()
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.header.activeVariation,
+                    expression: "header.activeVariation"
                   }
-                } else {
-                  _vm.$set(_vm.header, "activeVariation", $$c)
+                ],
+                staticClass: "woogool-field",
+                attrs: { id: "enable-product-variation", type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.header.activeVariation)
+                    ? _vm._i(_vm.header.activeVariation, null) > -1
+                    : _vm.header.activeVariation
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.header.activeVariation,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.header,
+                            "activeVariation",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.header,
+                            "activeVariation",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.header, "activeVariation", $$c)
+                    }
+                  }
                 }
-              }
-            }
-          })
-        ])
+              })
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        !_vm.is_pro()
+          ? _c("span", [
+              _vm._v("This feature is available for "),
+              _c(
+                "a",
+                {
+                  attrs: {
+                    target: "_blank",
+                    href: "http://wpspear.com/product-feed/"
+                  }
+                },
+                [_vm._v("pro version")]
+              )
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "woogool-individual-field-wrap" }, [
@@ -6221,12 +6260,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {},
+    { staticClass: "woogool-new-feed-warp" },
     [
       _c("feed-header"),
       _vm._v(" "),
+      !_vm.is_pro()
+        ? _c("div", { staticClass: "woogool-notice-warning" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
       _vm.loading
-        ? _c("div", { staticClass: "loadmoreanimation" }, [_vm._m(0)])
+        ? _c("div", { staticClass: "loadmoreanimation" }, [_vm._m(1)])
         : _vm._e(),
       _vm._v(" "),
       !_vm.loading
@@ -6539,6 +6582,23 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _vm._v(
+        "With this free verion you can generate only 20 products feed. For getting unlimited go with "
+      ),
+      _c(
+        "a",
+        {
+          attrs: { target: "_blank", href: "http://wpspear.com/product-feed/" }
+        },
+        [_vm._v("pro version")]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

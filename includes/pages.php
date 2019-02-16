@@ -5,53 +5,51 @@ function woogool_pages() {
     $woogool_page              = woogool_page_slug();
     $pages['woogool'] = woogool_sigle_product_items( $path );
     $pages['woogool_multiple'] = woogool_multi_product_items( $path );
-    $pages['woogool_tutorial'] = woogool_tutorial( $path );
-    //$pages['woogool_license']  = woogool_license( $path );
 
     return apply_filters( 'woogool_pages', $pages, $path );
 }
 
-function woogool_license( $path ) {
-    $license = array();
+// function woogool_license( $path ) {
+//     $license = array();
 
-    $license = array(
-        'id'        => 'woogool-license',
-        'title'     => __( 'License', 'woogool' ),
-        'file_slug' => 'license/license',
-        'file_path' => $path . '/license/license.php',
-    );
+//     $license = array(
+//         'id'        => 'woogool-license',
+//         'title'     => __( 'License', 'woogool' ),
+//         'file_slug' => 'license/license',
+//         'file_path' => $path . '/license/license.php',
+//     );
 
-    return $license;
-}
+//     return $license;
+// }
 
-function woogool_tutorial( $path ) {
-    $tutorial = array();
+// function woogool_tutorial( $path ) {
+//     $tutorial = array();
 
-    $tutorial = array(
-        'id'        => 'woogool-multi-product',
-        'title'     => __( 'Tutorial', 'woogool' ),
-        'file_slug' => 'tutorial/tutorial',
-        'file_path' => $path . '/tutorial/tutorial.php',
+//     $tutorial = array(
+//         'id'        => 'woogool-multi-product',
+//         'title'     => __( 'Tutorial', 'woogool' ),
+//         'file_slug' => 'tutorial/tutorial',
+//         'file_path' => $path . '/tutorial/tutorial.php',
 
-        'submenu' => array(
-            'single' => array(
-                'id'        => 'woogool-single-tutorial',
-                'title'     => __( 'Single Product', 'woogool' ),
-                'file_slug' => 'tutorial/single',
-                'file_path' => $path . '/tutorial/single.php',
-            ),
+//         'submenu' => array(
+//             'single' => array(
+//                 'id'        => 'woogool-single-tutorial',
+//                 'title'     => __( 'Single Product', 'woogool' ),
+//                 'file_slug' => 'tutorial/single',
+//                 'file_path' => $path . '/tutorial/single.php',
+//             ),
 
-            'multiple' => array(
-                'id'        => 'woogool-multi-product-tutorial',
-                'title'     => __( 'Multiple Product', 'hrm' ),
-                'file_slug' => 'tutorial/multiple',
-                'file_path' => $path . '/tutorial/multiple.php',
-            )
-        ),
-    );
+//             'multiple' => array(
+//                 'id'        => 'woogool-multi-product-tutorial',
+//                 'title'     => __( 'Multiple Product', 'hrm' ),
+//                 'file_slug' => 'tutorial/multiple',
+//                 'file_path' => $path . '/tutorial/multiple.php',
+//             )
+//         ),
+//     );
 
-    return $tutorial;
-}
+//     return $tutorial;
+// }
 
 function woogool_multi_product_items( $path ) {
 	$multi = array();
@@ -122,6 +120,13 @@ function woogool_sigle_product_items( $path ) {
         'title'     => __( 'Settings', 'hrm' ),
         'file_slug' => 'single/settings',
         'file_path' => $path . '/single/settings.php',
+    );
+
+     $single['tutorial'] = array(
+        'id'        => 'woogool-tutorial',
+        'title'     => __( 'Tutorial', 'hrm' ),
+        'file_slug' => 'single/tutorial',
+        'file_path' => $path . '/single/tutorial.php',
     );
 
     return $single;

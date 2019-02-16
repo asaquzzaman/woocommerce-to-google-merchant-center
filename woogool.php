@@ -135,7 +135,7 @@ if ( ! class_exists('WP_WooGool') ) {
             $this->define( 'WOOGOOL_VERSION', self::$version );
             $this->define( 'WOOGOOL_FEED_PER_PAGE', 2 );
             $this->define( 'WOOGOOL_REQUEST_AMOUNT', 2 );
-            $this->define( 'WOOGOOL_DEBUG', true );
+            $this->define( 'WOOGOOL_DEBUG', false );
         }
 
         /**
@@ -264,6 +264,7 @@ if ( ! class_exists('WP_WooGool') ) {
                 'google_extra_attr_fields'    => [],
                 'request_amount' => WOOGOOL_REQUEST_AMOUNT,
                 'feed_per_page' => WOOGOOL_FEED_PER_PAGE,
+                
             ));
 
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
@@ -286,6 +287,7 @@ if ( ! class_exists('WP_WooGool') ) {
                 'country_details'    => json_encode( woogool_country_details() ),
                 'is_admin'           => is_admin() ? 'yes' : 'no',
                 'dir_url'            => plugin_dir_url( __FILE__ ),
+                'is_pro' => class_exists( 'WP_WooGool_Pro' ) ? 1 : 0
             ));
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
             wp_enqueue_style( 'woogool-style', plugins_url( 'assets/css/woogool.css', __FILE__ ) );
@@ -296,7 +298,7 @@ if ( ! class_exists('WP_WooGool') ) {
          * @return void
          */
         function admin_menu() {
-            $woogool = add_menu_page( __( 'WooGool Feed', 'woogool' ), __( 'WooGool Feed', 'woogool' ), 'read', 'woogool', array( $this, 'woogool_page' ) );
+            $woogool = add_menu_page( __( 'WooGool Feed', 'woogool' ), __( 'WooGool Feed', 'woogool' ), 'read', 'woogool', array( $this, 'woogool_page' ), 'dashicons-rss' );
             $woogool_single = add_submenu_page( 'woogool', __( 'Individual Product', 'woogool' ), __( 'Individual Product', 'woogool' ), 'read', 'woogool' , array( $this, 'woogool_page' ) );
             $woogool_multi = add_submenu_page( 'woogool', __( 'Multiple Products', 'woogool' ), __( 'Multiple Products', 'woogool' ), 'read', 'woogool_multiple', array( $this, 'woogool_page' ) );
             

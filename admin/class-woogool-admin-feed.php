@@ -151,8 +151,9 @@ class WooGool_Admin_Feed {
         
         $settings         = get_post_meta( $feed_id );
         
-        $postdata['page'] = empty( $postdata['page'] ) ? 0 : $postdata['page'];
-        $page             = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
+        //$postdata['page'] = empty( $postdata['page'] ) ? 0 : $postdata['page'];
+        //$page             = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
+        
         $products         = $this->xml_get_products( $feed_id, $page=false, $offset );
         
         $file             = $this->get_file_path( $feed_id );
@@ -243,19 +244,17 @@ class WooGool_Admin_Feed {
             $xml->asXML( $file );
         }
 
+        $return = [
+            'has_product' => apply_filters( 'woogool_has_product', false, $products ),  //empty( $products ) ? false : true,
+            'offset'      => apply_filters( 'woogool_offset', 20, $offset ), //$offset,
+            'found_posts' => apply_filters( 'woogool_found_posts', 20, $this->found_posts ) //$this->found_posts
+        ];
+
         if ( $this->time_exceeded() || $this->memory_exceeded() ) {
-            return [
-                'has_product' => empty( $products ) ? false : true,
-                'offset'      => $offset,
-                'found_posts' => $this->found_posts
-            ];
+            return $return;
         }
 
-        return [
-            'has_product' => empty( $products ) ? false : true,
-            'offset'      => $offset,
-            'found_posts' => $this->found_posts
-        ];
+        return $return;
     }
 
     function is_exclude_from_filter( $wc_product, $logic ) {
@@ -436,120 +435,13 @@ class WooGool_Admin_Feed {
 
         $logic = isset( $post['logic'] ) ? $post['logic'] : [];
         update_post_meta( $post_id, 'logic', $logic );
-
-       
-        // $all_products = isset( $post['all_products'] ) ? $post['all_products'] : 0;
-        // update_post_meta( $post_id, '_all_products', $all_products );
-
-        // $products = isset( $post['xml_count'] ) ? $post['xml_count'] : array();
-        // update_post_meta( $post_id, '_xml_count', $products );
-
-        // $woogool_description = isset( $post['woogool_description'] ) ? $post['woogool_description'] : array();
-        // update_post_meta( $post_id, '_woogool_description', $woogool_description );
-
-        // $products_cat = isset( $post['products_cat'] ) ? $post['products_cat'] : array();
-        // update_post_meta( $post_id, '_products_cat', $products_cat );
-
-        // $var_products = isset( $post['variable_products'] ) ? $post['variable_products'] : 'no';
-        // update_post_meta( $post_id, '_woogool_include_variable_products', $var_products );
-
-        // $google_product_category = isset( $post['google_product_category'] ) ? $post['google_product_category'] : '';
-        // update_post_meta( $post_id, '_google_product_category', $google_product_category );
-
-        // $product_type = isset( $post['product_type'] ) ? $post['product_type'] : '';
-        // update_post_meta( $post_id, '_product_type', $product_type );
-
-        // $availability = isset( $post['availability'] ) ? $post['availability'] : '';
-        // update_post_meta( $post_id, '_availability', $availability );
-
-        // $availability_date = isset( $post['availability_date'] ) ? $post['availability_date'] : '';
-        // update_post_meta( $post_id, '_availability_date', $availability_date );
-
-        // $condition = isset( $post['condition'] ) ? $post['condition'] : '';
-        // update_post_meta( $post_id, '_condition', $condition );
-
-        // $brand = isset( $post['brand'] ) ? $post['brand'] : '';
-        // update_post_meta( $post_id, '_brand', $brand );
-
-        // $mpn = isset( $post['mpn'] ) ? $post['mpn'] : '';
-        // update_post_meta( $post_id, '_mpn', $mpn );
-
-        // $gtin = isset( $post['gtin'] ) ? $post['gtin'] : '';
-        // update_post_meta( $post_id, '_gtin', $gtin );
-
-        // $gender = isset( $post['gender'] ) ? $post['gender'] : '';
-        // update_post_meta( $post_id, '_gender', $gender );
-
-        // $age_group = isset( $post['age_group'] ) ? $post['age_group'] : '';
-        // update_post_meta( $post_id, '_age_group', $age_group );
-
-        // $color = isset( $post['color'] ) ? $post['color'] : '';
-        // update_post_meta( $post_id, '_color', $color );
-
-        // $size = isset( $post['size'] ) ? $post['size'] : '';
-        // update_post_meta( $post_id, '_size', $size );
-
-        // $size_type = isset( $post['size_type'] ) ? $post['size_type'] : '';
-        // update_post_meta( $post_id, '_size_type', $size_type );
-
-        // $size_system = isset( $post['size_system'] ) ? $post['size_system'] : '';
-        // update_post_meta( $post_id, '_size_system', $size_system );
-
-        // $expiration_date = isset( $post['expiration_date'] ) ? $post['expiration_date'] : '';
-        // update_post_meta( $post_id, '_expiration_date', $expiration_date );
-
-        // $sale_price = isset( $post['sale_price'] ) ? $post['sale_price'] : 'no';
-        // update_post_meta( $post_id, '_sale_price', $sale_price );
-
-        // $sale_price_effective_date = isset( $post['sale_price_effective_date'] ) ? $post['sale_price_effective_date'] : 'no';
-        // update_post_meta( $post_id, '_sale_price_effective_date', $sale_price_effective_date );
-
-        // $custom_label_0 = isset( $post['custom_label_0'] ) ? $post['custom_label_0'] : '';
-        // update_post_meta( $post_id, '_custom_label_0', $custom_label_0 );
-
-        // $custom_label_1 = isset( $post['custom_label_1'] ) ? $post['custom_label_1'] : '';
-        // update_post_meta( $post_id, '_custom_label_1', $custom_label_1 );
-
-        // $custom_label_2 = isset( $post['custom_label_2'] ) ? $post['custom_label_2'] : '';
-        // update_post_meta( $post_id, '_custom_label_2', $custom_label_2 );
-
-        // $custom_label_3 = isset( $post['custom_label_3'] ) ? $post['custom_label_3'] : '';
-        // update_post_meta( $post_id, '_custom_label_3', $custom_label_3 );
-
-        // $custom_label_4 = isset( $post['custom_label_4'] ) ? $post['custom_label_4'] : '';
-        // update_post_meta( $post_id, '_custom_label_4', $custom_label_4 );
-
-        // $promotion_id = isset( $post['promotion_id'] ) ? $post['promotion_id'] : '';
-        // update_post_meta( $post_id, '_promotion_id', $promotion_id );
-
-        // $promotion_id = isset( $post['identifier_exists'] ) ? $post['identifier_exists'] : '';
-        // update_post_meta( $post_id, '_identifier_exists', $promotion_id );
-
-        // $cat_map = isset( $post['cat_map'] ) ? $post['cat_map'] : array();
-        // update_post_meta( $post_id, '_cat_map', $cat_map );
-
-        // $woogool_price = isset( $post['woogool_price'] ) ? $post['woogool_price'] : '';
-        // update_post_meta( $post_id, '_woogool_price', $woogool_price );
-
-        // $woogool_adult = isset( $post['woogool_adult'] ) ? $post['woogool_adult'] : '';
-        // update_post_meta( $post_id, '_woogool_adult', $woogool_adult );
-
-        // $woogool_is_bundle = isset( $post['woogool_is_bundle'] ) ? $post['woogool_is_bundle'] : '';
-        // update_post_meta( $post_id, '_woogool_is_bundle', $woogool_is_bundle );
-
-        // $woogool_multipack = isset( $post['woogool_multipack'] ) ? $post['woogool_multipack'] : '';
-        // update_post_meta( $post_id, '_woogool_multipack', $woogool_multipack );
-
-        // $woogool_material = isset( $post['woogool_material'] ) ? $post['woogool_material'] : '';
-        // update_post_meta( $post_id, '_woogool_material', $woogool_material );
-
-        // $woogool_pattern = isset( $post['woogool_pattern'] ) ? $post['woogool_pattern'] : '';
-        // update_post_meta( $post_id, '_woogool_pattern', $woogool_pattern );
     }
 
     function xml_get_products( $feed_id, $page=false, $offset=false ) {
+        $per_page = apply_filters( 'woogool_feed_per_page', 20 );
+        
         if ( $offset === false ) {
-            $offset   = ( $page - 1 ) * WOOGOOL_FEED_PER_PAGE;
+            $offset   = ( $page - 1 ) * $per_page;
         } 
          
         $feed_by_cat = get_post_meta( $feed_id, 'feed_by_category', true );
@@ -568,11 +460,11 @@ class WooGool_Admin_Feed {
                 )
             );
 
-            $query = woogool_get_products( WOOGOOL_FEED_PER_PAGE,  $offset, $tax_query );
+            $query = woogool_get_products( $per_page,  $offset, $tax_query );
             $this->found_posts = $query->found_posts;
 
         } else {
-            $query = woogool_get_products( WOOGOOL_FEED_PER_PAGE, $offset );
+            $query = woogool_get_products( $per_page, $offset );
             $this->found_posts = $query->found_posts;
         }
 
@@ -769,101 +661,7 @@ class WooGool_Admin_Feed {
     }
 
 
-    function xml_for_product_variation( $wc_product,  $attr, $get_attrs ) {
-
-        //$product_id         = $wc_product->id; 
-        $product_id         = $wc_product->get_id(); 
-        $variation_product_id  = $attr['variation_id'];
-        
-        $size_attr          = $this->get_variable_size_attr( $attr );
-        $color_attr         = $this->get_variable_color_attr( $attr ); 
-        $brand              = $this->get_brand();
-        
-        $currency           = get_woocommerce_currency();
-        
-        $post_title         = $wc_product->get_title();
-        $description        = empty( $attr['variation_description'] ) ? $this->get_description( $wc_product ) : strip_tags( html_entity_decode( stripslashes( nl2br( $attr['variation_description'] ) ) ) );
-        $link               = $wc_product->get_permalink();
-        $feed_image_url     = ! empty( $attr['image_src'] ) ? $attr['image_src'] : wp_get_attachment_url( $wc_product->get_image_id() );
-        $condition          = $this->get_condition();
-        $availability       = $this->get_availability();
-        $category           = $this->get_category( $wc_product );
-        $availability_date  = $this->get_availability_date();
-        $availability_value = $this->get_availability_value( $availability_date );
-        $sku_as_mpn         = $this->get_variable_mpn( $attr );
-        $gender             = $this->get_gender();
-        $age_group          = $this->get_age_group();
-        $size_type          = $this->get_size_type();
-        $size_system        = $this->get_size_system();
-        $custom_label_0     = $this->get_custom_label_0();
-        $custom_label_1     = $this->get_custom_label_1();
-        $custom_label_2     = $this->get_custom_label_2();
-        $custom_label_3     = $this->get_custom_label_3();
-        $custom_label_4     = $this->get_custom_label_4();
-        $promotion_id       = $this->get_promotion_id();
-        $identifier         = $this->get_identifier();
-        $expiration_date    = $this->get_expiration_date();
-        $gtin               = $this->set_gtin( $product_id, $variation_product_id );
-        
-        $price              = $this->variable_product_regular_price( $attr );
-        $sale_price         = $this->variable_product_sale_price( $attr );
-        
-        $description = preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $description );
-        $description = str_replace( ']]>', ']]]]><![CDATA[>', $description );
-        $description = substr( $description, 0, 5000 );
-        //$description = html_entity_decode( $description, ENT_HTML401 | ENT_QUOTES );
-        $description = iconv('UTF-8', 'ASCII//TRANSLIT', $description );
-        $description = trim( $description );
-        
-        $effective_date = $this->get_sale_price_effective_date( $variation_product_id ); 
-        $adult          = $this->adult();
-        $is_bundle      = $this->is_bundle();
-        $multipack      = $this->multipack() ;
-        $material       = $this->material();
-        $pattern        = $this->pattern();
-
-        echo  "       <item>\n";
-        echo  "           <g:id><![CDATA[$variation_product_id]]></g:id>\n";
-        echo  "           <g:item_group_id><![CDATA[$product_id]]></g:item_group_id>\n";
-        echo  "           <title><![CDATA[$post_title]]></title>\n";
-        echo  "           <description><![CDATA[$description]]></description>\n";
-        echo  "           <link><![CDATA[$link]]></link>\n";
-        echo  "           <g:image_link><![CDATA[$feed_image_url]]></g:image_link>\n";
-        echo  "           <g:condition><![CDATA[$condition]]></g:condition>\n";
-        echo  "           <g:availability><![CDATA[$availability]]></g:availability>\n";
-        echo  $price ? "           <g:price><![CDATA[$price $currency]]></g:price>\n" : '';
-        echo  $category ?  "          <g:google_product_category><![CDATA[$category]]></g:google_product_category>\n" : '';
-        //echo  $type ? "           <g:product_type>$type</g:product_type>\n" : '';
-        echo  $availability_date ? "          <g:availability_date><![CDATA[$availability_value]]></g:availability_date>\n" : '';
-        echo  ! empty( $sale_price ) ? "          <g:sale_price><![CDATA[$sale_price $currency]]></g:sale_price>\n" : '';
-        echo  $sku_as_mpn ? "         <g:mpn><![CDATA[$sku_as_mpn]]></g:mpn>\n" : '';
-        echo  $gtin ? "         <g:gtin><![CDATA[$gtin]]></g:gtin>\n" : '';
-        echo  $gender ? "         <g:gender><![CDATA[$gender]]></g:gender>\n" : '';
-        echo  $age_group ? "          <g:age_group><![CDATA[$age_group]]></g:age_group>\n" : '';
-        echo  $brand ? "          <g:brand><![CDATA[$brand]]></g:brand>\n" : '';
-        echo  $expiration_date ? "          <g:expiration_date><![CDATA[$expiration_date]]></g:expiration_date>\n" : '';
-        echo  $size_type ? "          <g:size_type><![CDATA[$size_type]]></g:size_type>\n" : '';
-        echo  $size_system ? "            <g:size_system><![CDATA[$size_system]]></g:size_system>\n" : '';
-        echo  $is_bundle ? "       <g:is_bundle><![CDATA[$is_bundle]]></g:is_bundle>\n" : '';
-        echo  $multipack ? "       <g:multipack><![CDATA[$multipack]]></g:multipack>\n" : '';
-        echo  $material ? "       <g:material><![CDATA[$material]]></g:material>\n" : '';
-        echo  $pattern ? "       <g:pattern><![CDATA[$pattern]]></g:pattern>\n" : '';
-        echo  $effective_date ? "         <g:sale_price_effective_date><![CDATA[$effective_date]]></g:sale_price_effective_date>\n" : '';
-        echo  $custom_label_0 ? "         <g:custom_label_0><![CDATA[$custom_label_0]]></g:custom_label_0>\n" : '';
-        echo  $custom_label_1 ? "         <g:custom_label_1><![CDATA[$custom_label_1]]></g:custom_label_1>\n" : '';
-        echo  $custom_label_2 ? "         <g:custom_label_2><![CDATA[$custom_label_2]]></g:custom_label_2>\n" : '';
-        echo  $custom_label_3 ? "         <g:custom_label_3><![CDATA[$custom_label_3]]></g:custom_label_3>\n" : '';
-        echo  $custom_label_4 ? "         <g:custom_label_4><![CDATA[$custom_label_4]]></g:custom_label_4>\n" : '';
-        echo  $promotion_id ? "           <g:promotion_id><![CDATA[$promotion_id]]></g:promotion_id>\n" : '';
-        echo  $adult ? "                  <g:adult><![CDATA[$adult]]></g:adult>\n" : '';
-        echo  $color_attr ? "         <g:color><![CDATA[$color_attr]]></g:color>\n" : '';
-        echo  $size_attr ? "          <g:size><![CDATA[$size_attr]]></g:size>\n" : '';
-        echo  $identifier ? "         <g:identifier_exists><![CDATA[$identifier]]></g:identifier_exists>\n" : '';
-
-
-        echo  "       </item>\n";
-        return true;
-    }
+   
 
     function multipack() {
         $feed_settings = $this->feed_settings;
