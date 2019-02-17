@@ -435,10 +435,10 @@ function woopr() {
 }
 
 function woogool_log($type = '', $msg = '') {
-    if ( WP_DEBUG == true ) {
+    //if ( WP_DEBUG == true ) {
         $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, print_r($msg, true) );
         error_log( $msg, 3, WOOGOOL_PATH . '/tmp/woogool-debug.log' );
-    }
+    //}
 }
 
 function woogool_get_feed_file_path( $feed_id ) {

@@ -1,7 +1,7 @@
 <?php
-$countries = array(
+return array(
 	'AF' => __( 'Afghanistan', 'woogool' ),
-	'AX' => __( '&#197;land Islands', 'woogool' ),
+	'AX' => __( 'Islands', 'woogool' ),
 	'AL' => __( 'Albania', 'woogool' ),
 	'DZ' => __( 'Algeria', 'woogool' ),
 	'AD' => __( 'Andorra', 'woogool' ),

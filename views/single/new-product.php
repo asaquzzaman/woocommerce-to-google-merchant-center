@@ -33,16 +33,23 @@ foreach ( $products as $key => $product) {
     $product_log[$product->ID] = $product->post_title;
 }
 
+
+
 if ( isset( $_GET['product_id'] ) && intval( $_GET['product_id'] ) ) {
     $product_id    = $_GET['product_id']; 
 } else {
     $product_id    = get_user_meta( get_current_user_id(), 'woogool_product_id', true  );    
 }
 
+$has_product = get_post( $product_id );
+
+if ( ! $has_product ) {
+    $product_id = 0;
+}
 
 $product       = get_post_meta( $product_id, 'woogool_product', true );
 $product       = empty( $product ) ? array() : $product;
-$wc_product    = new WC_Product( $product_id );
+$wc_product    = new WC_Product( $product_id ); 
 $product_price = $wc_product->get_price();
 $sku           = $wc_product->get_sku();
 $link          = $wc_product->get_permalink();

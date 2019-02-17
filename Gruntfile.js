@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                     '!phpunit.xml.dist',
                     '!webpack.config.js',
                     '!tmp/**',
-                    '!views/assets/src/**',
+                    '!assets/src/**',
                     '!debug.log',
                     '!phpunit.xml',
                     '!export.sh',
@@ -66,18 +66,18 @@ module.exports = function(grunt) {
             main: {
                 options: {
                     mode: 'zip',
-                    archive: './build/wedevs-project-manager-v' + pkg.version + '.zip'
+                    archive: './build/woocommerce-to-google-merchant-center-v' + pkg.version + '.zip'
                 },
                 expand: true,
                 cwd: 'build/',
                 src: ['**/*'],
-                dest: 'wedevs-project-manager'
+                dest: 'woocommerce-to-google-merchant-center'
             }
         },
 
         addtextdomain: {
             options: {
-                textdomain: 'wedevs-project-manager',
+                textdomain: 'woocommerce-to-google-merchant-center',
             },
             update_all_domains: {
                 options: {
@@ -95,18 +95,7 @@ module.exports = function(grunt) {
             reset:{
                 cmd: 'npm',
                 args: ['run', 'build']
-            },
-
-            makepot:{
-                cmd: 'npm',
-                args: ['run', 'makepot']
-            },
-
-            dumpautoload:{
-                cmd: 'composer',
-                args: ['dumpautoload', '-o']
-            },
-
+            }
         }
     });
 

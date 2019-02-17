@@ -88,6 +88,9 @@ function woogool_product_attributes() {
 }
 
 function woogool_get_product_id( $wc_product ) {
+	if(!$wc_product) {
+		return 0;
+	}
 	return $wc_product->get_id();
 }
 function woogool_get_product_compare_id( $wc_product, $settings ) {
@@ -97,6 +100,9 @@ function woogool_get_product_compare_id( $wc_product, $settings ) {
 }
 
 function woogool_get_product_sku( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_sku();
 }
 function woogool_get_product_compare_sku( $wc_product, $settings ) {
@@ -107,6 +113,9 @@ function woogool_get_product_compare_sku( $wc_product, $settings ) {
 }
 
 function woogool_get_product_title( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_title();
 }
 function woogool_get_product_compare_title( $wc_product, $settings ) {
@@ -117,6 +126,9 @@ function woogool_get_product_compare_title( $wc_product, $settings ) {
 }
 
 function woogool_get_product_mother_title( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_title();
 }
 function woogool_get_product_compare_mother_title( $wc_product, $settings ) {
@@ -127,6 +139,9 @@ function woogool_get_product_compare_mother_title( $wc_product, $settings ) {
 }
 
 function woogool_get_product_description( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_description();
 }
 function woogool_get_product_compare_description( $wc_product, $settings ) {
@@ -137,6 +152,9 @@ function woogool_get_product_compare_description( $wc_product, $settings ) {
 }
 
 function woogool_get_product_short_description( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_short_description();
 }
 function woogool_get_product_compare_short_description( $wc_product, $settings ) {
@@ -147,98 +165,148 @@ function woogool_get_product_compare_short_description( $wc_product, $settings )
 }
 
 function woogool_get_product_price( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_price();
 }
 function woogool_get_product_compare_price( $wc_product, $settings ) {
 	$price = woogool_get_product_price( $wc_product, $settings );
 	$price = woogool_compare_with_logical_value( $wc_product, $settings, 'price', $price );
-	if ( empty( $price ) ) return '';
+	if ( empty( $price ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $price ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_regular_price( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_regular_price();
 }
 function woogool_get_product_compare_regular_price( $wc_product, $settings ) {
 	$regular_price = woogool_get_product_regular_price( $wc_product, $settings );
 	$regular_price = woogool_compare_with_logical_value( $wc_product, $settings, 'regular_price', $regular_price );
-	if ( empty( $regular_price ) ) return '';
+	if ( empty( $regular_price ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $regular_price ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_sale_price( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_sale_price();
 }
 function woogool_get_product_compare_sale_price( $wc_product, $settings ) {
 	$sale_price = woogool_get_product_sale_price( $wc_product, $settings );
 	$sale_price = woogool_compare_with_logical_value( $wc_product, $settings, 'sale_price', $sale_price );
-	if ( empty( $sale_price ) ) return '';
+	if ( empty( $sale_price ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $sale_price ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_net_price( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_price() ) );
 }
 function woogool_get_product_compare_net_price( $wc_product, $settings ) {
 	$net_price = woogool_get_product_net_price( $wc_product, $settings );
 	$net_price = woogool_compare_with_logical_value( $wc_product, $settings, 'net_price', $net_price );
-	if ( empty( $net_price ) ) return '';
+	if ( empty( $net_price ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $net_price ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_net_regular_price( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_regular_price() ) );
 }
 function woogool_get_product_compare_net_regular_price( $wc_product, $settings ) {
 	$net_regular_price = woogool_get_product_net_regular_price( $wc_product, $settings );
 	$net_regular_price = woogool_compare_with_logical_value( $wc_product, $settings, 'net_regular_price', $net_regular_price );
-	if ( empty( $net_regular_price ) ) return '';
+	if ( empty( $net_regular_price ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $net_regular_price ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_net_sale_price( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wc_get_price_excluding_tax( $wc_product, array( 'price'=> $wc_product->get_sale_price() ) );
 }
 function woogool_get_product_compare_net_sale_price( $wc_product, $settings ) {
 	$net_sale_price = woogool_get_product_net_sale_price( $wc_product, $settings );
 	$net_sale_price = woogool_compare_with_logical_value( $wc_product, $settings, 'net_sale_price', $net_sale_price );
-	if ( empty( $net_sale_price ) ) return '';
+	if ( empty( $net_sale_price ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $net_sale_price ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_price_forced( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_price() ) );
 }
 function woogool_get_product_compare_price_forced( $wc_product, $settings ) {
 	$price_forced = woogool_get_product_price_forced( $wc_product, $settings );
 	$price_forced = woogool_compare_with_logical_value( $wc_product, $settings, 'price_forced', $price_forced );
-	if ( empty( $price_forced ) ) return '';
+	if ( empty( $price_forced ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $price_forced ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_regular_price_forced( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_regular_price() ) );
 }
 function woogool_get_product_compare_regular_price_forced( $wc_product, $settings ) {
 	$regular_price_forced = woogool_get_product_regular_price_forced( $wc_product, $settings );
 	$regular_price_forced = woogool_compare_with_logical_value( $wc_product, $settings, 'regular_price_forced', $regular_price_forced );
-	if ( empty( $regular_price_forced ) ) return '';
+	if ( empty( $regular_price_forced ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $regular_price_forced ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_sale_price_forced( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wc_get_price_including_tax( $wc_product, array( 'price'=> $wc_product->get_sale_price() ) );
 }
 function woogool_get_product_compare_sale_price_forced( $wc_product, $settings ) {
 	$sale_price_forced = woogool_get_product_sale_price_forced( $wc_product, $settings );
 	$sale_price_forced = woogool_compare_with_logical_value( $wc_product, $settings, 'sale_price_forced', $sale_price_forced );
-	if ( empty( $sale_price_forced ) ) return '';
+	if ( empty( $sale_price_forced ) ) {
+		return '';
+	}
 	return wc_format_localized_price( $sale_price_forced ) .' '. get_woocommerce_currency();
 }
 
 function woogool_get_product_sale_date_from( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$date = $wc_product->get_date_on_sale_from();
-	if ( empty( $date ) ) return '';
+	if ( empty( $date ) ) {
+		return '';
+	}
 	return $date->date('Y-m-d H:i:s');
 }
 function woogool_get_product_compare_sale_date_from( $wc_product, $settings ) {
@@ -259,8 +327,13 @@ function woogool_get_product_compare_sale_date_from( $wc_product, $settings ) {
 }
 
 function woogool_get_product_sale_date_to( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$date = $wc_product->get_date_on_sale_to();
-	if ( empty( $date ) ) return '';
+	if ( empty( $date ) ) {
+		return '';
+	}
 	return $date->date('Y-m-d H:i:s');
 }
 function woogool_get_product_compare_sale_date_to( $wc_product, $settings ) {
@@ -275,6 +348,9 @@ function woogool_get_product_compare_sale_date_to( $wc_product, $settings ) {
 }
 
 function woogool_get_product_sale_price_effective_date( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$start = $wc_product->get_date_on_sale_from();
 	$end   = $wc_product->get_date_on_sale_to();
 
@@ -297,6 +373,9 @@ function woogool_get_product_compare_sale_price_effective_date( $wc_product, $se
 }
 
 function woogool_get_product_link( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_permalink();
 }
 function woogool_get_product_compare_link( $wc_product ) {
@@ -304,6 +383,9 @@ function woogool_get_product_compare_link( $wc_product ) {
 }
 
 function woogool_get_product_currency( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_woocommerce_currency();
 }
 function woogool_get_product_compare_currency( $wc_product, $settings ) {
@@ -311,6 +393,9 @@ function woogool_get_product_compare_currency( $wc_product, $settings ) {
 }
 
 function woogool_get_product_category_slugs( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$product_cats = $wc_product->get_category_ids();
 	$cat_slug = [];
 	foreach ( $product_cats as $key => $cat_id ) {
@@ -321,6 +406,9 @@ function woogool_get_product_category_slugs( $wc_product ) {
 	return $cat_slug;
 }
 function woogool_get_product_category_ids( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_category_ids();
 }
 function woogool_get_product_compare_categories( $wc_product, $settings ) {
@@ -344,6 +432,9 @@ function woogool_get_product_compare_categories( $wc_product, $settings ) {
 }
 
 function woogool_get_product_categorie_links( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 
 	$product_cats = $wc_product->get_category_ids();
 	$cat_links = [];
@@ -370,6 +461,9 @@ function woogool_get_product_compare_categorie_links( $wc_product, $settings ) {
 }
 
 function woogool_get_product_condition( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_condition', true );
 }
 function woogool_get_product_compare_condition( $wc_product, $settings ) {
@@ -378,6 +472,9 @@ function woogool_get_product_compare_condition( $wc_product, $settings ) {
 }
 
 function woogool_get_product_availability( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_stock_status();
 }
 function woogool_get_product_compare_availability( $wc_product, $settings ) {
@@ -390,6 +487,9 @@ function woogool_get_product_compare_availability( $wc_product, $settings ) {
 }
 
 function woogool_get_product_stock_quantity( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_stock_quantity();
 }
 function woogool_get_product_compare_stock_quantity( $wc_product, $settings ) {
@@ -399,6 +499,9 @@ function woogool_get_product_compare_stock_quantity( $wc_product, $settings ) {
 }
 
 function woogool_get_product_exclude_from_catalog( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$catalog = 'no';
 	
 	$visibility_list = wp_get_post_terms( $wc_product->get_id(), 'product_visibility', array( 'fields' => 'all' ) );
@@ -413,6 +516,9 @@ function woogool_get_product_exclude_from_catalog( $wc_product ) {
 }
 
 function woogool_get_product_exclude_from_search( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$search = 'no';
 	
 	$visibility_list = wp_get_post_terms( $wc_product->get_id(), 'product_visibility', array( 'fields' => 'all' ) );
@@ -427,6 +533,9 @@ function woogool_get_product_exclude_from_search( $wc_product ) {
 }
 
 function woogool_get_product_exclude_from_all( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$search = 'no';
 	$catalog = 'no';
 	$all    = 'no';
@@ -451,10 +560,16 @@ function woogool_get_product_exclude_from_all( $wc_product ) {
 }
 
 function woogool_get_product_group_id( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_parent_id();
 }
 
 function woogool_get_product_publication_date( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_the_date( 'd-m-y G:i:s', $wc_product->get_id() );
 }
 function woogool_get_product_compare_publication_date( $wc_product, $settings ) {
@@ -462,6 +577,9 @@ function woogool_get_product_compare_publication_date( $wc_product, $settings ) 
 }
 
 function woogool_get_product_weight( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_weight();
 }
 function woogool_get_product_compare_weight( $wc_product, $settings ) {
@@ -473,32 +591,53 @@ function woogool_get_product_compare_weight( $wc_product, $settings ) {
 }
 
 function woogool_get_product_width( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_width();
 }
 function woogool_get_product_compare_width( $wc_product, $settings ) {
-	if ( empty( woogool_get_product_width( $wc_product ) ) ) return '';
+	$width = woogool_get_product_width( $wc_product );
+	if ( empty( $width ) ) {
+		return '';
+	}
 
 	return woogool_get_product_width( $wc_product ) .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
 }
 
 function woogool_get_product_height( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_height();
 }
 function woogool_get_product_compare_height( $wc_product, $settings ) {
-	if ( empty( woogool_get_product_height( $wc_product ) ) ) return '';
+	$height = woogool_get_product_height( $wc_product );
+	if ( empty( $height ) ) {
+		return '';
+	}
 
 	return woogool_get_product_height( $wc_product ) .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
 }
 
 function woogool_get_product_length( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_length();
 }
 function woogool_get_product_compare_length( $wc_product, $settings ) {
-	if ( empty( woogool_get_product_length( $wc_product ) ) ) return '';
+	$length = woogool_get_product_length( $wc_product );
+	if ( empty( $length ) ) {
+		return '';
+	}
 	return woogool_get_product_length( $wc_product ) .' '. strtolower( get_option( 'woocommerce_dimension_unit', 'm' ) );
 }
 
 function woogool_get_product_custom_attributes__woogool_ean( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_ean', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_ean( $wc_product, $settings ) {
@@ -506,6 +645,9 @@ function woogool_get_product_compare_custom_attributes__woogool_ean( $wc_product
 }
 
 function woogool_get_product_custom_attributes__woogool_mpn( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_mpn', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_mpn( $wc_product, $settings ) {
@@ -513,6 +655,9 @@ function woogool_get_product_compare_custom_attributes__woogool_mpn( $wc_product
 }
 
 function woogool_get_product_custom_attributes__woogool_gtin( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_gtin', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_gtin( $wc_product, $settings ) {
@@ -520,6 +665,9 @@ function woogool_get_product_compare_custom_attributes__woogool_gtin( $wc_produc
 }
 
 function woogool_get_product_custom_attributes__woogool_upc( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_upc', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_upc( $wc_product, $settings ) {
@@ -527,6 +675,9 @@ function woogool_get_product_compare_custom_attributes__woogool_upc( $wc_product
 }
 
 function woogool_get_product_custom_attributes__woogool_brand( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_brand', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_brand( $wc_product, $settings ) {
@@ -534,6 +685,9 @@ function woogool_get_product_compare_custom_attributes__woogool_brand( $wc_produ
 }
 
 function woogool_get_product_custom_attributes__woogool_condition($wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_condition', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_condition($wc_product, $settings) {
@@ -541,6 +695,9 @@ function woogool_get_product_compare_custom_attributes__woogool_condition($wc_pr
 }
 
 function woogool_get_product_custom_attributes__woogool_optimized_title( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_optimized_title', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_optimized_title( $wc_product, $settings ) {
@@ -548,6 +705,9 @@ function woogool_get_product_compare_custom_attributes__woogool_optimized_title(
 }
 
 function woogool_get_product_custom_attributes__woogool_unit_pricing_measure( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_unit_pricing_measure', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_unit_pricing_measure( $wc_product, $settings ) {
@@ -555,6 +715,9 @@ function woogool_get_product_compare_custom_attributes__woogool_unit_pricing_mea
 }
 
 function woogool_get_product_custom_attributes__woogool_unit_pricing_base_measure( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_unit_pricing_base_measure', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_unit_pricing_base_measure( $wc_product, $settings ) {
@@ -562,6 +725,9 @@ function woogool_get_product_compare_custom_attributes__woogool_unit_pricing_bas
 }
 
 function woogool_get_product_custom_attributes__woogool_installment_months( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_installment_months', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_installment_months( $wc_product, $settings ) {
@@ -569,6 +735,9 @@ function woogool_get_product_compare_custom_attributes__woogool_installment_mont
 }
 
 function woogool_get_product_custom_attributes__woogool_installment_amount( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return get_post_meta( $wc_product->get_id(), '_woogool_installment_amount', true );
 }
 function woogool_get_product_compare_custom_attributes__woogool_installment_amount( $wc_product, $settings ) {
@@ -576,6 +745,9 @@ function woogool_get_product_compare_custom_attributes__woogool_installment_amou
 }
 
 function woogool_get_product_is_visible( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->is_visible();
 }
 function woogool_get_product_compare_is_visible( $wc_product, $settings ) {
@@ -583,10 +755,16 @@ function woogool_get_product_compare_is_visible( $wc_product, $settings ) {
 }
 
 function woogool_get_product_image( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	return wp_get_attachment_url( $wc_product->get_image_id() );
 }
 
 function woogool_get_product_feature_image( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$feature_image = 0;
 
 	if ( has_post_thumbnail( $wc_product->get_id() ) ) {
@@ -613,6 +791,9 @@ function woogool_get_product_image_url( $wc_product ){
 }
 
 function woogool_get_product_image_1( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[0] ) ) {
 		return false;
@@ -621,6 +802,9 @@ function woogool_get_product_image_1( $wc_product ) {
 	return wp_get_attachment_url( $images[0] );
 }
 function woogool_get_product_image_2( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[1] ) ) {
 		return false;
@@ -629,6 +813,9 @@ function woogool_get_product_image_2( $wc_product ) {
 	return wp_get_attachment_url( $images[1] );
 }
 function woogool_get_product_image_3( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[2] ) ) {
 		return false;
@@ -637,6 +824,9 @@ function woogool_get_product_image_3( $wc_product ) {
 	return wp_get_attachment_url( $images[2] );
 }
 function woogool_get_product_image_4( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[3] ) ) {
 		return false;
@@ -645,6 +835,9 @@ function woogool_get_product_image_4( $wc_product ) {
 	return wp_get_attachment_url( $images[3] );
 }
 function woogool_get_product_image_5( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[4] ) ) {
 		return false;
@@ -653,6 +846,9 @@ function woogool_get_product_image_5( $wc_product ) {
 	return wp_get_attachment_url( $images[4] );
 }
 function woogool_get_product_image_6( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[5] ) ) {
 		return false;
@@ -661,6 +857,9 @@ function woogool_get_product_image_6( $wc_product ) {
 	return wp_get_attachment_url( $images[5] );
 }
 function woogool_get_product_image_7( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[6] ) ) {
 		return false;
@@ -669,6 +868,9 @@ function woogool_get_product_image_7( $wc_product ) {
 	return wp_get_attachment_url( $images[6] );
 }
 function woogool_get_product_image_8( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[7] ) ) {
 		return false;
@@ -677,6 +879,9 @@ function woogool_get_product_image_8( $wc_product ) {
 	return wp_get_attachment_url( $images[7] );
 }
 function woogool_get_product_image_9( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[8] ) ) {
 		return false;
@@ -685,6 +890,9 @@ function woogool_get_product_image_9( $wc_product ) {
 	return wp_get_attachment_url( $images[8] );
 }
 function woogool_get_product_image_10( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$images = $wc_product->get_gallery_image_ids();
 	if ( empty( $images[9] ) ) {
 		return false;
@@ -694,6 +902,9 @@ function woogool_get_product_image_10( $wc_product ) {
 }
 
 function woogool_get_product_dynamic_value( $wc_product, $attr ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$attr_value = '';
 
 	if ( strpos( $attr, 'pa_' ) !== false ) {
@@ -718,6 +929,9 @@ function woogool_get_product_compare_dynamic_value( $wc_product, $settings, $att
 }
 
 function woogool_get_product_tags( $wc_product ) {
+	if(!$wc_product) {
+		return '';
+	}
 	$tags = [];
 
 	$product_tags = get_the_terms( $wc_product->get_id(), 'product_tag' );
@@ -794,6 +1008,9 @@ function woogool_compare_with_logical_value( $wc_product, $settings, $key, $prod
 }
 
 function woogool_get_product_type($wc_product) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_type();
 }
 function woogool_get_product_compare_type($wc_product, $settings) {
@@ -801,10 +1018,16 @@ function woogool_get_product_compare_type($wc_product, $settings) {
 }
 
 function woogool_get_product_rating_count($wc_product) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_rating_count();
 }
 
 function woogool_get_product_average_rating($wc_product) {
+	if(!$wc_product) {
+		return '';
+	}
 	return $wc_product->get_average_rating();
 }
 

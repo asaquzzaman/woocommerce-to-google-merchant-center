@@ -163,7 +163,8 @@
 					feedCategories: [],
 					refresh: 1,
 					googleCategories: [],
-					categories: []
+					categories: [],
+					country: {}
 				},
 				gAttrs: [],
 				logic: [],

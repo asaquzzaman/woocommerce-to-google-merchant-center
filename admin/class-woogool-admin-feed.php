@@ -57,7 +57,11 @@ class WooGool_Admin_Feed {
         if( ! is_dir( $dir_path ) ) {
             wp_mkdir_p( $dir_path );
         }
-        unlink ( $file_path );
+
+        if ( file_exists( $file_path ) ) {
+            unlink ( $file_path );
+        }
+        
         // Check if directory in uploads exists, if not create one  
         if ( ! file_exists( $file_path ) ) {
 
@@ -420,6 +424,9 @@ class WooGool_Admin_Feed {
 
         $activeVariation = isset( $header['activeVariation'] ) ? $header['activeVariation'] : false;
         update_post_meta( $post_id, 'active_variation', $activeVariation );
+
+        $country = isset( $header['country'] ) ? $header['country'] : [];
+        update_post_meta( $post_id, 'country', $country );
 
         $refresh = isset( $header['refresh'] ) ? $header['refresh'] : 1;
         update_post_meta( $post_id, 'refresh', $refresh );

@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: WP Woocommerce to Google merchant center new
+ * Plugin Name: WP Woocommerce to Google merchant center
  * Plugin URI: https://github.com/asaquzzaman/woocommerce-to-google-merchant-center
  * Description: Submit your product woocommerce to google merchant center.
  * Author: asaquzzaman
- * Version: 1.6.0
- * Author URI: http://mishubd.com
+ * Version: 1.7.0
+ * Author URI: http://wpspear.com
  * License: GPL2
  * TextDomain: woogool
  */
@@ -287,7 +287,8 @@ if ( ! class_exists('WP_WooGool') ) {
                 'country_details'    => json_encode( woogool_country_details() ),
                 'is_admin'           => is_admin() ? 'yes' : 'no',
                 'dir_url'            => plugin_dir_url( __FILE__ ),
-                'is_pro' => class_exists( 'WP_WooGool_Pro' ) ? 1 : 0
+                'is_pro' => class_exists( 'WP_WooGool_Pro' ) ? 1 : 0,
+                'countries' => require_once dirname(__FILE__) . '/includes/countries.php',
             ));
             wp_enqueue_style( 'woogool-chosen', plugins_url( '/assets/css/chosen/chosen.min.css', __FILE__ ), false, time(), 'all' );
             wp_enqueue_style( 'woogool-style', plugins_url( 'assets/css/woogool.css', __FILE__ ) );

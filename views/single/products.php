@@ -18,7 +18,7 @@ if ( ! $is_access_premission ) {
 ?>
 
 <?php
-require_once dirname(__FILE__) . '/../includes/countries.php';
+$countries = require_once dirname(__FILE__) . '/../includes/countries.php';
 require_once dirname(__FILE__) . '/../includes/languages.php';
 
 try{

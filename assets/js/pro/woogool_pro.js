@@ -495,7 +495,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   data: function data() {
     return {
-      'stage': {
+      stage: {
         step: 'first'
       },
       loopLimit: woogool_multi_product_var.request_amount,
@@ -506,7 +506,7 @@ exports.default = {
   watch: {
     stage: {
       handler: function handler(stage) {
-        window.localStorage.setItem('woogoolStageStep', stage.step);
+        //window.localStorage.setItem('woogoolStageStep', stage.step);
       },
 
 
@@ -514,11 +514,11 @@ exports.default = {
     }
   },
   created: function created() {
-    var step = localStorage.getItem('woogoolStageStep');
+    // var step = localStorage.getItem('woogoolStageStep');
 
-    if (step) {
-      this.stage.step = step;
-    }
+    // if(step) {
+    //this.stage.step = step;
+    //}
   },
 
   methods: {
@@ -1138,7 +1138,8 @@ if (false) {(function () {
 				feedCategories: [],
 				refresh: 1,
 				googleCategories: [],
-				categories: []
+				categories: [],
+				country: {}
 			},
 			gAttrs: [],
 			logic: [],
@@ -1481,6 +1482,33 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1504,7 +1532,8 @@ if (false) {(function () {
 	data: function data() {
 		return {
 			categories: [],
-			googleCategories: []
+			googleCategories: [],
+			countries: []
 		};
 	},
 	created: function created() {
@@ -1516,6 +1545,13 @@ if (false) {(function () {
 			self.categories.push({
 				'catId': index,
 				'catName': cat
+			});
+		});
+
+		jQuery.each(woogool_var.countries, function (key, country) {
+			self.countries.push({
+				id: key,
+				label: country
 			});
 		});
 	},
@@ -4697,6 +4733,45 @@ var render = function() {
             }
           })
         ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "woogool-individual-field-wrap" }, [
+        _c("label", { staticClass: "woogool-label" }, [
+          _vm._v("Select Country")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "field-action-wrap" },
+          [
+            _c("vue-woogool-multiselect", {
+              staticClass: "header-multiselect",
+              attrs: {
+                options: _vm.countries,
+                multiple: false,
+                "close-on-select": true,
+                "clear-on-select": true,
+                "show-labels": true,
+                searchable: true,
+                placeholder: "Select Country",
+                "select-label": "",
+                "selected-label": "selected",
+                "deselect-label": "",
+                label: "label",
+                "track-by": "id",
+                "allow-empty": true
+              },
+              model: {
+                value: _vm.header.country,
+                callback: function($$v) {
+                  _vm.$set(_vm.header, "country", $$v)
+                },
+                expression: "header.country"
+              }
+            })
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _vm.header.feedByCatgory

@@ -53,7 +53,17 @@ class WooGool_Admin_ajax {
         
         $postdata   = wp_unslash( $_POST );
         $feed_id    = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false;
-        $feed_title = sanitize_text_field( $postdata['feed_title'] );
+        $post = false;
+        
+        if ( $feed_id ) {
+            $post = get_post( $feed_id );
+        }
+        if( $post ) {
+            $feed_title = $post->post_title;
+        } else {
+            $feed_title = '';
+        }
+        
         
         if ( ! $feed_id ) {
             wp_send_json_error();
@@ -142,7 +152,8 @@ class WooGool_Admin_ajax {
                 'refresh'          => get_post_meta( $post_id, 'refresh', true ),
                 'categories'       => get_post_meta( $post_id, 'categories', true ),
                 'googleCategories' => get_post_meta( $post_id, 'google_categories', true ),
-                'name'             => $post->post_title
+                'name'             => $post->post_title,
+                'country'          => get_post_meta( $post_id, 'country', true ),
             ],
             'contentAttrs' => get_post_meta( $post_id, 'content_attributes', true ),
             'logic' => get_post_meta( $post_id, 'logic', true ),

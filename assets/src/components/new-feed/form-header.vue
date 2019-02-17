@@ -22,6 +22,33 @@
 			</div>
 		</div>
 
+		<div class="woogool-individual-field-wrap">
+			<label class="woogool-label">Select Country</label>
+			<div class="field-action-wrap">
+					
+				<vue-woogool-multiselect
+					class="header-multiselect"
+					v-model="header.country"
+					:options="countries" 
+	                :multiple="false"
+	                :close-on-select="true"
+	                :clear-on-select="true"
+	                :show-labels="true"
+	                :searchable="true"
+	                placeholder="Select Country"
+	                select-label=""
+	                selected-label="selected"
+	                deselect-label=""
+	                label="label"
+	                track-by="id"
+	                
+	                :allow-empty="true">
+						
+				</vue-woogool-multiselect>
+				
+			</div>
+		</div>
+
 		<div v-if="header.feedByCatgory" class="woogool-individual-field-wrap">
 			<label class="woogool-label">Feed by category</label>
 			<div class="field-action-wrap">
@@ -208,6 +235,7 @@
 			return {
 				categories: [],
 				googleCategories: [],
+				countries: []
 			}
 		},
 
@@ -225,6 +253,13 @@
 					'catName': cat
 				});
 			});
+
+			jQuery.each(woogool_var.countries, function(key, country) {
+				self.countries.push({
+					id: key,
+					label: country
+				});
+			})
 		},
 
 		methods: {

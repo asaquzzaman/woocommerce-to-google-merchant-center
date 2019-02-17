@@ -29,7 +29,7 @@ class WooGool_Admin_Test {
 
     function test() {
 
-        $this->auto_test_product_value();
+        //$this->auto_test_product_value();
        //$this->auto_test_filter();
        // $this->auto_test_rule();
        // $this->auto_test_value();
@@ -61,8 +61,6 @@ class WooGool_Admin_Test {
 
             $product_val[$func_key] = $prod_val;
         }
-
-        woogool_log('product_value', $product_val);
     }
 
     public function auto_test_feed_form_generator() {

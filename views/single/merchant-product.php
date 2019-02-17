@@ -18,7 +18,7 @@ if ( ! $is_access_premission ) {
 ?>
 
 <?php
-require_once WOOGOOL_INCLUDES_PATH . '/countries.php';
+$countries = require_once WOOGOOL_INCLUDES_PATH . '/countries.php';
 require_once WOOGOOL_INCLUDES_PATH . '/languages.php';
 
 try{

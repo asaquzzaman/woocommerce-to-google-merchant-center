@@ -1,7 +1,7 @@
 export default {
 	data () {
 		return {
-			'stage': {
+			stage: {
 				step: 'first',
 			},
 			loopLimit: woogool_multi_product_var.request_amount,
@@ -11,18 +11,18 @@ export default {
 	watch: {
 		stage: {
 			handler (stage) {
-				window.localStorage.setItem('woogoolStageStep', stage.step);
+				//window.localStorage.setItem('woogoolStageStep', stage.step);
 			},
 
 			deep: true
 		}
 	},
 	created () {
-		var step = localStorage.getItem('woogoolStageStep');
+		// var step = localStorage.getItem('woogoolStageStep');
 
-		if(step) {
-			this.stage.step = step;
-		}
+		// if(step) {
+			//this.stage.step = step;
+		//}
 	},
 	methods: {
 		newFeed (args) {
