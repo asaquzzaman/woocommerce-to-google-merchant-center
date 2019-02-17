@@ -276,11 +276,11 @@ class WooGool_Admin_ajax {
 
             $submited_products = get_option( 'woogool_submited_products', 0 );
 
-            if ( $submited_products >= 20 ) {
-                $url = 'http://wpspear.com/product-feed/';
-                $notice = sprintf( 'You have to purchase this plugin (WooGool) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url );
-                wp_send_json_error( array( 'error_code' => 'unknown', 'error_msg' => $notice ) );
-            }
+            // if ( $submited_products >= 20 ) {
+            //     $url = 'http://wpspear.com/product-feed/';
+            //     $notice = sprintf( 'You have to purchase this plugin (WooGool) to submit more than 5 products. <a href="%s" target="_blank">Purchase Link</a>', $url );
+            //     wp_send_json_error( array( 'error_code' => 'unknown', 'error_msg' => $notice ) );
+            // }
             
             $merchant_id = get_user_meta( get_current_user_id(), 'merchant_account_id', true );
             $product = $shoppinContent->products->insert( $merchant_id, new Google_Service_ShoppingContent_Product( $postdatas ) );

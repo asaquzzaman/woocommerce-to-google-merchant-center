@@ -106,7 +106,7 @@ class WooGool_Admin_Upgrade {
             	
             	if ( file_exists( $path ) ) {
             		include $path;
-                	//update_option( 'woogool_version', $version );	
+                	update_option( 'woogool_version', $version );	
             	}
             }
         }

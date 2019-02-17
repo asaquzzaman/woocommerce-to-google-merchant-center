@@ -45,7 +45,7 @@ if ( ! class_exists('WP_WooGool') ) {
 
         private $merchant_account_id;
         public $individual;
-        public static $version = '1.6.0';
+        public static $version = '1.7.0';
         static $woocommerce;
         static $woogool_free;
 
@@ -426,7 +426,7 @@ if ( ! class_exists('WP_WooGool') ) {
 
     register_activation_hook( __FILE__, array( 'WP_WooGool', 'install' ) );
 
-    add_action( 'plugins_loaded', 'WooGool' );
+    add_action( 'plugins_loaded', 'WooGool', 10 );
 
     function WooGool() {
         if ( ! class_exists( 'WooCommerce' ) ) {

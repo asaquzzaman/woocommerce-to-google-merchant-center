@@ -2,9 +2,10 @@
 	
 Contributors: asaquzzaman
 Tags: woocommerce google product feed, google product feed, merchant center, google merchant center, woocommerce shopping feed, product export, woocommerce product feed, woocommerce merchant
-Requires at least: 3.3
-Tested up to: 4.9.4
-Stable tag: trunk
+Requires at least: 4.4
+Tested up to: 5.0.3
+Requires PHP: 5.6
+Stable tag: 1.7.0
 License: GPLv2 or later
 
 WooCommerce Google product feed provide you to generate product feed xml file. You can also upload product one by one to google merchant center.
@@ -21,8 +22,6 @@ Now, you can easily upload your WC product feed XML file directly to your Google
 = Documentation for single product submission =
 [youtube https://www.youtube.com/watch?v=Fl9jqaKy6JY]
 
-= Documentation for multiple product submission =
-[youtube https://www.youtube.com/watch?v=DOT_oMnOnr8]
 
 == WooCommerce to Google Merchant Center ==
 
@@ -115,6 +114,14 @@ Browser Compatibility
 8. Screenshot Delete button
 
 == Changelog ==
+
+= v1.7.0 - Feb 17, 2019 =
+
+* **New** Menu separate from WooCommerce.
+* **New** Multiple product feed generate form.
+* **New** Conditional product feed.
+* **Fix** Individual and multiple product feed menu are separated.
+* **Update** Product feed generating process.
 
 =1.5.2=
 * Include some configuration worning.
