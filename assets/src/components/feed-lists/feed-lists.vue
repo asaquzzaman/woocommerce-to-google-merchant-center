@@ -8,6 +8,7 @@
 					<tr>
 						
 						<th>Feed Name</th>
+						<th>Download link</th>
 						<th class="third">Action</th>
 					</tr>
 				</thead>
@@ -15,6 +16,7 @@
 					<template v-if="feeds.length" v-for="(feed, key) in feeds">
 						<tr>
 							<td>{{ feed.post_title }}</td>
+							<td><a target="_blank" :href="feed.feed_url">{{ feed.feed_url }}</a></td>
 							<td>
 								<div class="list-action-wrap">
 									<div class="actions">
@@ -46,7 +48,7 @@
 
 					<template v-if="loading">
 						<tr>
-							<td colspan="2">
+							<td colspan="3">
 								<div  class="loadmoreanimation">
 						            <div class="load-spinner">
 						                <div class="rect1"></div>
@@ -62,7 +64,7 @@
 
 					<template v-if="!loading && !feeds.length">
 						<tr>
-							<td colspan="2">No feed found!</td>
+							<td colspan="3">No feed found!</td>
 						</tr>
 					</template>
 

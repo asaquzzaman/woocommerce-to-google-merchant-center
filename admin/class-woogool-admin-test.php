@@ -23,7 +23,7 @@ class WooGool_Admin_Test {
     }
 
     function __construct() {
-        add_action( 'admin_init', array( $this, 'test' ) );
+       // add_action( 'admin_init', array( $this, 'test' ) );
 
     }
 
