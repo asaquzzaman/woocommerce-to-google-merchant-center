@@ -22,7 +22,7 @@
 									<div class="actions">
 										<router-link
 											:to="{
-												name: 'edit_feed', 
+												name: 'edit_googel_shopping', 
 												params: {
 													feed_id: feed.ID
 												}

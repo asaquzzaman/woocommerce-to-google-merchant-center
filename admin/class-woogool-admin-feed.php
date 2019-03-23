@@ -381,11 +381,11 @@ class WooGool_Admin_Feed {
     }
 
     function insert_feed( $post ) {
-
+        
         $arg = array(
             'post_type'    => 'woogool_feed',
             'post_title'   => $post['header']['name'],
-            'post_content' => '',//$xml_content,
+            'post_content' => $post['header']['channel']['id'],
             'post_status'  => 'publish'
         );
 
@@ -413,7 +413,6 @@ class WooGool_Admin_Feed {
     function update_xml_meta_content( $feed_id, $xml_content ) {
         add_post_meta( $feed_id, '_woogool_xml_content', $xml_content );
     }
-
 
     function update_feed_meta( $post_id, $post ) {
 

@@ -154,6 +154,7 @@ class WooGool_Admin_ajax {
                 'googleCategories' => get_post_meta( $post_id, 'google_categories', true ),
                 'name'             => $post->post_title,
                 'country'          => get_post_meta( $post_id, 'country', true ),
+                'channel'          => empty( $post->post_content ) ? 'google_shopping' : $post->post_content
             ],
             'contentAttrs' => get_post_meta( $post_id, 'content_attributes', true ),
             'logic' => get_post_meta( $post_id, 'logic', true ),

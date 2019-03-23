@@ -4,7 +4,7 @@
 			<thead>
 				<tr>
 					
-					<th>Google Shopping Attributes</th>
+					<th>Facebook dynamic ads attributes</th>
 					<th>Product Attributes</th>
 					<th></th>
 
@@ -13,95 +13,95 @@
 
 			<tbody>
 				<template 
-					v-for="(gAttrTr, gkey) in gAttrs" 
-					v-if="gAttrTr.format == 'required'">
+					v-for="(fAttrTr, fkey) in fAttrs" 
+					v-if="fAttrTr.format == 'required'">
 				
-					<tr :key="gkey" v-if="gAttrTr.type == 'default'">
+					<tr :key="fkey" v-if="fAttrTr.type == 'default'">
 						<td>
-							<select class="map-drop-down-left" @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
+							<select class="map-drop-down-left" @change="setGooAttrReqVal(fAttrTr, fkey, fAttrTr.type, $event)">
 								<optgroup 
-									v-for="(googleAttributeTd, key) in googleAttributes"
-									:label="googleAttributeTd.label">
+									v-for="(facebookAttributeTd, key) in facebookAttributes"
+									:label="facebookAttributeTd.label">
 									<option
-										v-for="(googleAttrTd, optKey) in googleAttributeTd.attributes"
-										:value="googleAttrTd.name" 
-										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
-										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
+										v-for="(facebookAttrTd, optKey) in facebookAttributeTd.attributes"
+										:value="facebookAttrTd.name" 
+										:selected="isGoogleAttrSelected(fAttrTr, facebookAttrTd)">
+										{{ facebookAttrTd.label }} {{ '('+facebookAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
 								
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(fAttrTr, fkey, $event)">
 								<option 
 									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
 									:value="proMetaKey"
-									:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
+									:selected="isProductAttrSelected(fAttrTr, proMetaKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(fAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 			
 					<!-- For extra map fields -->
-					<tr :key="gkey" v-if="gAttrTr.type == 'mapping'">
+					<tr :key="fkey" v-if="fAttrTr.type == 'mapping'">
 						<td>
-							<select class="map-drop-down-left" @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
+							<select class="map-drop-down-left" @change.self="setGooAttrReqVal(fAttrTr, fkey, fAttrTr.type, $event)">
 								<option value=""></option>
 								<optgroup 
-									v-for="(googleAttributeTd, key) in googleAttributes"
-									:label="googleAttributeTd.label">
+									v-for="(facebookAttributeTd, key) in facebookAttributes"
+									:label="facebookAttributeTd.label">
 									<option 
-										v-for="(googleAttrTd, mKey) in googleAttributeTd.attributes"
-										:value="googleAttrTd.name"
-										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
-										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
+										v-for="(facebookAttrTd, mKey) in facebookAttributeTd.attributes"
+										:value="facebookAttrTd.name"
+										:selected="isGoogleAttrSelected(fAttrTr, facebookAttrTd)">
+										{{ facebookAttrTd.label }} {{ '('+facebookAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
 								
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(fAttrTr, fkey, $event)">
 								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
 									:value="wpKey"
-									:selected="isProductAttrSelected(gAttrTr, wpKey)">
+									:selected="isProductAttrSelected(fAttrTr, wpKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(fAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 
 					<!-- For custom fields -->
-					<tr :key="gkey" v-if="gAttrTr.type == 'custom'">
+					<tr :key="fkey" v-if="fAttrTr.type == 'custom'">
 						<td>
-							<input class="custom-field-text" :value="gAttrTr.name" type="text" @input="setCustomText(gAttrTr, gkey, $event)">
+							<input class="custom-field-text" :value="fAttrTr.name" type="text" @input="setCustomText(fAttrTr, fkey, $event)">
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(fAttrTr, fkey, $event)">
 								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, pmKey) in woogoolAttributes"
 									:value="pmKey"
-									:selected="isProductAttrSelected(gAttrTr, pmKey)">
+									:selected="isProductAttrSelected(fAttrTr, pmKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(fAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 
@@ -151,7 +151,7 @@
 					return {}
 				}
 			},
-			gAttrs: {
+			fAttrs: {
 				type: [Array],
 				default () {
 					return []
@@ -160,7 +160,7 @@
 		},
 		data () {
 			return {
-				googleAttributes: woogool_multi_product_var.google_shopping_attributes,
+				facebookAttributes: woogool_multi_product_var.facebook_ad_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
 				googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
 			}
@@ -179,14 +179,14 @@
 		},
 
 		methods: {
-			setCustomText (gAttrTr, gkey, elet) {
-				woogool.Vue.set(gAttrTr, 'name', elet.target.value);
+			setCustomText (fAttrTr, fkey, elet) {
+				woogool.Vue.set(fAttrTr, 'name', elet.target.value);
 			},
 			setGooAttrReqVal (gooAttr, key, type, evt) {
 				var self = this;
 				var value = evt.target.value;
 				
-				jQuery.each(this.googleAttributes, function(index, googleAttribute) {
+				jQuery.each(this.facebookAttributes, function(index, googleAttribute) {
 					jQuery.each(googleAttribute.attributes, function(position, attr) {
 						
 						if(attr.name == value) {
@@ -198,7 +198,7 @@
 								}
 							);
 							
-				 			self.gAttrs.splice(key, 1, newAttr);
+				 			self.fAttrs.splice(key, 1, newAttr);
 						} 
 					});
 				});
@@ -211,19 +211,19 @@
 			setDefaultAttr () {
 				var self = this;
 
-				jQuery.each(this.googleAttributes, function(index, googleAttribute) {
+				jQuery.each(this.facebookAttributes, function(index, googleAttribute) {
 					jQuery.each(googleAttribute.attributes, function(key, attr) {
 						if(attr.format == 'required') {
 							if(typeof attr.type == 'undefined') {
 								woogool.Vue.set(attr, 'type', 'default');
 							}
-				 			self.gAttrs.push(attr);
+				 			self.fAttrs.push(attr);
 						}
 					});
 				});
 			},
-			isGoogleAttrSelected (gAttributeTr, googleAttrTd) {
-				return gAttributeTr.name == googleAttrTd.name ? 'selected' : false;
+			isGoogleAttrSelected (gAttributeTr, facebookAttrTd) {
+				return gAttributeTr.name == facebookAttrTd.name ? 'selected' : false;
 			},
 
 			isProductAttrSelected (gAttributeTr, wpKey) {
@@ -235,7 +235,7 @@
 					return;
 				}
 
-				this.gAttrs.splice(key, 1);
+				this.fAttrs.splice(key, 1);
 			}
 		}
 	}

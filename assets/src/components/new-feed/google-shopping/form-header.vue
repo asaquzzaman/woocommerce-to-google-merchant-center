@@ -7,6 +7,8 @@
 			</div>
 		</div>
 
+		<channel v-if="!extAttr.updateMode"></channel>
+
 		<div class="woogool-individual-field-wrap">
 			<label for="enable-product-variation" class="woogool-label">Enable product variations</label>
 			<div class="field-action-wrap">
@@ -213,10 +215,17 @@
 
 <script>
 	import Mixin from '@components/new-feed/mixin'
+	import Channel from '@components/new-feed/common/channel-drop-down.vue'
 
 	export default {
 		mixins: [Mixin],
 		props: {
+			extAttr: {
+				type: [Object],
+				default () {
+					return {}
+				}
+			},
 			stage: {
 				type: [Object],
 				default () {
@@ -235,10 +244,13 @@
 			return {
 				categories: [],
 				googleCategories: [],
-				countries: []
+				countries: [],
 			}
 		},
 
+		components: {
+			'channel': Channel 
+		},
 
 		created () {
 			var self = this;
@@ -263,6 +275,7 @@
 		},
 
 		methods: {
+			
 			submit () {
 				var args = {
 					header: this.header,

@@ -95,6 +95,7 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/google-info.php';
             require_once dirname(__FILE__) . '/includes/google-shopping-attributes.php';
             require_once dirname(__FILE__) . '/includes/woogool-product-attributes.php';
+            require_once dirname(__FILE__) . '/includes/facebook-ads.php';
         }
 
         function autoload( $class ) {
@@ -249,14 +250,15 @@ if ( ! class_exists('WP_WooGool') ) {
             wp_enqueue_script( 'woogool-pro', plugins_url( '/assets/js/pro/woogool_pro.js', __FILE__ ), array( 'woogool-library' ), time(), true );
 
             wp_localize_script( 'woogool-pro', 'woogool_multi_product_var', array(
-                'product_categories'         => woogool_get_products_terms_dropdown_array(),
-                'google_categories'          => get_option( 'woogool_google_product_type' ),
-                'google_shopping_attributes' => woogool_shopping_attributes(),
-                'woogool_product_attributes' => woogool_product_attributes(),
+                'product_categories'                       => woogool_get_products_terms_dropdown_array(),
+                'google_categories'                        => get_option( 'woogool_google_product_type' ),
+                'google_shopping_attributes'               => woogool_shopping_attributes(),
+                'woogool_product_attributes'               => woogool_product_attributes(),
                 'woogool_product_attribute_with_optgroups' => woogool_product_attribute_with_optgroups (),
-                'google_extra_attr_fields'    => [],
-                'request_amount' => WOOGOOL_REQUEST_AMOUNT,
-                'feed_per_page' => WOOGOOL_FEED_PER_PAGE,
+                'facebook_ad_attributes'                   => woogool_get_facebook_ad_attributes(),
+                'google_extra_attr_fields'                 => [],
+                'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,
+                'feed_per_page'                            => WOOGOOL_FEED_PER_PAGE,
                 
             ));
 

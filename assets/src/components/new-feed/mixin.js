@@ -5,7 +5,17 @@ export default {
 				step: 'first',
 			},
 			loopLimit: woogool_multi_product_var.request_amount,
-			loopStart: 1
+			loopStart: 1,
+            channels: [
+                {
+                    label: 'Google Shopping',
+                    id: 'google_shopping'
+                },
+                {
+                    label: 'Facebook Ads',
+                    id: 'facebook_ads'
+                }
+            ]
 		}
 	},
 	watch: {
@@ -25,6 +35,25 @@ export default {
 		//}
 	},
 	methods: {
+        changeChannel (channel) {
+            if(channel.id == 'google_shopping') {
+                this.gotoGoogleShopping();
+            }
+
+            if(channel.id == 'facebook_ads') {
+                this.gotoFacebookAds();
+            }
+        },
+        gotoGoogleShopping () {
+            this.$router.push({
+                name: 'googel_shopping'
+            });
+        },
+        gotoFacebookAds () {
+            this.$router.push({
+                name: 'facebook_ads'
+            });
+        },
 		newFeed (args) {
 			var self = this,
             pre_define = {
@@ -74,6 +103,10 @@ export default {
 		},
 
         addMappingField () {
+            this.fAttrs.push({
+                'type': 'mapping',
+                'format': 'required'
+            });
             this.gAttrs.push({
                 'type': 'mapping',
                 'format': 'required'
