@@ -46,7 +46,7 @@ export default {
         },
         gotoGoogleShopping () {
             this.$router.push({
-                name: 'googel_shopping'
+                name: 'google_shopping'
             });
         },
         gotoFacebookAds () {
@@ -103,10 +103,6 @@ export default {
 		},
 
         addMappingField () {
-            this.fAttrs.push({
-                'type': 'mapping',
-                'format': 'required'
-            });
             this.gAttrs.push({
                 'type': 'mapping',
                 'format': 'required'

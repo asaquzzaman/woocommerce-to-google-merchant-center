@@ -173,9 +173,9 @@
 		},
 
 		watch: {
-			'$route' (route) {
-	            if(route.name === 'google_shopping') {
-	            	//this.setDefaultAttr();
+			'$route' (route) { 
+	            if(route.name == 'google_shopping') { 
+	            	this.setDefaultAttr();
 	            }
 	        }
 		},

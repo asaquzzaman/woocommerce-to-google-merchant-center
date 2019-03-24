@@ -15,7 +15,7 @@
 
 		<form v-if="!loading" class="woogool-new-feed-form" action="" @submit.prevent="submit()" method="post">
 			<form-header v-show="stage.step == 'first'" :header="header" :stage="stage"></form-header>
-			<google-shopping v-show="stage.step == 'second'" :gAttrs="gAttrs"  :stage="stage"></google-shopping>
+			<facebook-ads v-show="stage.step == 'second'" :extAttr="extAttr" :fAttrs="fAttrs"  :stage="stage"></facebook-ads>
 			
 			<form-logic v-show="stage.step == 'third'" :logic="logic" :stage="stage"></form-logic>
 			
@@ -154,7 +154,7 @@
 <script>
 	import Header from '@components/header.vue'
 	import FormHeader from '@components/new-feed/facebook-ads/form-header.vue'
-	import FormContent from '@components/new-feed/facebook-ads/form-facebook-ads.vue'
+	import FacebookAds from '@components/new-feed/facebook-ads/form-facebook-ads.vue'
 	import FormLogic from '@components/new-feed/facebook-ads/form-logic.vue'
 	import Mixin from '@components/new-feed/mixin'
 	
@@ -174,17 +174,19 @@
 					categories: [],
 					country: {},
 					channel: {
-						label: 'Google Shopping',
-						id: 'google_shopping'
+						label: 'Facebook Ads',
+						id: 'facebook_ads'
 					},
 				},
-				gAttrs: [],
 				fAttrs: [],
 				logic: [],
 				isActiveSpinner: false,
 				width: 0,
 				refreshStatus: false,
-				loading: true
+				loading: true,
+				extAttr: {
+					updateMode: false
+				}
 			}
 		},
 		watch: {
@@ -200,7 +202,7 @@
 						googleCategories: [],
 						categories: []
 					});
-					this.gAttrs = [];
+					this.fAttrs = [];
 					this.logic = [];
                 }
             }
@@ -208,7 +210,7 @@
 		components: {
 			'feed-header': Header,
 			'form-header': FormHeader,
-			'google-shopping': FormContent,
+			'facebook-ads': FacebookAds,
 			'form-logic': FormLogic,
 		},
 
@@ -218,12 +220,19 @@
 			if(feed_id) {
 				this.getFeed(feed_id);
 				this.feed_id = feed_id;
+				this.extAttr.updateMode = true;
 			} else {
 				this.loading = false;
 			}
 			
 		},
 		methods: {
+			addMappingField () {
+	            this.fAttrs.push({
+	                'type': 'mapping',
+	                'format': 'required'
+	            });
+	        },
 			cancel () {
 				this.$router.push({
 					name: 'feed_lists'
@@ -247,7 +256,7 @@
 					data: {
 						feed_id: self.feed_id,
 						header: self.header,
-                		contentAttrs: self.gAttrs,
+                		contentAttrs: self.fAttrs,
                 		logic: self.logic	
 					},
 					callback (res) {
@@ -318,10 +327,15 @@
 				this.header = feed.header;
 				this.header.activeVariation = this.setBoolen(feed.header.activeVariation);
 				this.header.feedByCatgory = this.setBoolen(feed.header.feedByCatgory);
+
+				this.header.channel = {
+					'label': 'Facebook Ads',
+					'id': 'facebook_ads'
+				}
 			},
 
 			setContentAttrs (feed) {
-				this.gAttrs = feed.contentAttrs;
+				this.fAttrs = feed.contentAttrs;
 			},
 
 			setLogic (feed) {						

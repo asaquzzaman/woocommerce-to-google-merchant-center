@@ -145,6 +145,12 @@
 	export default {
 		mixins: [Mixin],
 		props: {
+			extAttr: {
+				type: [Object],
+				default () {
+					return {}
+				}
+			},
 			stage: {
 				type: [Object],
 				default () {
@@ -162,20 +168,22 @@
 			return {
 				facebookAttributes: woogool_multi_product_var.facebook_ad_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
-				googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
+				//googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
 			}
 		},
 
 		watch: {
 			'$route' (route) {
-	            if(route.name === 'new_feed') {
+	            if(route.name === 'facebook_ads') {
 	            	this.setDefaultAttr();
 	            }
 	        }
 		},
 
 		created () {
-			this.setDefaultAttr();
+			if(!this.extAttr.updateMode) {
+				this.setDefaultAttr();
+			}
 		},
 
 		methods: {

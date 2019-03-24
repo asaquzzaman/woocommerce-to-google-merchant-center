@@ -21,12 +21,7 @@
 								<div class="list-action-wrap">
 									<div class="actions">
 										<router-link
-											:to="{
-												name: 'edit_googel_shopping', 
-												params: {
-													feed_id: feed.ID
-												}
-											}">
+											:to="getEditUrl(feed)">
 
 											Edit
 										</router-link>|
@@ -129,6 +124,32 @@
 		},
 
 		methods: {
+			getEditUrl (feed) {
+				if(feed.post_content == 'google_shopping') {
+					return {
+						name: 'edit_google_shopping', 
+						params: {
+							feed_id: feed.ID
+						}
+					}
+				}
+
+				if(feed.post_content == 'facebook_ads') {
+					return {
+						name: 'edit_facebook_ads', 
+						params: {
+							feed_id: feed.ID
+						}
+					}
+				}
+
+				return {
+					name: 'edit_google_shopping', 
+					params: {
+						feed_id: feed.ID
+					}
+				}
+			},
 			getFeeds () {
 				var self = this;
 

@@ -13,13 +13,13 @@ wpspearWooGoolRegisterChildrenRoute('woogool_root',
                 {
                     path: 'google-shopping', 
                     component: GoogleShopping,
-                    name: 'googel_shopping',
+                    name: 'google_shopping',
 
                     children:[
                         {
                             path: ':feed_id/edit', 
                             component: GoogleShopping,
-                            name: 'edit_googel_shopping',
+                            name: 'edit_google_shopping',
                         }
                     ]
                 },

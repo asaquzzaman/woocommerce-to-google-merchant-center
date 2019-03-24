@@ -4,7 +4,7 @@
 		<div v-if="!is_pro()" class="woogool-notice-warning">
 	        <div>With this free verion you can generate only 20 products feed. For getting unlimited go with <a target="_blank" href="http://wpspear.com/product-feed/"><strong>Pro version</strong></a></div>
 	    </div>
-	    <div v-if="$route.name=='googel_shopping'" class="woogool-notice-info">
+	    <div v-if="$route.name=='google_shopping'" class="woogool-notice-info">
 	        <div>Please check this documentation before submit form <a target="_blank" href="https://support.google.com/merchants/answer/7052112?hl=en">https://support.google.com/merchants/answer/7052112?hl=en</a></div>
 	    </div>
 		<!-- <div>

@@ -190,8 +190,8 @@
 			}
 		},
 		watch: {
-			'$route' (route) {
-                if(route.name === 'new_feed') {
+			'$route' (route, old) { 
+                if(old.name === 'edit_google_shopping') {
                 	this.feed_id = false;
                 	this.header = jQuery.extend({}, this.header, {
 						feedByCatgory: false,
@@ -322,18 +322,15 @@
 				this.header.activeVariation = this.setBoolen(feed.header.activeVariation);
 				this.header.feedByCatgory = this.setBoolen(feed.header.feedByCatgory);
 
-				let channelIndex = this.getIndex(this.channels, this.header.channel, 'id');
-				
-				if(channelIndex != -1) {
-					this.header.channel = this.channels[channelIndex];
-				} else {
-					this.header.channel = this.channels[0];
-				}
+				this.header.channel = {
+					'label': 'Google Shopping',
+					'id': 'google_shopping'
+				};
+
 			},
 
 			setContentAttrs (feed) {
 				this.gAttrs = feed.contentAttrs;
-				console.log(this.gAttrs);
 			},
 
 			setLogic (feed) {						
