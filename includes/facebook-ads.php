@@ -218,6 +218,13 @@ function woogool_get_facebook_ad_attributes() {
 					"feed_name" => "g:custom_label_4",
 					"format" => "optional",
 				),
+				"identifier_exists" => array (
+					'label'       => 'Identifier exists',
+					"name"        => "identifier_exists",
+					"feed_name"   => "g:identifier_exists",
+					"woogool_suggest" => "woogool_get_product_identifier_exists",
+					"format"      => "optional",
+				),
 			),
 		),
 	);

@@ -1031,6 +1031,10 @@ function woogool_get_product_average_rating($wc_product) {
 	return $wc_product->get_average_rating();
 }
 
+function woogool_get_product_identifier_exists() {
+	return 'no';
+}
+
 function woogool_product_attributes_maping_func() {
 	$attributes =  array(
 		'id'                        => 'woogool_get_product_compare_id',
@@ -1086,7 +1090,8 @@ function woogool_product_attributes_maping_func() {
 		'_woogool_unit_pricing_measure'      => 'woogool_get_product_compare_custom_attributes__woogool_unit_pricing_measure',
 		'_woogool_unit_pricing_base_measure' => 'woogool_get_product_compare_custom_attributes__woogool_unit_pricing_base_measure',
 		'_woogool_installment_amount'        => 'woogool_get_product_compare_custom_attributes__woogool_installment_amount', 
-		'_woogool_installment_months'        => 'woogool_get_product_compare_custom_attributes__woogool_installment_months' 
+		'_woogool_installment_months'        => 'woogool_get_product_compare_custom_attributes__woogool_installment_months',
+		'woogool_get_identifier_exists'      => 'woogool_get_product_identifier_exists' 
 	);
 
 	$images = array(

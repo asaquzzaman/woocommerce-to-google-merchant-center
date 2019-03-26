@@ -178,7 +178,7 @@ function woogool_shopping_attributes () {
 					'label'       => 'Identifier exists',
 					"name"        => "identifier_exists",
 					"feed_name"   => "g:identifier_exists",
-					"woogool_suggest" => "calculated",
+					"woogool_suggest" => "woogool_get_product_identifier_exists",
 					"format"      => "optional",
 				),
 			)

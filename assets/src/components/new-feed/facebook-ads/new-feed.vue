@@ -252,6 +252,16 @@
 				if(!this.isValidate()) {
 					return;
 				}
+				
+				self.fAttrs.push({
+					feed_name: "g:identifier_exists",
+					format: "required",
+					label: "Identifier Exists",
+					name: "identifier_exists",
+					type: "mapping",
+					woogool_suggest: "woogool_get_identifier_exists"
+				});
+
 				var args = {
 					data: {
 						feed_id: self.feed_id,
@@ -335,7 +345,15 @@
 			},
 
 			setContentAttrs (feed) {
-				this.fAttrs = feed.contentAttrs;
+				var newAttrs = [];
+
+				feed.contentAttrs.forEach(function(attrs, index) {
+					if(attrs.name !== 'identifier_exists') {
+						newAttrs.push(attrs);
+					}
+				});
+
+				this.fAttrs = newAttrs;
 			},
 
 			setLogic (feed) {						

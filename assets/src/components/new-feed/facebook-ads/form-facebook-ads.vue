@@ -183,7 +183,7 @@
 		created () {
 			if(!this.extAttr.updateMode) {
 				this.setDefaultAttr();
-			}
+			} 
 		},
 
 		methods: {

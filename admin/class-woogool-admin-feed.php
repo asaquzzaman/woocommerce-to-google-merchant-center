@@ -317,7 +317,7 @@ class WooGool_Admin_Feed {
         $val_func = woogool_product_attributes_maping_func();
         $name     = $feed_content['woogool_suggest'];
         $value    = '';
-
+        
         $call = empty( $val_func[$name] ) ? '' : $val_func[$name];
 
         if ( function_exists( $call ) ) {
