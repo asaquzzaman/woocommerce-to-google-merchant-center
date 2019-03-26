@@ -181,6 +181,9 @@
 		},
 
 		created () {
+			if(typeof this.facebookAttributes.remarketing_fields.attributes.identifier_exists != 'undefined') {
+				delete this.facebookAttributes.remarketing_fields.attributes['identifier_exists'];
+			}
 			if(!this.extAttr.updateMode) {
 				this.setDefaultAttr();
 			} 

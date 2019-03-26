@@ -3,7 +3,7 @@
 Contributors: asaquzzaman
 Tags: woocommerce google product feed, google product feed, merchant center, google merchant center, woocommerce shopping feed, product export, woocommerce product feed, woocommerce merchant
 Requires at least: 4.4
-Tested up to: 5.0.3
+Tested up to: 5.1.1
 Requires PHP: 5.6
 Stable tag: 1.7.1
 License: GPLv2 or later
@@ -114,6 +114,14 @@ Browser Compatibility
 8. Screenshot Delete button
 
 == Changelog ==
+
+= v1.7.2 - March 26, 2019 =
+
+* **New** Facebook ads.
+* **New** Hire me section
+* **New** Feed channel
+* **Update** Menu navigation
+* **fix** Feed generator
 
 = v1.7.1 - Feb 26, 2019 =
 
