@@ -143,6 +143,15 @@
 					}
 				}
 
+				if(feed.post_content == 'bing_shopping') {
+					return {
+						name: 'edit_bing_shopping', 
+						params: {
+							feed_id: feed.ID
+						}
+					}
+				}
+
 				return {
 					name: 'edit_google_shopping', 
 					params: {

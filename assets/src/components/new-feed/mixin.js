@@ -14,6 +14,10 @@ export default {
                 {
                     label: 'Facebook Ads',
                     id: 'facebook_ads'
+                },
+                {
+                    label: 'Bing Shopping',
+                    id: 'bing_shopping'
                 }
             ]
 		}
@@ -43,6 +47,15 @@ export default {
             if(channel.id == 'facebook_ads') {
                 this.gotoFacebookAds();
             }
+
+            if(channel.id == 'bing_shopping') {
+                this.gotoBingShopping();
+            }
+        },
+        gotoBingShopping () {
+            this.$router.push({
+                name: 'bing_shopping'
+            });
         },
         gotoGoogleShopping () {
             this.$router.push({

@@ -141,6 +141,16 @@ class WooGool_Admin_Feed {
         return $return;
     }
 
+    public function has_namespace( $feed_id ) {
+        $post = get_post( $feed_id );
+
+        if ( $post->post_content == 'bing_shopping' ) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function update_feed_file( $postdata ) {
         global $woogool_debug;
 
@@ -154,15 +164,13 @@ class WooGool_Admin_Feed {
         $active_variation = get_post_meta( $feed_id, 'active_variation', true );
         
         $settings         = get_post_meta( $feed_id );
-        
-        //$postdata['page'] = empty( $postdata['page'] ) ? 0 : $postdata['page'];
-        //$page             = intval( $postdata['page'] ) > 0 ? intval( $postdata['page'] ) : 1;
-        
+  
         $products         = $this->xml_get_products( $feed_id, $page=false, $offset );
         
         $file             = $this->get_file_path( $feed_id );
         $namespace        = array( 'g' => 'http://base.google.com/ns/1.0' );
         $xml              = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
+        $has_namespace    = $this->has_namespace( $feed_id );
         
         foreach ( $products as $key => $product ) {
             $offset     = $offset + 1;
@@ -202,14 +210,24 @@ class WooGool_Admin_Feed {
                     }
 
                     $variable_feed = $xml->channel->addChild('item');
-                    $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
+
+                    if ( $has_namespace ) {
+                        $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
+                    } else {
+                        $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id() );
+                    }
                     
                     foreach ( $feed_contents as $key => $feed_content ) {
                         
                         $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
 
                         if ( $feed_value ) {
-                            $variable_feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+
+                            if ( $has_namespace ) {
+                                $variable_feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+                            } else {
+                                $variable_feed->addChild( $feed_content['feed_name'], $feed_value );
+                            }
                         
                         } else if (WOOGOOL_DEBUG) {
                             $woogool_debug[$wc_product->get_id()][] = [
@@ -227,7 +245,12 @@ class WooGool_Admin_Feed {
                     $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
                     
                     if ( $feed_value ) {
-                        $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+
+                        if ( $has_namespace ) {
+                            $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+                        } else {
+                            $feed->addChild( $feed_content['feed_name'], $feed_value );
+                        }
                     
                     } else if (WOOGOOL_DEBUG) {
                         $woogool_debug[$wc_product->get_id()][] = [

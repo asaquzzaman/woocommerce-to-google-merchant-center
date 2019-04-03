@@ -96,6 +96,7 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/google-shopping-attributes.php';
             require_once dirname(__FILE__) . '/includes/woogool-product-attributes.php';
             require_once dirname(__FILE__) . '/includes/facebook-ads.php';
+            require_once dirname(__FILE__) . '/includes/bing-shopping-attributes.php';
         }
 
         function autoload( $class ) {
@@ -254,7 +255,8 @@ if ( ! class_exists('WP_WooGool') ) {
                 'google_categories'                        => get_option( 'woogool_google_product_type' ),
                 'google_shopping_attributes'               => woogool_shopping_attributes(),
                 'woogool_product_attributes'               => woogool_product_attributes(),
-                'woogool_product_attribute_with_optgroups' => woogool_product_attribute_with_optgroups (),
+                'woogool_product_attribute_with_optgroups' => woogool_product_attribute_with_optgroups(),
+                'woogool_bing_shopping_attributes'         => woogool_bing_shopping_attributes(),
                 'facebook_ad_attributes'                   => woogool_get_facebook_ad_attributes(),
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,

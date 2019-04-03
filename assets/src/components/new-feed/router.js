@@ -1,6 +1,7 @@
 import NewFeed from './new-feed.vue'
 import GoogleShopping from './google-shopping/new-feed.vue'
 import FacebookAds from './facebook-ads/new-feed.vue'
+import BingShopping from './bing-shopping/new-feed.vue'
 
 wpspearWooGoolRegisterChildrenRoute('woogool_root', 
     [   
@@ -34,6 +35,20 @@ wpspearWooGoolRegisterChildrenRoute('woogool_root',
                             path: ':feed_id/edit', 
                             component: FacebookAds,
                             name: 'edit_facebook_ads',
+                        }
+                    ]
+                },
+
+                {
+                    path: 'bing-shopping', 
+                    component: BingShopping,
+                    name: 'bing_shopping',
+
+                    children:[
+                        {
+                            path: ':feed_id/edit', 
+                            component: BingShopping,
+                            name: 'edit_bing_shopping',
                         }
                     ]
                 },
