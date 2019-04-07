@@ -239,8 +239,7 @@ class WooGool_Admin_Feed {
                     }
                 }
             } else {
-               $feed = $xml->channel->addChild('item');
-                
+                $feed = $xml->channel->addChild('item');
                 foreach ( $feed_contents as $key => $feed_content ) {
                     $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
                     

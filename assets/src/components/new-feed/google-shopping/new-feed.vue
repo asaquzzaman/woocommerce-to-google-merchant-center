@@ -259,6 +259,7 @@
 						self.createFeedFile( res.data.feed_id );
 					}
 				}
+				
 				self.isActiveSpinner = true;
 				self.newFeed(args);
 			},

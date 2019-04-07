@@ -15,7 +15,7 @@
 
 		<form v-if="!loading" class="woogool-new-feed-form" action="" @submit.prevent="submit()" method="post">
 			<form-header v-show="stage.step == 'first'" :extAttr="extAttr" :header="header" :stage="stage"></form-header>
-			<bing-shopping v-show="stage.step == 'second'" :extAttr="extAttr" :gAttrs="gAttrs"  :stage="stage"></bing-shopping>
+			<google-shopping v-show="stage.step == 'second'" :extAttr="extAttr" :gAttrs="gAttrs"  :stage="stage"></google-shopping>
 			<form-logic v-show="stage.step == 'third'" :logic="logic" :stage="stage"></form-logic>
 			
 			<div class="button-group">
@@ -169,7 +169,7 @@
 					activeVariation: false,
 					feedCategories: [],
 					refresh: 1,
-					bingCategories: [],
+					googleCategories: [],
 					categories: [],
 					country: {},
 					channel: {
@@ -199,7 +199,7 @@
 						activeVariation: false,
 						feedCategories: [],
 						refresh: 1,
-						bingCategories: [],
+						googleCategories: [],
 						categories: []
 					});
 					this.gAttrs = [];
@@ -210,7 +210,7 @@
 		components: {
 			'feed-header': Header,
 			'form-header': FormHeader,
-			'bing-shopping': FormContent,
+			'google-shopping': FormContent,
 			'form-logic': FormLogic,
 		},
 

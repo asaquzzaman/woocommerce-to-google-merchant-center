@@ -80,7 +80,7 @@
 			<div class="field-action-wrap">
 				<vue-woogool-multiselect 
 					class="header-multiselect"
-	                v-model="header.bingCategories" 
+	                v-model="header.googleCategories" 
 					:options="categories" 
 	                :multiple="true"
 	                :close-on-select="true"
@@ -99,20 +99,20 @@
 			</div>
 		</div>
 
-		<div v-for="(catElement, index) in header.bingCategories" :key="index" class="woogool-individual-field-wrap">
+		<div v-for="(catElement, index) in header.googleCategories" :key="index" class="woogool-individual-field-wrap">
 			<label class="woogool-label">{{ catElement.catName }}</label>
 			<div class="field-action-wrap">
 				
 				<vue-woogool-multiselect
 					class="header-multiselect"
-					v-model="catElement.bingCat"
-					:options="bingCategories" 
+					v-model="catElement.googleCat"
+					:options="googleCategories" 
 	                :multiple="false"
 	                :close-on-select="true"
 	                :clear-on-select="true"
 	                :show-labels="true"
 	                :searchable="true"
-	                @input="setBingCat(catElement, $event)"
+	                @input="setGoogleCat(catElement, $event)"
 	                placeholder="Category maping"
 	                select-label=""
 	                selected-label="selected"
@@ -123,7 +123,7 @@
 	                :allow-empty="true">
 						
 				</vue-woogool-multiselect>
-				<span class="help-text">Bing category for the {{ catElement.catName.toLowerCase() }} item</span>
+				<span class="help-text">Google category for the {{ catElement.catName.toLowerCase() }} item</span>
 			</div>
 		</div>
 
@@ -243,7 +243,7 @@
 		data () {
 			return {
 				categories: [],
-				bingCategories: [],
+				googleCategories: [],
 				countries: [],
 			}
 		},
@@ -255,7 +255,7 @@
 		created () {
 			var self = this;
 			
-			this.bingCategories = woogool_multi_product_var.bing_categories;
+			this.googleCategories = woogool_multi_product_var.google_categories;
 
 		
 
@@ -285,11 +285,11 @@
 
 					}
 				}
-
+				
 				this.newFeed(args);
 			},
-			setBingCat (cat, bingCat) {
-				cat['bingCat'] = bingCat;
+			setGoogleCat (cat, googleCat) {
+				cat['googleCat'] = googleCat;
 			},
 	
 		}

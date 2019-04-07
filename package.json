@@ -1,7 +1,7 @@
 {
-  "name": "pmapi",
-  "version": "1.7.2",
-  "description": "Front-end package manager for project manager",
+  "name": "WooGool",
+  "version": "1.7.3",
+  "description": "WooCommerce to Google Merchange Center",
   "main": "index.js",
   "directories": {
     "test": "tests"

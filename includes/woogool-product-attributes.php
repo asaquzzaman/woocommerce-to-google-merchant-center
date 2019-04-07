@@ -142,8 +142,16 @@ function woogool_get_product_description( $wc_product ) {
 	if(!$wc_product) {
 		return '';
 	}
-	return $wc_product->get_description();
+	$description = $wc_product->get_description();
+	$description = html_entity_decode( ( str_replace( "\r", "", $description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
+	$description = woogool_rip_tags( $description );
+	$description = preg_replace( '/\[(.*?)\]/', ' ', $description );
+	$description = str_replace("&#xa0;", "", $description );
+	$description = trim( woogool_utf8_for_xml( $description ) );
+
+	return $description;
 }
+
 function woogool_get_product_compare_description( $wc_product, $settings ) {
 	$description = woogool_get_product_description( $wc_product, $settings );
 	$description = woogool_compare_with_logical_value( $wc_product, $settings, 'description', $description );
@@ -155,7 +163,15 @@ function woogool_get_product_short_description( $wc_product ) {
 	if(!$wc_product) {
 		return '';
 	}
-	return $wc_product->get_short_description();
+
+	$short_description = $wc_product->get_short_description();
+	$short_description = html_entity_decode( ( str_replace( "\r", "", $short_description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
+	$short_description = woogool_rip_tags( $short_description );
+	$short_description = preg_replace( '/\[(.*?)\]/', ' ', $short_description );
+	$short_description = str_replace("&#xa0;", "", $short_description );
+	$short_description = trim( woogool_utf8_for_xml( $short_description ) );
+
+	return $short_description;
 }
 function woogool_get_product_compare_short_description( $wc_product, $settings ) {
 	$short_description = woogool_get_product_short_description( $wc_product, $settings );
@@ -1530,6 +1546,33 @@ function woogool_is_equal( $product_value, $cond_value ) {
 	} 
 	
 	return $product_value == $cond_value ? true : false;
+}
+
+/**
+ * An improved function for the strip_tags
+ * Removing tags but replacing them with spaces instead of just removing them
+ */
+function woogool_rip_tags( $string ) { 
+	// ----- remove HTML TAGs ----- 
+	$string = preg_replace ('/<[^>]*>/', ' ', $string); 
+
+	// ----- remove control characters ----- 
+	$string = str_replace("\r", '', $string);    // --- replace with empty space
+	$string = str_replace("\n", ' ', $string);   // --- replace with space
+	$string = str_replace("\t", ' ', $string);   // --- replace with space
+
+	// ----- remove multiple spaces ----- 
+	$string = trim(preg_replace('/ {2,}/', ' ', $string));
+
+	return $string; 
+}
+
+/**
+ * Strip unwanted UTF chars from string
+ */
+function woogool_utf8_for_xml( $string ){
+	$string = html_entity_decode($string);
+		return preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
 }
 
 

@@ -289,7 +289,7 @@
 
 					}
 				}
-
+				
 				this.newFeed(args);
 			},
 			setGoogleCat (cat, googleCat) {

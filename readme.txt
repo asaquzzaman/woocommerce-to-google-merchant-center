@@ -115,6 +115,10 @@ Browser Compatibility
 
 == Changelog ==
 
+= v1.7.3 - April 07, 2019 =
+
+* **New** Bing shopping.
+
 = v1.7.2 - March 26, 2019 =
 
 * **New** Facebook ads.
