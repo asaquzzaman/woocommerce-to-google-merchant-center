@@ -1,6 +1,6 @@
 {
   "name": "WooGool",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "WooCommerce to Google Merchange Center",
   "main": "index.js",
   "directories": {

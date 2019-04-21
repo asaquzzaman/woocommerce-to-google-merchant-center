@@ -12,13 +12,29 @@ export default {
                     id: 'google_shopping'
                 },
                 {
+                    label: 'Google Merchant Promotion Feed',
+                    id: 'google_shopping_promotion'
+                },
+                {
+                    label: 'Google Local Products',
+                    id: 'google_local'
+                },
+                // {
+                //     label: 'Google Products Inventory',
+                //     id: 'google_inventory'
+                // },
+                // {
+                //     label: 'Google Remarketing - DRM',
+                //     id: 'google_drm'
+                // },
+                {
                     label: 'Facebook Ads',
                     id: 'facebook_ads'
                 },
                 {
                     label: 'Bing Shopping',
                     id: 'bing_shopping'
-                }
+                },
             ]
 		}
 	},
@@ -51,6 +67,37 @@ export default {
             if(channel.id == 'bing_shopping') {
                 this.gotoBingShopping();
             }
+
+            if(channel.id == 'google_shopping_promotion') {
+                this.gotoGoogleShoppingPromotion();
+            }
+
+            if(channel.id == 'google_local') {
+                this.gotoGoogleLocal();
+            }
+
+            if(channel.id == 'google_drm') {
+                this.gotoGoogleDRM();
+            }
+
+            if(channel.id == 'google_inventory') {
+                this.gotoGoogleInventory();
+            }
+        },
+        gotoGoogleLocal () {
+            this.$router.push({
+                name: 'google_local'
+            });
+        },
+        gotoGoogleDRM () {
+            this.$router.push({
+                name: 'google_drm'
+            });
+        },
+        gotoGoogleInventory () {
+            this.$router.push({
+                name: 'google_inventory'
+            });
         },
         gotoBingShopping () {
             this.$router.push({
@@ -65,6 +112,11 @@ export default {
         gotoFacebookAds () {
             this.$router.push({
                 name: 'facebook_ads'
+            });
+        },
+        gotoGoogleShoppingPromotion () {
+            this.$router.push({
+                name: 'google_shopping_promotion'
             });
         },
 		newFeed (args) {

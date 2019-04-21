@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/asaquzzaman/woocommerce-to-google-merchant-center
  * Description: Submit your product woocommerce to google merchant center.
  * Author: asaquzzaman
- * Version: 1.7.4
+ * Version: 1.7.5
  * Author URI: http://wpspear.com
  * License: GPL2
  * TextDomain: woogool
@@ -45,7 +45,7 @@ if ( ! class_exists('WP_WooGool') ) {
 
         private $merchant_account_id;
         public $individual;
-        public static $version = '1.7.4';
+        public static $version = '1.7.5';
         static $woocommerce;
         static $woogool_free;
 
@@ -97,6 +97,10 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/woogool-product-attributes.php';
             require_once dirname(__FILE__) . '/includes/facebook-ads.php';
             require_once dirname(__FILE__) . '/includes/bing-shopping-attributes.php';
+            require_once dirname(__FILE__) . '/includes/google-shopping-promotion-attributes.php';
+            require_once dirname(__FILE__) . '/includes/google-remarketing-drm.php';
+            require_once dirname(__FILE__) . '/includes/google-local-products-inventory.php';
+            require_once dirname(__FILE__) . '/includes/google-local-products.php';
         }
 
         function autoload( $class ) {
@@ -257,6 +261,10 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogool_product_attributes'               => woogool_product_attributes(),
                 'woogool_product_attribute_with_optgroups' => woogool_product_attribute_with_optgroups(),
                 'woogool_bing_shopping_attributes'         => woogool_bing_shopping_attributes(),
+                'woogool_shopping_promotion_attributes'    => woogool_shopping_promotion_attributes(),
+                'woogool_remarketing_drm_attributes'       => woogool_google_remarketing_drm_attributes(),
+                'woogool_local_product_attributes'         => woogool_google_local_product_attributes(),
+                'woogool_local_product_inventory_attrs'    => woogool_google_local_product_inventory_attributes(),
                 'facebook_ad_attributes'                   => woogool_get_facebook_ad_attributes(),
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,

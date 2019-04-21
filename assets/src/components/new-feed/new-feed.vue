@@ -67,6 +67,22 @@
 				if(this.$route.name == 'facebook_ads') {
 					this.gotoFacebookAds();
 				}
+
+				if(this.$route.name == 'google_shopping_promotion') {
+					this.gotoGoogleShoppingPromotion();
+				}
+
+				if(this.$route.name == 'google_local') {
+					this.gotoGoogleLocal();
+				}
+
+				if(this.$route.name == 'google_drm') {
+					this.gotoGoogleDRM();
+				}
+
+				if(this.$route.name == 'google_inventory') {
+					this.gotoGoogleInventory();
+				}
 			}
 		},
 

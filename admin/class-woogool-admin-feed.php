@@ -143,8 +143,12 @@ class WooGool_Admin_Feed {
 
     public function has_namespace( $feed_id ) {
         $post = get_post( $feed_id );
-
-        if ( $post->post_content == 'bing_shopping' ) {
+        $no_namespace = [
+            'bing_shopping',
+            'google_shopping_promotion'
+        ];
+        
+        if ( in_array( $post->post_content, $no_namespace ) ) {
             return false;
         }
 
