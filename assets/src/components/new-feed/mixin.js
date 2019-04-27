@@ -1,41 +1,14 @@
+
+
 export default {
 	data () {
 		return {
-			stage: {
-				step: 'first',
-			},
+            feed_id: false,
+
 			loopLimit: woogool_multi_product_var.request_amount,
 			loopStart: 1,
-            channels: [
-                {
-                    label: 'Google Shopping',
-                    id: 'google_shopping'
-                },
-                {
-                    label: 'Google Merchant Promotion Feed',
-                    id: 'google_shopping_promotion'
-                },
-                {
-                    label: 'Google Local Products',
-                    id: 'google_local'
-                },
-                // {
-                //     label: 'Google Products Inventory',
-                //     id: 'google_inventory'
-                // },
-                // {
-                //     label: 'Google Remarketing - DRM',
-                //     id: 'google_drm'
-                // },
-                {
-                    label: 'Facebook Ads',
-                    id: 'facebook_ads'
-                },
-                {
-                    label: 'Bing Shopping',
-                    id: 'bing_shopping'
-                },
-            ]
+            
+
 		}
 	},
 	watch: {
@@ -48,77 +21,9 @@ export default {
 		}
 	},
 	created () {
-		// var step = localStorage.getItem('woogoolStageStep');
-
-		// if(step) {
-			//this.stage.step = step;
-		//}
+		
 	},
 	methods: {
-        changeChannel (channel) {
-            if(channel.id == 'google_shopping') {
-                this.gotoGoogleShopping();
-            }
-
-            if(channel.id == 'facebook_ads') {
-                this.gotoFacebookAds();
-            }
-
-            if(channel.id == 'bing_shopping') {
-                this.gotoBingShopping();
-            }
-
-            if(channel.id == 'google_shopping_promotion') {
-                this.gotoGoogleShoppingPromotion();
-            }
-
-            if(channel.id == 'google_local') {
-                this.gotoGoogleLocal();
-            }
-
-            if(channel.id == 'google_drm') {
-                this.gotoGoogleDRM();
-            }
-
-            if(channel.id == 'google_inventory') {
-                this.gotoGoogleInventory();
-            }
-        },
-        gotoGoogleLocal () {
-            this.$router.push({
-                name: 'google_local'
-            });
-        },
-        gotoGoogleDRM () {
-            this.$router.push({
-                name: 'google_drm'
-            });
-        },
-        gotoGoogleInventory () {
-            this.$router.push({
-                name: 'google_inventory'
-            });
-        },
-        gotoBingShopping () {
-            this.$router.push({
-                name: 'bing_shopping'
-            });
-        },
-        gotoGoogleShopping () {
-            this.$router.push({
-                name: 'google_shopping'
-            });
-        },
-        gotoFacebookAds () {
-            this.$router.push({
-                name: 'facebook_ads'
-            });
-        },
-        gotoGoogleShoppingPromotion () {
-            this.$router.push({
-                name: 'google_shopping_promotion'
-            });
-        },
 		newFeed (args) {
 			var self = this,
             pre_define = {
@@ -152,8 +57,30 @@ export default {
 		},
         
 		changeStage (step) {
-			this.stage.step = step;
+            if(this.validate(step)) {
+                this.stage.step = step;
+            }
 		},
+
+        validate (step) {
+            if(step != 'second') {
+                return true;
+            }
+
+            if(this.header.name == '') {
+                alert('Feed name required!');
+
+                return false;
+            }
+
+            if(jQuery.isEmptyObject(this.header.country)) {
+                alert('Please select your country!');
+
+                return false;
+            }
+
+            return true;
+        },
 
 		setBoolen (value) {
 			if(value.toLowerCase() === 'true') {

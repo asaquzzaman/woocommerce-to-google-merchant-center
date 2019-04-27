@@ -7,23 +7,6 @@
 			</div>
 		</div>
 
-		<channel v-if="!extAttr.updateMode"></channel>
-
-		<div class="woogool-individual-field-wrap">
-			<label for="enable-product-variation" class="woogool-label">Enable product variations</label>
-			<div class="field-action-wrap">
-				<input v-if="is_pro()" id="enable-product-variation" type="checkbox" v-model="header.activeVariation" class="woogool-field">
-			</div>
-			<span v-if="!is_pro()">This feature is available for <a target="_blank" href="http://wpspear.com/product-feed/">pro version</a></span>
-		</div>
-
-		<div class="woogool-individual-field-wrap">
-			<label for="feed-by-category" class="woogool-label">Feed by category</label>
-			<div class="field-action-wrap">
-				<input id="feed-by-category" type="checkbox" v-model="header.feedByCatgory" class="woogool-field">
-			</div>
-		</div>
-
 		<div class="woogool-individual-field-wrap">
 			<label class="woogool-label">Select Country</label>
 			<div class="field-action-wrap">
@@ -43,13 +26,37 @@
 	                deselect-label=""
 	                label="label"
 	                track-by="id"
-	                
+	                @input="onChangeCountry"
 	                :allow-empty="true">
 						
 				</vue-woogool-multiselect>
 				
 			</div>
 		</div>
+
+		<channel 
+			:channel="defaultChannel" 
+			:propChannels="channels" 
+			v-if="!extAttr.updateMode"
+			@channelChange="channelChange">
+			
+		</channel>
+
+		<div class="woogool-individual-field-wrap">
+			<label for="enable-product-variation" class="woogool-label">Enable product variations</label>
+			<div class="field-action-wrap">
+				<input v-if="is_pro()" id="enable-product-variation" type="checkbox" v-model="header.activeVariation" class="woogool-field">
+			</div>
+			<span v-if="!is_pro()">This feature is available for <a target="_blank" href="http://wpspear.com/product-feed/">pro version</a></span>
+		</div>
+
+		<div class="woogool-individual-field-wrap">
+			<label for="feed-by-category" class="woogool-label">Feed by category</label>
+			<div class="field-action-wrap">
+				<input id="feed-by-category" type="checkbox" v-model="header.feedByCatgory" class="woogool-field">
+			</div>
+		</div>
+
 
 		<div v-if="header.feedByCatgory" class="woogool-individual-field-wrap">
 			<label class="woogool-label">Feed by category</label>
@@ -245,6 +252,10 @@
 				categories: [],
 				googleCategories: [],
 				countries: [],
+				defaultChannel:{
+                    label: 'Google Shopping',
+                    id: 'google_shopping'
+				}
 			}
 		},
 
@@ -254,10 +265,10 @@
 
 		created () {
 			var self = this;
+
+			this.channels = this.$store.state.channels;
 			
 			this.googleCategories = woogool_multi_product_var.google_categories;
-
-		
 
 			jQuery.each(woogool_multi_product_var.product_categories, function(index, cat) {
 				self.categories.push({
@@ -275,7 +286,14 @@
 		},
 
 		methods: {
-			
+			channelChange () {
+				var self = this;
+				
+				this.$store.commit('setHeaderInStore', {
+					header: self.header,
+					channels: self.channels
+				});
+			},
 			submit () {
 				var args = {
 					header: this.header,
@@ -291,6 +309,15 @@
 			setGoogleCat (cat, googleCat) {
 				cat['googleCat'] = googleCat;
 			},
+
+			onChangeCountry (country) {
+				this.defaultChannel = {
+                    label: 'Google Shopping',
+                    id: 'google_shopping'
+				}
+				
+				this.getChannelByCountry(country);
+			}
 	
 		}
 	}

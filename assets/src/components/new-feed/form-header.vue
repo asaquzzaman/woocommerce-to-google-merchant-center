@@ -7,23 +7,6 @@
 			</div>
 		</div>
 
-		<channel v-if="!extAttr.updateMode"></channel>
-
-		<div class="woogool-individual-field-wrap">
-			<label for="enable-product-variation" class="woogool-label">Enable product variations</label>
-			<div class="field-action-wrap">
-				<input v-if="is_pro()" id="enable-product-variation" type="checkbox" v-model="header.activeVariation" class="woogool-field">
-			</div>
-			<span v-if="!is_pro()">This feature is available for <a target="_blank" href="http://wpspear.com/product-feed/">pro version</a></span>
-		</div>
-
-		<div class="woogool-individual-field-wrap">
-			<label for="feed-by-category" class="woogool-label">Feed by category</label>
-			<div class="field-action-wrap">
-				<input id="feed-by-category" type="checkbox" v-model="header.feedByCatgory" class="woogool-field">
-			</div>
-		</div>
-
 		<div class="woogool-individual-field-wrap">
 			<label class="woogool-label">Select Country</label>
 			<div class="field-action-wrap">
@@ -43,13 +26,62 @@
 	                deselect-label=""
 	                label="label"
 	                track-by="id"
-	                
+	                @input="onChangeCountry"
 	                :allow-empty="true">
 						
 				</vue-woogool-multiselect>
 				
 			</div>
 		</div>
+
+	<!-- 	<channel 
+			:channel="defaultChannel" 
+			:propChannels="channels" 
+			v-if="!extAttr.updateMode"
+			@channelChange="channelChange">
+			
+		</channel> -->
+
+		<div class="woogool-individual-field-wrap">
+			<label class="woogool-label">Select Channel</label>
+			<div class="field-action-wrap">
+				<vue-woogool-multiselect
+					class="header-multiselect"
+					v-model="header.channel"
+					:options="channels" 
+	                :multiple="false"
+	                :close-on-select="true"
+	                :clear-on-select="true"
+	                :show-labels="true"
+	                :searchable="true"
+	                placeholder="Select Channel"
+	                select-label=""
+	                selected-label="selected"
+	                deselect-label=""
+	                label="label"
+	                track-by="id"
+	                :allow-empty="false">
+						
+				</vue-woogool-multiselect>
+				
+			</div>
+		</div>
+
+		<div class="woogool-individual-field-wrap">
+			<label for="enable-product-variation" class="woogool-label">Enable product variations</label>
+			<div class="field-action-wrap">
+				<input v-if="is_pro()" id="enable-product-variation" type="checkbox" v-model="header.activeVariation" class="woogool-field">
+			</div>
+			<span v-if="!is_pro()">This feature is available for <a target="_blank" href="http://wpspear.com/product-feed/">pro version</a></span>
+		</div>
+
+		<div class="woogool-individual-field-wrap">
+			<label for="feed-by-category" class="woogool-label">Feed by category</label>
+			<div class="field-action-wrap">
+				<input id="feed-by-category" type="checkbox" v-model="header.feedByCatgory" class="woogool-field">
+			</div>
+		</div>
+
 
 		<div v-if="header.feedByCatgory" class="woogool-individual-field-wrap">
 			<label class="woogool-label">Feed by category</label>
@@ -215,7 +247,7 @@
 
 <script>
 	import Mixin from '@components/new-feed/mixin'
-	import Channel from '@components/new-feed/common/channel-drop-down.vue'
+	import Channels from '@components/new-feed/common/country-channel.js'
 
 	export default {
 		mixins: [Mixin],
@@ -245,15 +277,51 @@
 				categories: [],
 				googleCategories: [],
 				countries: [],
+				defaultChannel:{
+                    label: 'Google Shopping',
+                    id: 'google_shopping'
+				},
+				allCountries: [
+	                {
+	                    label: 'Google Shopping',
+	                    id: 'google_shopping'
+	                },
+	                {
+	                    label: 'Google Merchant Promotion Feed',
+	                    id: 'google_shopping_promotion'
+	                },
+	                {
+	                    label: 'Google Local Products',
+	                    id: 'google_local'
+	                },
+	                // {
+	                //     label: 'Google Products Inventory',
+	                //     id: 'google_inventory'
+	                // },
+	                // {
+	                //     label: 'Google Remarketing - DRM',
+	                //     id: 'google_drm'
+	                // },
+	                {
+	                    label: 'Facebook Ads',
+	                    id: 'facebook_ads'
+	                },
+	                {
+	                    label: 'Bing Shopping',
+	                    id: 'bing_shopping'
+	                },
+	            ],
+            	channels: [],
 			}
 		},
 
 		components: {
-			'channel': Channel 
+			
 		},
 
 		created () {
 			var self = this;
+			this.setDefaultChannel();
 			
 			this.googleCategories = woogool_multi_product_var.google_categories;
 
@@ -275,7 +343,10 @@
 		},
 
 		methods: {
-			
+			changeChannel () {
+				var self = this;
+
+			},
 			submit () {
 				var args = {
 					header: this.header,
@@ -291,6 +362,39 @@
 			setGoogleCat (cat, googleCat) {
 				cat['googleCat'] = googleCat;
 			},
+
+			onChangeCountry (country) {
+				this.getChannelByCountry(country);
+
+				this.header.channel = {
+                    label: 'Google Shopping',
+                    id: 'google_shopping'
+				}
+			},
+			setDefaultChannel () {
+	            var self = this;
+	            self.channels = [];
+
+	            this.allCountries.forEach(function(channel) {
+	                self.channels.push(channel);
+	            });
+	        },
+
+	        getChannelByCountry (country) {
+	            var self = this;
+	            
+	            this.setDefaultChannel();
+	            let id = country.id;
+
+	            if( typeof Channels[id] == 'undefined' ) {
+	                return;
+	            }
+
+	            Channels[id].forEach(function(channel) {
+	                self.channels.push(channel);
+	            });
+
+	        },
 	
 		}
 	}

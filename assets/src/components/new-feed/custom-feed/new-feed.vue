@@ -152,12 +152,11 @@
 
 <script>
 	import Header from '@components/header.vue'
-	import FormHeader from '@components/new-feed/bing-shopping/form-header.vue'
-	import FormContent from '@components/new-feed/bing-shopping/form-bing-shopping.vue'
-	import FormLogic from '@components/new-feed/bing-shopping/form-logic.vue'
+	import FormHeader from '@components/new-feed/custom-feed/form-header.vue'
+	import FormContent from '@components/new-feed/custom-feed/form-custom-feed.vue'
+	import FormLogic from '@components/new-feed/custom-feed/form-logic.vue'
 	import Mixin from '@components/new-feed/mixin'
 	
-
 	export default {
 		mixins: [Mixin],
 		data () {
@@ -173,8 +172,8 @@
 					categories: [],
 					country: {},
 					channel: {
-						label: 'Bing Shopping',
-						id: 'bing_shopping'
+						label: 'Google Shopping',
+						id: 'google_shopping'
 					},
 				},
 				gAttrs: [],
@@ -191,7 +190,7 @@
 		},
 		watch: {
 			'$route' (route, old) { 
-                if(old.name === 'edit_bing_shopping') {
+                if(old.name === 'edit_google_shopping') {
                 	this.feed_id = false;
                 	this.header = jQuery.extend({}, this.header, {
 						feedByCatgory: false,
@@ -216,6 +215,7 @@
 
 		created () {
 			var feed_id = this.$route.params.feed_id;
+			this.header = this.$store.state.header;
 
 			if(feed_id) {
 				this.getFeed(feed_id);
@@ -259,6 +259,7 @@
 						self.createFeedFile( res.data.feed_id );
 					}
 				}
+				
 				self.isActiveSpinner = true;
 				self.newFeed(args);
 			},
@@ -323,8 +324,8 @@
 				this.header.feedByCatgory = this.setBoolen(feed.header.feedByCatgory);
 
 				this.header.channel = {
-					'label': 'Bing Shopping',
-					'id': 'bing_shopping'
+					'label': 'Google Shopping',
+					'id': 'google_shopping'
 				};
 
 			},

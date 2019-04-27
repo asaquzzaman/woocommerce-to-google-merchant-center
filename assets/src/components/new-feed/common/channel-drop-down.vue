@@ -2,11 +2,10 @@
 	<div class="woogool-individual-field-wrap">
 		<label class="woogool-label">Select Channel</label>
 		<div class="field-action-wrap">
-				
 			<vue-woogool-multiselect
 				class="header-multiselect"
 				v-model="channel"
-				:options="channels" 
+				:options="propChannels" 
                 :multiple="false"
                 :close-on-select="true"
                 :clear-on-select="true"
@@ -19,7 +18,7 @@
                 label="label"
                 track-by="id"
                 @input="changeChannel"
-                :allow-empty="true">
+                :allow-empty="false">
 					
 			</vue-woogool-multiselect>
 			
@@ -33,25 +32,30 @@
 
 	export default {
 		mixins: [Mixin],
-		// props: {
-		// 	header: {
-		// 		type:[Object],
-		// 		default () {
-		// 			return {
-	 //                    channel: {
-	 //                    	label: 'Google Shopping',
-	 //                    	id: 'google_shopping'
-	 //                    }
-		// 			}
-		// 		}
-		// 	}
-		// },
+
+		props: {
+			propChannels: {
+				type: [Array],
+				default () {
+					return [];
+				}
+			},
+
+			channel: {
+				type: [Object],
+				default() {
+
+					return {
+	                    label: 'Google Shopping',
+	                    id: 'google_shopping'
+					}
+				}
+			}
+		},
+
 		data () {
 			return {
-				channel: {
-                    label: 'Google Shopping',
-                    id: 'google_shopping'
-				}
+				
 			}
 		},
 		created () {
