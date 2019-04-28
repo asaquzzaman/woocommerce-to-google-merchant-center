@@ -4,7 +4,7 @@
 		<div v-if="!is_pro()" class="woogool-notice-warning">
 	        <div>With this free verion you can generate only 20 products feed. For getting unlimited go with <a target="_blank" href="http://wpspear.com/product-feed/"><strong>Pro version</strong></a></div>
 	    </div>
-	    <div v-if="$route.name=='google_shopping'" class="woogool-notice-info">
+	    <div v-if="header.channel.id =='google_shopping'" class="woogool-notice-info">
 	        <div>Please check this documentation before submit form <a target="_blank" href="https://support.google.com/merchants/answer/7052112?hl=en">https://support.google.com/merchants/answer/7052112?hl=en</a></div>
 	    </div>
 		
@@ -19,12 +19,13 @@
 		            <div class="rect5"></div>
 		        </div>
 		    </div>
-
+		    
 			<form v-if="!loading" class="woogool-new-feed-form" action="" @submit.prevent="submit()" method="post">
 				<form-header 
 					v-show="stage.step == 'first'" 
 					:extAttr="extAttr" 
 					:header="header" 
+					:test="test"
 					:stage="stage">
 						
 				</form-header>
@@ -48,6 +49,8 @@
 					:btnMeta="buttonGroup"
 					:header="header"
 					:stage="stage"
+					:gAttrs="gAttrs"
+					:logic="logic"
 					@submit="submit">
 					
 				</button-group>
@@ -192,13 +195,7 @@
 				},
 			}
 		},
-		watch: {
-			'$route' (route) {
-	            if(route.name === 'new_feed') {
-	            	//this.setDefaultRoute();
-	            }
-	        }
-		},
+
 		components: {
 			'feed-header': Header,
 			'form-header': FormHeader,
@@ -208,9 +205,6 @@
 		},
 
 		created () {
-
-			//this.setDefaultRoute();
-
 			var feed_id = this.$route.params.feed_id;
 
 			if(feed_id) {
@@ -222,8 +216,21 @@
 			}
 		},
 
-		methods: {
+		watch: {
+			'$route' (route, prev) {
+				
+				if(prev.name == 'new_feed_update' && route.name == 'new_feed') {
+					this.resetData(); 
+				}
+			}
+		},
 
+		methods: {
+			resetData () {
+				this.$router.push({
+					name: 'reset_new_feed'
+				});
+			},
 			isValidate () {
 				if(this.header.name === '') {
 					alert('Feed name is required!');

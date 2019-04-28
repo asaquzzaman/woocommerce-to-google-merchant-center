@@ -59,14 +59,22 @@
 				default () {
 					return {}
 				}
+			},
+			gAttrs: {
+				type: [Array],
+				default () {
+					return []
+				}
+			},
+			logic: {
+				type: [Array],
+				default () {
+					return []
+				}
 			}
+
 		},
 		methods: {
-			cancel () {
-				this.$router.push({
-					name: 'feed_lists'
-				});
-			},
 			submit () {
 				this.$emit('submit');
 			}

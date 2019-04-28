@@ -1,5 +1,6 @@
 <template>
 	<div>
+
 		<table class="wp-list-table woogool-map-table widefat striped posts">
 			<thead>
 				<tr>
@@ -172,16 +173,10 @@
 			}
 		},
 
-		watch: {
-			'$route' (route) { 
-	            if(route.name == 'google_shopping') { 
-	            	this.setDefaultAttr();
-	            }
-	        }
-		},
-
 		created () {
+			
 			if(!this.extAttr.updateMode) {
+				this.gAttrs.length = 0;
 				this.setDefaultAttr();
 			}
 		},
@@ -225,6 +220,7 @@
 							if(typeof attr.type == 'undefined') {
 								woogool.Vue.set(attr, 'type', 'default');
 							}
+
 				 			self.gAttrs.push(attr);
 						}
 					});

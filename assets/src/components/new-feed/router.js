@@ -1,4 +1,5 @@
 import NewFeed from './new-feed.vue'
+import ResetNewFeed from './reset-new-feed.vue'
 
 
 wpspearWooGoolRegisterChildrenRoute('woogool_root', 
@@ -16,6 +17,11 @@ wpspearWooGoolRegisterChildrenRoute('woogool_root',
                 }
             ]
 
+        },
+        {
+            path: 'reset-new-feed', 
+            component: ResetNewFeed,
+            name: 'reset_new_feed',
         }
         
     ]

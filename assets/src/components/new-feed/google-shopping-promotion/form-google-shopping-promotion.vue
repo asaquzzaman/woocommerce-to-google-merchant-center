@@ -182,8 +182,9 @@
 
 		created () {
 			if(!this.extAttr.updateMode) {
+				this.gAttrs.length = 0;
 				this.setDefaultAttr();
-			}
+			} 		
 		},
 
 		methods: {

@@ -1,5 +1,6 @@
 <template>
 	<div class="woogool-feed-step-1">
+		
 		<div class="woogool-individual-field-wrap">
 			<label for="feed-name-field" class="woogool-label">Feed name</label>
 			<div class="field-action-wrap">
@@ -42,7 +43,7 @@
 			
 		</channel> -->
 
-		<div class="woogool-individual-field-wrap">
+		<div v-if="!isUpdateMode()" class="woogool-individual-field-wrap">
 			<label class="woogool-label">Select Channel</label>
 			<div class="field-action-wrap">
 				<vue-woogool-multiselect
@@ -60,6 +61,7 @@
 	                deselect-label=""
 	                label="label"
 	                track-by="id"
+	                @input="onChangeChannel"
 	                :allow-empty="false">
 						
 				</vue-woogool-multiselect>
@@ -269,7 +271,7 @@
 				default () {
 					return {}
 				}
-			}
+			},
 		},
 
 		data () {
@@ -320,6 +322,7 @@
 		},
 
 		created () {
+
 			var self = this;
 			this.setDefaultChannel();
 			
@@ -343,9 +346,17 @@
 		},
 
 		methods: {
-			changeChannel () {
-				var self = this;
+			isUpdateMode () {
+				let feedId = parseInt(this.$route.params.feed_id);
+				
+				if(isNaN(feedId)) {
+					return false;
+				}
 
+				return true;
+			},
+			changeChannel () {
+				
 			},
 			submit () {
 				var args = {
@@ -382,7 +393,7 @@
 
 	        getChannelByCountry (country) {
 	            var self = this;
-	            
+
 	            this.setDefaultChannel();
 	            let id = country.id;
 
@@ -395,6 +406,11 @@
 	            });
 
 	        },
+
+	        onChangeChannel () {
+	        	
+
+	       	}
 	
 		}
 	}

@@ -125,75 +125,14 @@
 
 		methods: {
 			getEditUrl (feed) {
-				if(feed.post_content == 'google_shopping') {
-					return {
-						name: 'edit_google_shopping', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
-				if(feed.post_content == 'facebook_ads') {
-					return {
-						name: 'edit_facebook_ads', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
-				if(feed.post_content == 'bing_shopping') {
-					return {
-						name: 'edit_bing_shopping', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
-				if(feed.post_content == 'google_shopping_promotion') {
-					return {
-						name: 'edit_google_shopping_promotion', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
-				if(feed.post_content == 'google_local') {
-					return {
-						name: 'edit_google_local', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
-				if(feed.post_content == 'google_drm') {
-					return {
-						name: 'edit_google_drm', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
-				if(feed.post_content == 'google_inventory') {
-					return {
-						name: 'edit_google_inventory', 
-						params: {
-							feed_id: feed.ID
-						}
-					}
-				}
-
+				
 				return {
-					name: 'edit_google_shopping', 
+					name: 'new_feed_update', 
 					params: {
 						feed_id: feed.ID
 					}
 				}
+				
 			},
 			getFeeds () {
 				var self = this;
