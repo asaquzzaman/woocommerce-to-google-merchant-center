@@ -172,16 +172,9 @@
 			}
 		},
 
-		watch: {
-			'$route' (route) { 
-	            if(route.name == 'google_shopping') { 
-	            	this.setDefaultAttr();
-	            }
-	        }
-		},
-
 		created () {
 			if(!this.extAttr.updateMode) {
+				this.gAttrs.length = 0;
 				this.setDefaultAttr();
 			}
 		},

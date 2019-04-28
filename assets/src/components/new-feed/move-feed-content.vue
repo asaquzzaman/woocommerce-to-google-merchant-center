@@ -9,6 +9,33 @@
 				
 		</google-shopping>
 
+		<google-promotion 
+			v-if="header.channel.id == 'google_shopping_promotion'"
+			v-show="stage.step == 'second'" 
+			:extAttr="extAttr" 
+			:gAttrs="gAttrs"  
+			:stage="stage">
+				
+		</google-promotion>
+
+		<google-local 
+			v-if="header.channel.id == 'google_local'"
+			v-show="stage.step == 'second'" 
+			:extAttr="extAttr" 
+			:gAttrs="gAttrs"  
+			:stage="stage">
+				
+		</google-local>
+
+		<facebook-ads 
+			v-if="header.channel.id == 'facebook_ads'"
+			v-show="stage.step == 'second'" 
+			:extAttr="extAttr" 
+			:gAttrs="gAttrs"  
+			:stage="stage">
+				
+		</facebook-ads>
+
 		<bing-shopping 
 			v-if="header.channel.id == 'bing_shopping'"
 			v-show="stage.step == 'second'" 
@@ -18,14 +45,14 @@
 				
 		</bing-shopping>
 
-		<google-promotion 
-			v-if="header.channel.id == 'google_shopping_promotion'"
+		<custom-feed 
+			v-if="header.channel.id == 'bing_shopping'"
 			v-show="stage.step == 'second'" 
 			:extAttr="extAttr" 
 			:gAttrs="gAttrs"  
 			:stage="stage">
 				
-		</google-promotion>
+		</custom-feed>
 	</div>
 </template>
 
@@ -33,6 +60,9 @@
 	import GoogleShopping from '@components/new-feed/google-shopping/form-google-shopping.vue'
 	import BingShopping from '@components/new-feed/bing-shopping/form-bing-shopping.vue'
 	import GooglePromotion from '@components/new-feed/google-shopping-promotion/form-google-shopping-promotion.vue'
+	import FacebookAds from '@components/new-feed/facebook-ads/form-facebook-ads.vue'
+	import GoogleLocal from '@components/new-feed/google-local/form-google-local.vue'
+	import CustomFeed from '@components/new-feed/custom-feed/form-custom-feed.vue'
 
 	export default {
 		props: {
@@ -68,7 +98,10 @@
 		components: {
 			'google-shopping': GoogleShopping,
 			'bing-shopping': BingShopping,
-			'google-promotion': GooglePromotion
+			'google-promotion': GooglePromotion,
+			'facebook-ads': FacebookAds,
+			'google-local': GoogleLocal,
+			'custom-feed': CustomFeed
 		},
 	}
 </script>

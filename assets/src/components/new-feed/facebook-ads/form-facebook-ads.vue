@@ -13,7 +13,7 @@
 
 			<tbody>
 				<template 
-					v-for="(fAttrTr, fkey) in fAttrs" 
+					v-for="(fAttrTr, fkey) in gAttrs" 
 					v-if="fAttrTr.format == 'required'">
 				
 					<tr :key="fkey" v-if="fAttrTr.type == 'default'">
@@ -44,7 +44,7 @@
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(fAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 			
@@ -79,7 +79,7 @@
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(fAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 
@@ -101,7 +101,7 @@
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(fAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 
@@ -157,7 +157,7 @@
 					return {}
 				}
 			},
-			fAttrs: {
+			gAttrs: {
 				type: [Array],
 				default () {
 					return []
@@ -172,19 +172,12 @@
 			}
 		},
 
-		watch: {
-			'$route' (route) {
-	            if(route.name === 'facebook_ads') {
-	            	this.setDefaultAttr();
-	            }
-	        }
-		},
-
 		created () {
 			if(typeof this.facebookAttributes.remarketing_fields.attributes.identifier_exists != 'undefined') {
 				delete this.facebookAttributes.remarketing_fields.attributes['identifier_exists'];
 			}
 			if(!this.extAttr.updateMode) {
+				this.gAttrs.length = 0;
 				this.setDefaultAttr();
 			} 
 		},
@@ -209,7 +202,7 @@
 								}
 							);
 							
-				 			self.fAttrs.splice(key, 1, newAttr);
+				 			self.gAttrs.splice(key, 1, newAttr);
 						} 
 					});
 				});
@@ -228,7 +221,7 @@
 							if(typeof attr.type == 'undefined') {
 								woogool.Vue.set(attr, 'type', 'default');
 							}
-				 			self.fAttrs.push(attr);
+				 			self.gAttrs.push(attr);
 						}
 					});
 				});
@@ -246,7 +239,7 @@
 					return;
 				}
 
-				this.fAttrs.splice(key, 1);
+				this.gAttrs.splice(key, 1);
 			}
 		}
 	}
