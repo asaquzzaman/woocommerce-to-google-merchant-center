@@ -101,6 +101,8 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/google-remarketing-drm.php';
             require_once dirname(__FILE__) . '/includes/google-local-products-inventory.php';
             require_once dirname(__FILE__) . '/includes/google-local-products.php';
+            require_once dirname(__FILE__) . '/includes/fruugous-attributes.php';
+            require_once dirname(__FILE__) . '/includes/yandex-attributes.php';
         }
 
         function autoload( $class ) {
@@ -266,6 +268,8 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogool_local_product_attributes'         => woogool_google_local_product_attributes(),
                 'woogool_local_product_inventory_attrs'    => woogool_google_local_product_inventory_attributes(),
                 'facebook_ad_attributes'                   => woogool_get_facebook_ad_attributes(),
+                'woogool_yandex_attributes'                => woogool_yandex_feed(),
+                'woogool_fruugous_attributes'              => woogool_fruugous_feed(),
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,
                 'feed_per_page'                            => WOOGOOL_FEED_PER_PAGE,

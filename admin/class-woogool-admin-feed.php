@@ -49,10 +49,11 @@ class WooGool_Admin_Feed {
 
     public function create_xml_file( $feed_id, $feed_title ) {
         $upload_dir = wp_upload_dir();
-        $base      = $upload_dir['basedir'];
-        $dir_path  = $base . '/woogool-product-feed/';
-        $file_name = md5( 'woogool' . $feed_id );
-        $file_path = woogool_get_feed_file_path( $feed_id ); 
+        $base       = $upload_dir['basedir'];
+        $dir_path   = $base . '/woogool-product-feed/';
+        $file_name  = md5( 'woogool' . $feed_id );
+        $file_path  = woogool_get_feed_file_path( $feed_id ); 
+        $feed       = get_post( $feed_id );
 
         if( ! is_dir( $dir_path ) ) {
             wp_mkdir_p( $dir_path );
@@ -65,13 +66,55 @@ class WooGool_Admin_Feed {
         // Check if directory in uploads exists, if not create one  
         if ( ! file_exists( $file_path ) ) {
 
-            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
-            $xml->addAttribute( 'version', '2.0' );
-            $xml->addChild( 'channel' );
-            $xml->channel->addChild( 'title', htmlspecialchars( $feed_title ) );
-            $xml->channel->addChild( 'link', site_url() );
-            $xml->channel->addChild( 'description', 'WooCommerce Product Feed for google shopping' );
-            $xml->asXML( $file_path );
+            if ( $feed->post_content == 'yandex' ) {
+
+                $main_currency = get_woocommerce_currency();
+
+                $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><yml_catalog></yml_catalog>');   
+                $xml->addAttribute('date', date('Y-m-d H:i'));
+                $shop = $xml->addChild('shop');
+                $shop->addChild('name', htmlspecialchars( $feed_title ));
+                $shop->addChild('company', get_bloginfo());
+                $shop->addChild('url', site_url());
+                $shop->addChild('platform', 'WooCommerce');
+                $currencies = $shop->addChild('currencies');
+                $currency = $currencies->addChild('currency');
+                $currency->addAttribute('id', $main_currency);
+                $currency->addAttribute('rate', '1');
+
+                $args = array(
+                    'taxonomy' => "product_cat",
+                );
+                $product_categories = get_terms( 'product_cat', $args );
+                $count = count($product_categories);
+                
+                if ($count > 0){
+                    $categories = $shop->addChild('categories');
+
+                    foreach ($product_categories as $product_category){
+                        $category = $categories->addChild('category', htmlspecialchars($product_category->name));
+                        $category->addAttribute('id', $product_category->term_id);
+                        if ($product_category->parent > 0){
+                            $category->addAttribute('parentId', $product_category->parent);
+
+                        }
+                    }
+                }
+
+                $shop->addChild('offers');
+
+                $xml->asXML( $file_path );
+
+            } else {
+                $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
+                $xml->addAttribute( 'version', '2.0' );
+                $xml->addChild( 'channel' );
+                $xml->channel->addChild( 'title', htmlspecialchars( $feed_title ) );
+                $xml->channel->addChild( 'link', site_url() );
+                $xml->channel->addChild( 'description', 'WooCommerce Product Feed for google shopping' );
+                $xml->asXML( $file_path );
+            }
+            
 
             update_post_meta( $feed_id, 'feed_file_name', $file_name );
 
@@ -145,7 +188,8 @@ class WooGool_Admin_Feed {
         $post = get_post( $feed_id );
         $no_namespace = [
             'bing_shopping',
-            'google_shopping_promotion'
+            'google_shopping_promotion',
+            'yandex'
         ];
         
         if ( in_array( $post->post_content, $no_namespace ) ) {
@@ -160,6 +204,7 @@ class WooGool_Admin_Feed {
 
         $this->start_time = time();
         $feed_id          = intval( $postdata['feed_id'] ) ? $postdata['feed_id'] : false ; 
+        $post_feed        = get_post( $feed_id );
         $offset           = empty( $postdata['offset'] ) ? 0 : intval( $postdata['offset'] );
         $logic            = get_post_meta( $feed_id, 'logic', true );
         
@@ -213,7 +258,7 @@ class WooGool_Admin_Feed {
                         continue;
                     }
 
-                    $variable_feed = $xml->channel->addChild('item');
+                    $variable_feed = $this->set_xml_wrap( $xml, $post_feed ); //$xml->channel->addChild('item');
 
                     if ( $has_namespace ) {
                         $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
@@ -222,50 +267,57 @@ class WooGool_Admin_Feed {
                     }
                     
                     foreach ( $feed_contents as $key => $feed_content ) {
+                        $this->feed_tag_generate( $feed_content, $wc_product, $settings, $feed, $namespace );
+                        // $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
+
+                        // if ( $feed_value ) {
+                        //     if ( $post_feed->post_content == 'yandex' ) {
+                        //         $variable_feed->addChild( $feed_content['feed_name'], $feed_value );
+                        //     } else if ( $has_namespace ) {
+                        //         $variable_feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+                        //     } else {
+                        //         $variable_feed->addChild( $feed_content['feed_name'], $feed_value );
+                        //     }
                         
-                        $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
+                        // } else if (WOOGOOL_DEBUG) {
+                        //     $woogool_debug[$wc_product->get_id()][] = [
+                        //         'empty_value' => true,
+                        //         'feed_content' => $feed_content
 
-                        if ( $feed_value ) {
-
-                            if ( $has_namespace ) {
-                                $variable_feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
-                            } else {
-                                $variable_feed->addChild( $feed_content['feed_name'], $feed_value );
-                            }
-                        
-                        } else if (WOOGOOL_DEBUG) {
-                            $woogool_debug[$wc_product->get_id()][] = [
-                                'empty_value' => true,
-                                'feed_content' => $feed_content
-
-                            ];
-                        }
+                        //     ];
+                        // }
                     }
                 }
             } else {
-                $feed = $xml->channel->addChild('item');
+                $feed = $this->set_xml_wrap( $xml, $post_feed ); //$xml->channel->addChild('item');
+                
                 foreach ( $feed_contents as $key => $feed_content ) {
-                    $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
-                    
-                    if ( $feed_value ) {
 
-                        if ( $has_namespace ) {
-                            $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
-                        } else {
-                            $feed->addChild( $feed_content['feed_name'], $feed_value );
-                        }
+                    $this->feed_tag_generate( $feed_content, $wc_product, $settings, $feed, $namespace );
+                    // $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
                     
-                    } else if (WOOGOOL_DEBUG) {
-                        $woogool_debug[$wc_product->get_id()][] = [
-                            'empty_value' => true,
-                            'feed_content' => $feed_content
+                    // if ( $feed_value ) {
+                    //     if ( $post_feed->post_content == 'yandex' ) {
 
-                        ];
-                    }
+                    //         $feed->addChild( $feed_content['feed_name'], $feed_value );
+
+                    //     } else if ( $has_namespace ) {
+                    //         $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+                    //     } else {
+                    //         $feed->addChild( $feed_content['feed_name'], $feed_value );
+                    //     }
+                    
+                    // } else if (WOOGOOL_DEBUG) {
+                    //     $woogool_debug[$wc_product->get_id()][] = [
+                    //         'empty_value' => true,
+                    //         'feed_content' => $feed_content
+
+                    //     ];
+                    // }
                 } 
             }
         }
-
+        
         if ( WOOGOOL_DEBUG && !empty($woogool_debug) ) {
             woogool_log( 'woogool_debug', $woogool_debug );
         }
@@ -285,6 +337,43 @@ class WooGool_Admin_Feed {
         }
 
         return $return;
+    }
+
+    private function feed_tag_generate( $feed_content, $wc_product, $settings, $feed, $namespace ) {
+        global $woogool_debug;
+        
+        $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
+                    
+        if ( $feed_value ) {
+            if ( $post_feed->post_content == 'yandex' ) {
+
+                $feed->addChild( $feed_content['feed_name'], $feed_value );
+
+            } else if ( $has_namespace ) {
+                $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
+            } else {
+                $feed->addChild( $feed_content['feed_name'], $feed_value );
+            }
+        
+        } else if (WOOGOOL_DEBUG) {
+            $woogool_debug[$wc_product->get_id()][] = [
+                'empty_value' => true,
+                'feed_content' => $feed_content
+
+            ];
+        }
+    }
+
+    function set_xml_wrap( $xml, $feed ) {
+        $xml_parent = '';
+        
+        if ( $feed->post_content == 'yandex' ) {
+            $xml_parent = $xml->shop->offers->addChild('offer');
+        } else {
+            $xml_parent = $xml->channel->addChild('item');
+        }
+
+        return $xml_parent;
     }
 
     function is_exclude_from_filter( $wc_product, $logic ) {

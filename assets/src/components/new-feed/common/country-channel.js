@@ -37,7 +37,7 @@ var channels = {
         },
 
         {
-            id:'Fruugo',
+            id:'fruugo',
             label: 'Fruugo.us',
             // type: 'Marketplace',
             // fields: 'fruugous'
@@ -90,7 +90,7 @@ var channels = {
         },
 
         {
-            id:'Yandex',
+            id:'yandex',
             label: 'Yandex.com',
             // type: 'Advertising',
             // fields: 'yandex'

@@ -307,6 +307,7 @@
 	                	_wpnonce: woogool_var.nonce,
 	                },
 	                success (res) {
+	                	
 	                	self.loading = false;
 	                    self.setHeader(res.data);
 	                    self.setContentAttrs(res.data);

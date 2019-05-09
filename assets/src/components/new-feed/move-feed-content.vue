@@ -45,8 +45,26 @@
 				
 		</bing-shopping>
 
+		<yandex-attributes 
+			v-if="header.channel.id == 'yandex'"
+			v-show="stage.step == 'second'" 
+			:extAttr="extAttr" 
+			:gAttrs="gAttrs"  
+			:stage="stage">
+				
+		</yandex-attributes>
+
+		<fruugo-attributes 
+			v-if="header.channel.id == 'fruugo'"
+			v-show="stage.step == 'second'" 
+			:extAttr="extAttr" 
+			:gAttrs="gAttrs"  
+			:stage="stage">
+				
+		</fruugo-attributes>
+
 		<custom-feed 
-			v-if="header.channel.id == 'bing_shopping'"
+			v-if="header.channel.id == 'custom_feed'"
 			v-show="stage.step == 'second'" 
 			:extAttr="extAttr" 
 			:gAttrs="gAttrs"  
@@ -62,6 +80,8 @@
 	import GooglePromotion from '@components/new-feed/google-shopping-promotion/form-google-shopping-promotion.vue'
 	import FacebookAds from '@components/new-feed/facebook-ads/form-facebook-ads.vue'
 	import GoogleLocal from '@components/new-feed/google-local/form-google-local.vue'
+	import YandexAttributes from '@components/new-feed/yandex/form-yandex-attributes.vue'
+	import FruugoAttributes from '@components/new-feed/fruugous/form-fruugous-attributes.vue'
 	import CustomFeed from '@components/new-feed/custom-feed/form-custom-feed.vue'
 
 	export default {
@@ -101,7 +121,9 @@
 			'google-promotion': GooglePromotion,
 			'facebook-ads': FacebookAds,
 			'google-local': GoogleLocal,
-			'custom-feed': CustomFeed
+			'custom-feed': CustomFeed,
+			'yandex-attributes': YandexAttributes,
+			'fruugo-attributes': FruugoAttributes 
 		},
 	}
 </script>
