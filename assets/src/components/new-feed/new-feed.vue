@@ -324,8 +324,8 @@
 				this.header.feedByCatgory = this.setBoolen(feed.header.feedByCatgory);
 
 				this.header.channel = {
-					'label': 'Google Shopping',
-					'id': 'google_shopping'
+					id:feed.header.channel,
+            		label: '',
 				};
 
 			},

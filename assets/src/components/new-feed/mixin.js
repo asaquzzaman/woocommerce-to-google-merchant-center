@@ -4,11 +4,8 @@ export default {
 	data () {
 		return {
             feed_id: false,
-
 			loopLimit: woogool_multi_product_var.request_amount,
 			loopStart: 1,
-            
-
 		}
 	},
 	watch: {

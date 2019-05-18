@@ -311,7 +311,7 @@ if ( ! class_exists('WP_WooGool') ) {
             $woogool = add_menu_page( __( 'WooGool Feed', 'woogool' ), __( 'WooGool Feed', 'woogool' ), 'read', 'woogool', array( $this, 'woogool_page' ), 'dashicons-rss' );
             $woogool_single = add_submenu_page( 'woogool', __( 'Individual Product', 'woogool' ), __( 'Individual Product', 'woogool' ), 'read', 'woogool' , array( $this, 'woogool_page' ) );
             $woogool_multi = add_submenu_page( 'woogool', __( 'Multiple Products', 'woogool' ), __( 'Multiple Products', 'woogool' ), 'read', 'woogool_multiple', array( $this, 'woogool_page' ) );
-            add_submenu_page( 'woogool', __( 'Discuss', 'woogool' ), __( 'Discuss', 'woogool' ), 'read', 'woogool_discuss', array( $this, 'woogool_discuss_page' ) );
+            //add_submenu_page( 'woogool', __( 'Discuss', 'woogool' ), __( 'Discuss', 'woogool' ), 'read', 'woogool_discuss', array( $this, 'woogool_discuss_page' ) );
             
             add_action( 'admin_print_styles-' . $woogool, array( $this, 'scripts' ) );
             add_action( 'admin_print_styles-' . $woogool_multi, array( $this, 'scripts_multiple_products' ) );

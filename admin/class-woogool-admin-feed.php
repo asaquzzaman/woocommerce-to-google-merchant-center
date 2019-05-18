@@ -60,7 +60,7 @@ class WooGool_Admin_Feed {
         }
 
         if ( file_exists( $file_path ) ) {
-            unlink ( $file_path );
+            unlink ( $file_path ); 
         }
         
         // Check if directory in uploads exists, if not create one  
@@ -260,60 +260,28 @@ class WooGool_Admin_Feed {
 
                     $variable_feed = $this->set_xml_wrap( $xml, $post_feed ); //$xml->channel->addChild('item');
 
-                    if ( $has_namespace ) {
-                        $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
-                    } else {
-                        $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id() );
+                    if ( $this->has_item_group_id( $post_feed ) ) {
+                        if ( $has_namespace ) {
+                            $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id(), $namespace['g'] );
+                        } else {
+                            $variable_feed->addChild( 'g:item_group_id', $wc_product->get_id() );
+                        }
                     }
                     
+                    
+                    $this->set_common_tags( $variable_feed, $post_feed, $wc_product );
+                    
                     foreach ( $feed_contents as $key => $feed_content ) {
-                        $this->feed_tag_generate( $feed_content, $wc_product, $settings, $feed, $namespace );
-                        // $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
-
-                        // if ( $feed_value ) {
-                        //     if ( $post_feed->post_content == 'yandex' ) {
-                        //         $variable_feed->addChild( $feed_content['feed_name'], $feed_value );
-                        //     } else if ( $has_namespace ) {
-                        //         $variable_feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
-                        //     } else {
-                        //         $variable_feed->addChild( $feed_content['feed_name'], $feed_value );
-                        //     }
-                        
-                        // } else if (WOOGOOL_DEBUG) {
-                        //     $woogool_debug[$wc_product->get_id()][] = [
-                        //         'empty_value' => true,
-                        //         'feed_content' => $feed_content
-
-                        //     ];
-                        // }
+                        $this->feed_tag_generate( $feed_content, $wc_product, $settings, $post_feed, $has_namespace, $variable_feed, $namespace );
                     }
                 }
             } else {
                 $feed = $this->set_xml_wrap( $xml, $post_feed ); //$xml->channel->addChild('item');
-                
+                $this->set_common_tags( $feed, $post_feed, $wc_product );
+
                 foreach ( $feed_contents as $key => $feed_content ) {
 
-                    $this->feed_tag_generate( $feed_content, $wc_product, $settings, $feed, $namespace );
-                    // $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
-                    
-                    // if ( $feed_value ) {
-                    //     if ( $post_feed->post_content == 'yandex' ) {
-
-                    //         $feed->addChild( $feed_content['feed_name'], $feed_value );
-
-                    //     } else if ( $has_namespace ) {
-                    //         $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
-                    //     } else {
-                    //         $feed->addChild( $feed_content['feed_name'], $feed_value );
-                    //     }
-                    
-                    // } else if (WOOGOOL_DEBUG) {
-                    //     $woogool_debug[$wc_product->get_id()][] = [
-                    //         'empty_value' => true,
-                    //         'feed_content' => $feed_content
-
-                    //     ];
-                    // }
+                    $this->feed_tag_generate( $feed_content, $wc_product, $settings, $post_feed, $has_namespace, $feed, $namespace );
                 } 
             }
         }
@@ -339,17 +307,45 @@ class WooGool_Admin_Feed {
         return $return;
     }
 
-    private function feed_tag_generate( $feed_content, $wc_product, $settings, $feed, $namespace ) {
+    private function has_item_group_id( $post ) {
+        $no_namespace = [
+            
+        ];
+        
+        if ( in_array( $post->post_content, $no_namespace ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function set_common_tags( $feed, $post_feed, $wc_product ) {
+        
+        if ( $post_feed->post_content == 'yandex' ) {
+            $feed->addAttribute( 'id', $wc_product->get_id() );
+            $stock_status = $wc_product->get_stock_status();
+            
+            if ( $stock_status == 'instock' ) {
+                $feed->addAttribute( 'available', 'true' );
+            } else {
+                $feed->addAttribute( 'available', 'false' );
+            }
+
+            $categories = $wc_product->get_category_ids();
+
+            foreach ( $categories as $categorieId ) {
+                $feed->addChild( 'categoryId', $categorieId );
+            }
+        }
+    }
+
+    private function feed_tag_generate( $feed_content, $wc_product, $settings, $post_feed, $has_namespace, $feed, $namespace ) {
         global $woogool_debug;
         
         $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
-                    
+
         if ( $feed_value ) {
-            if ( $post_feed->post_content == 'yandex' ) {
-
-                $feed->addChild( $feed_content['feed_name'], $feed_value );
-
-            } else if ( $has_namespace ) {
+            if ( $has_namespace ) {
                 $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
             } else {
                 $feed->addChild( $feed_content['feed_name'], $feed_value );
