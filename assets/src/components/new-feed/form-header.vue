@@ -109,7 +109,7 @@
 			</div>
 		</div>
 
-		<div class="woogool-individual-field-wrap">
+		<div v-if="hasGoogleCategoryMaping()" class="woogool-individual-field-wrap">
 			<label class="woogool-label">Category Maping</label>
 			<div class="field-action-wrap">
 				<vue-woogool-multiselect 
@@ -346,6 +346,18 @@
 		},
 
 		methods: {
+			hasGoogleCategoryMaping () {
+				var noMap = [
+					'yandex', 'fruugous'
+				]
+				var channelID = this.header.channel.id;
+
+				if(noMap.indexOf(channelID) != -1) {
+					return false;
+				}
+
+				return true;
+			},
 			isUpdateMode () {
 				let feedId = parseInt(this.$route.params.feed_id);
 				

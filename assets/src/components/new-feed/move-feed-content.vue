@@ -55,7 +55,7 @@
 		</yandex-attributes>
 
 		<fruugo-attributes 
-			v-if="header.channel.id == 'fruugo'"
+			v-if="header.channel.id == 'fruugous'"
 			v-show="stage.step == 'second'" 
 			:extAttr="extAttr" 
 			:gAttrs="gAttrs"  

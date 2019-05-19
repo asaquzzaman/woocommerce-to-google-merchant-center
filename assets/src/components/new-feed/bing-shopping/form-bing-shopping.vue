@@ -34,6 +34,7 @@
 						</td>
 						<td>
 							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
 									:value="proMetaKey"
@@ -229,7 +230,7 @@
 			},
 
 			isProductAttrSelected (gAttributeTr, wpKey) {
-				return gAttributeTr.woogool_suggest == wpKey ? 'selected' : false;
+				return gAttributeTr.woogool_suggest == wpKey ? 'selected' : '';
 			},
 
 			removeAttr(gAttributeTr, key) {

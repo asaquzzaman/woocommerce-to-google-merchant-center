@@ -37,7 +37,7 @@ var channels = {
         },
 
         {
-            id:'fruugo',
+            id:'fruugous',
             label: 'Fruugo.us',
             // type: 'Marketplace',
             // fields: 'fruugous'

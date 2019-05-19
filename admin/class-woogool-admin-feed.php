@@ -62,11 +62,23 @@ class WooGool_Admin_Feed {
         if ( file_exists( $file_path ) ) {
             unlink ( $file_path ); 
         }
-        
+       // woopr($feed->post_content); die();
         // Check if directory in uploads exists, if not create one  
         if ( ! file_exists( $file_path ) ) {
 
-            if ( $feed->post_content == 'yandex' ) {
+            if ( $feed->post_content == 'fruugous' ) {
+
+                $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><products></products>'); 
+                $xml->addAttribute('version', '1.0' ); 
+                $xml->addAttribute('standalone', 'yes' );  
+                $xml->addChild('datetime', date( 'Y-m-d H:i:s', strtotime( current_time('mysql') ) ) );
+                $xml->addChild('title', 'fruugous');
+                $xml->addChild('link', site_url());
+                $xml->addChild('description', 'WooCommerce Product Feed - This product feed is created for WooCommerce plugin');
+
+                $xml->asXML( $file_path );
+
+            } else if ( $feed->post_content == 'yandex' ) {
 
                 $main_currency = get_woocommerce_currency();
 
@@ -189,7 +201,8 @@ class WooGool_Admin_Feed {
         $no_namespace = [
             'bing_shopping',
             'google_shopping_promotion',
-            'yandex'
+            'yandex',
+            'fruugous'
         ];
         
         if ( in_array( $post->post_content, $no_namespace ) ) {
@@ -308,15 +321,16 @@ class WooGool_Admin_Feed {
     }
 
     private function has_item_group_id( $post ) {
-        $no_namespace = [
-            
+        $no_group_id = [
+            'yandex',
+            'fruugous'
         ];
         
-        if ( in_array( $post->post_content, $no_namespace ) ) {
-            return true;
+        if ( in_array( $post->post_content, $no_group_id ) ) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private function set_common_tags( $feed, $post_feed, $wc_product ) {
@@ -365,6 +379,8 @@ class WooGool_Admin_Feed {
         
         if ( $feed->post_content == 'yandex' ) {
             $xml_parent = $xml->shop->offers->addChild('offer');
+        } else if( $feed->post_content == 'fruugous' ) {
+            $xml_parent = $xml->addChild('product');
         } else {
             $xml_parent = $xml->channel->addChild('item');
         }
