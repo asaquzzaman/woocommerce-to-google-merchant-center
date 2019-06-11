@@ -392,7 +392,7 @@ function woogool_get_product_link( $wc_product ) {
 	if(!$wc_product) {
 		return '';
 	}
-	return $wc_product->get_permalink();
+	return esc_url( $wc_product->get_permalink() );
 }
 function woogool_get_product_compare_link( $wc_product ) {
 	return woogool_get_product_link( $wc_product );
@@ -456,7 +456,7 @@ function woogool_get_product_categorie_links( $wc_product ) {
 	$cat_links = [];
 	foreach ( $product_cats as $key => $cat_id ) {
 		$cat = get_term_by( 'id', $cat_id, 'product_cat' );
-		$cat_links[] = get_category_link( $cat->term_id );
+		$cat_links[] = esc_url( get_category_link( $cat->term_id ) );
 	}
 
 	return $cat_links;
@@ -469,7 +469,7 @@ function woogool_get_product_compare_categorie_links( $wc_product, $settings ) {
 
 	foreach ( $google_cats as $key => $google_cat ) {
 		if ( in_array( $google_cat['catId'], $product_cats ) ) {
-			$maps[] = get_category_link( $google_cat['catId'] );
+			$maps[] = esc_url( get_category_link( $google_cat['catId'] ) );
 		}
 	}
 

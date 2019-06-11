@@ -4,7 +4,7 @@
 			<thead>
 				<tr>
 					
-					<th>Google Shopping Attributes</th>
+					<th>Custom Product Attributes</th>
 					<th>Product Attributes</th>
 					<th></th>
 
@@ -167,7 +167,7 @@
 		},
 		data () {
 			return {
-				googleAttributes: woogool_multi_product_var.google_shopping_attributes,
+				googleAttributes: woogool_multi_product_var.woogool_custom_product_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
 				googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
 			}

@@ -103,6 +103,7 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/google-local-products.php';
             require_once dirname(__FILE__) . '/includes/fruugous-attributes.php';
             require_once dirname(__FILE__) . '/includes/yandex-attributes.php';
+            require_once dirname(__FILE__) . '/includes/custom-feed.php';
         }
 
         function autoload( $class ) {
@@ -270,6 +271,7 @@ if ( ! class_exists('WP_WooGool') ) {
                 'facebook_ad_attributes'                   => woogool_get_facebook_ad_attributes(),
                 'woogool_yandex_attributes'                => woogool_yandex_feed(),
                 'woogool_fruugous_attributes'              => woogool_fruugous_feed(),
+                'woogool_custom_product_attributes'        => woogool_custom_feed(),
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,
                 'feed_per_page'                            => WOOGOOL_FEED_PER_PAGE,
@@ -472,7 +474,7 @@ function woogool_notice() {
 //add_action( 'woocommerce_product_options_general_product_data', 'woogool_custom_variable_fields', 10, 3 );
 
 function woogool_custom_variable_fields( $loop, $variation_id, $variation ) {
-        die('mishu custom asdfasdfasdfeawdsfawsdfzsdfzsdw');
+        
         // Check if the option is enabled or not in the pluggin settings 
         //if( get_option('add_unique_identifiers') == "yes" ){
 

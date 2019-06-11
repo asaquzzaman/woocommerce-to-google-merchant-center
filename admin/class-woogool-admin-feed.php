@@ -117,6 +117,16 @@ class WooGool_Admin_Feed {
 
                 $xml->asXML( $file_path );
 
+            } else if ( $feed->post_content == 'custom_feed' ) {
+
+                $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><products></products>'); 
+                $xml->addChild('datetime', date( 'Y-m-d H:i:s', strtotime( current_time('mysql') ) ) );
+                $xml->addChild('title', 'custom');
+                $xml->addChild('link', site_url());
+                $xml->addChild('description', 'WooCommerce Product Feed - This product feed is created for WooCommerce plugin');
+
+                $xml->asXML( $file_path );
+
             } else {
                 $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
                 $xml->addAttribute( 'version', '2.0' );
@@ -202,7 +212,8 @@ class WooGool_Admin_Feed {
             'bing_shopping',
             'google_shopping_promotion',
             'yandex',
-            'fruugous'
+            'fruugous',
+            'custom_feed'
         ];
         
         if ( in_array( $post->post_content, $no_namespace ) ) {
@@ -323,7 +334,8 @@ class WooGool_Admin_Feed {
     private function has_item_group_id( $post ) {
         $no_group_id = [
             'yandex',
-            'fruugous'
+            'fruugous',
+            'custom_feed'
         ];
         
         if ( in_array( $post->post_content, $no_group_id ) ) {
@@ -334,6 +346,19 @@ class WooGool_Admin_Feed {
     }
 
     private function set_common_tags( $feed, $post_feed, $wc_product ) {
+        if ( $post_feed->post_content == 'custom_feed' ) {
+
+            $product_cats = $wc_product->get_category_ids();
+
+            if ( ! empty( $product_cats ) ) {
+                $categories = $feed->addChild('categories');
+            }
+            
+            foreach ( $product_cats as $key => $cat_id ) {
+                $cat = get_term_by( 'id', $cat_id, 'product_cat' );
+                $categories->addChild('category', $cat->name);
+            }
+        }
         
         if ( $post_feed->post_content == 'yandex' ) {
             $feed->addAttribute( 'id', $wc_product->get_id() );
@@ -358,7 +383,7 @@ class WooGool_Admin_Feed {
         
         $feed_value = $this->get_value( $feed_content, $wc_product, $settings );
 
-        if ( $feed_value ) {
+        if ( ! empty( $feed_value ) ) {
             if ( $has_namespace ) {
                 $feed->addChild( $feed_content['feed_name'], $feed_value, $namespace['g'] );
             } else {
@@ -380,6 +405,8 @@ class WooGool_Admin_Feed {
         if ( $feed->post_content == 'yandex' ) {
             $xml_parent = $xml->shop->offers->addChild('offer');
         } else if( $feed->post_content == 'fruugous' ) {
+            $xml_parent = $xml->addChild('product');
+        } else if( $feed->post_content == 'custom_feed' ) {
             $xml_parent = $xml->addChild('product');
         } else {
             $xml_parent = $xml->channel->addChild('item');
@@ -446,7 +473,7 @@ class WooGool_Admin_Feed {
         $value    = '';
         
         $call = empty( $val_func[$name] ) ? '' : $val_func[$name];
-
+        
         if ( function_exists( $call ) ) {
             $value = $call( $wc_product, $settings );
         } else {
