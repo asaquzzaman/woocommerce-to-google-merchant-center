@@ -4,98 +4,190 @@ var channels = {
 		{
 			id:'custom_feed',
 			label: 'Adform.com',
-			// type: 'Advertising',
-   //          fields: 'customfeed'
 		},
 
         {
             id:'custom_feed',
             label: 'Adroll.com',
-            // type: 'Advertising',
-            // fields: 'customfeed'
         },
 
         {
             id:'custom_feed',
             label: 'Connexity.com',
-            // type: 'Advertising',
-            // fields: 'customfeed'
         },
 
         {
             id:'custom_feed',
             label: 'Smartly.io',
-            // type: 'Advertising',
-            // fields: 'customfeed'
         },
 
         {
             id:'custom_feed',
             label: 'TheNextAd',
-            // type: 'Advertising',
-            // fields: 'customfeed'
         },
 
         {
             id:'fruugous',
             label: 'Fruugo.us',
-            // type: 'Marketplace',
-            // fields: 'fruugous'
         },
 
         {
             id:'custom_feed',
             label: 'Polyvore.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
         },
 
         {
             id:'custom_feed',
             label: 'Pricegrabber.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
         },
         {
             id:'custom_feed',
             label: 'ShopMania.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
         },
         {
             id:'custom_feed',
             label: 'Shopping.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
         },
         {
             id:'custom_feed',
             label: 'Shopzilla.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
         },
 
         {
             id:'custom_feed',
             label: 'Stylight.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
+
         },
 
         {
             id:'custom_feed',
             label: 'Twenga.com',
-            // type: 'Comparison shopping engine',
-            // fields: 'customfeed'
         },
 
         {
             id:'yandex',
             label: 'Yandex.com',
-            // type: 'Advertising',
-            // fields: 'yandex'
         },
-	]
+	],
+
+    'GB': [
+
+        {
+            id:'custom_feed',
+            label: 'Adform.com',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'AdRoll.com',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Connexity.com',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Smartly.io',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'TheNextAd',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Spartoo.co.uk',
+        },
+
+        {
+            id:'fruugouk',
+            label: 'Fruugo.co.uk',
+        },
+
+        {
+            id:'manomano',
+            label: 'ManoMano.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Choozen.co.uk',
+        },
+        {
+            id:'custom_feed',
+            label: 'Ciao.co.uk',
+        },
+        {
+            id:'custom_feed',
+            label: 'Dooyoo.co.uk',
+        },
+        {
+            id:'custom_feed',
+            label: 'Idealo.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Kelkoo.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Pricegrabber.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Priceminister.com',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Pricerunner.co.uk',
+        },
+        {
+            id:'custom_feed',
+            label: 'Pricespy.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Rakuten.com',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'ShapMania.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Shopping.com',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Shopzilla.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Skinflint.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Stylight.co.uk',
+        },
+
+        {
+            id:'custom_feed',
+            label: 'Twenga.co.uk',
+        },
+    ]
 
 }
 

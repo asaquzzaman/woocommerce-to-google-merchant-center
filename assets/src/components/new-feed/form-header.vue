@@ -11,7 +11,6 @@
 		<div class="woogool-individual-field-wrap">
 			<label class="woogool-label">Select Country</label>
 			<div class="field-action-wrap">
-					
 				<vue-woogool-multiselect
 					class="header-multiselect"
 					v-model="header.country"
@@ -60,7 +59,7 @@
 	                selected-label="selected"
 	                deselect-label=""
 	                label="label"
-	                track-by="id"
+	                track-by="label"
 	                @input="onChangeChannel"
 	                :allow-empty="false">
 						
@@ -348,15 +347,20 @@
 		methods: {
 			hasGoogleCategoryMaping () {
 				var noMap = [
-					'yandex', 'fruugous'
-				]
-				var channelID = this.header.channel.id;
+					'google_shopping', 
+					'google_shopping_promotion', 
+					'google_local', 
+					'facebook_ads', 
+					'bing_shopping'
+				];
 
+				var channelID = this.header.channel.id;
+				
 				if(noMap.indexOf(channelID) != -1) {
-					return false;
+					return true;
 				}
 
-				return true;
+				return false;
 			},
 			isUpdateMode () {
 				let feedId = parseInt(this.$route.params.feed_id);

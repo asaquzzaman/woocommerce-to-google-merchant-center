@@ -115,6 +115,10 @@ Browser Compatibility
 
 == Changelog ==
 
+= v1.7.6 - Jun 15, 2019 =
+
+* **New** Channel Yandex.com, Fruugo.us, Adform.com, Adroll.com, Connexity.com, Smartly.io, TheNextAd, Polyvore.com, ShopMania.com, Shopping.com, Shopzilla.com, Stylight.com, Twenga.com.
+
 = v1.7.5 - April 21, 2019 =
 
 * **New** Channel google merchant promotion feed.

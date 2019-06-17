@@ -76,6 +76,13 @@ function woogool_fruugous_feed() {
 					"format"      => "required",
 					"woogool_suggest" => "description",
 				),
+				"product_url" => array (
+					'label'       => 'Product URL',
+					"name"        => "link",
+					"feed_name"   => "Link",
+					"format"      => "required",
+					"woogool_suggest" => "link",
+            	),
 				"normal_price_with_vat" => array(
 					'label'       => 'Normal Price With VAT',
 					"name"        => "NormalPriceWithVat",
