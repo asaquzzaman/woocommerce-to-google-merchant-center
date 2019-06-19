@@ -78,6 +78,18 @@ class WooGool_Admin_Feed {
 
                 $xml->asXML( $file_path );
 
+            } else if ( $feed->post_content == 'manomano' ) {
+
+                $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><products></products>'); 
+                $xml->addAttribute('version', '1.0' ); 
+                $xml->addAttribute('standalone', 'yes' );  
+                $xml->addChild('datetime', date( 'Y-m-d H:i:s', strtotime( current_time('mysql') ) ) );
+                $xml->addChild('title', 'manomano');
+                $xml->addChild('link', site_url());
+                $xml->addChild('description', 'WooCommerce Product Feed - This product feed is created for WooCommerce plugin');
+
+                $xml->asXML( $file_path );
+
             } else if ( $feed->post_content == 'yandex' ) {
 
                 $main_currency = get_woocommerce_currency();
@@ -213,7 +225,8 @@ class WooGool_Admin_Feed {
             'google_shopping_promotion',
             'yandex',
             'fruugous',
-            'custom_feed'
+            'custom_feed',
+            'manomano'
         ];
         
         if ( in_array( $post->post_content, $no_namespace ) ) {
@@ -256,7 +269,7 @@ class WooGool_Admin_Feed {
 
             $product_type = $wc_product->get_type();
 
-            if ( $product_type == 'variable' ) {
+            if ( $product_type == 'variable' || $product_type == 'variation' ) {
                 $variable   = new WC_Product_Variable( $wc_product );
                 $variations = $variable->get_available_variations();
                 $attrs      = $variable->get_variation_attributes();
@@ -335,7 +348,8 @@ class WooGool_Admin_Feed {
         $no_group_id = [
             'yandex',
             'fruugous',
-            'custom_feed'
+            'custom_feed',
+            'manomano'
         ];
         
         if ( in_array( $post->post_content, $no_group_id ) ) {
@@ -404,9 +418,13 @@ class WooGool_Admin_Feed {
         
         if ( $feed->post_content == 'yandex' ) {
             $xml_parent = $xml->shop->offers->addChild('offer');
-        } else if( $feed->post_content == 'fruugous' ) {
-            $xml_parent = $xml->addChild('product');
-        } else if( $feed->post_content == 'custom_feed' ) {
+        } else if( 
+            $feed->post_content == 'fruugous' 
+                || 
+            $feed->post_content == 'manomano'
+                ||
+            $feed->post_content == 'custom_feed'
+        ) {
             $xml_parent = $xml->addChild('product');
         } else {
             $xml_parent = $xml->channel->addChild('item');

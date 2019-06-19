@@ -104,6 +104,7 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/fruugous-attributes.php';
             require_once dirname(__FILE__) . '/includes/yandex-attributes.php';
             require_once dirname(__FILE__) . '/includes/custom-feed.php';
+            require_once dirname(__FILE__) . '/includes/manomano-attributes.php';
         }
 
         function autoload( $class ) {
@@ -272,6 +273,7 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogool_yandex_attributes'                => woogool_yandex_feed(),
                 'woogool_fruugous_attributes'              => woogool_fruugous_feed(),
                 'woogool_custom_product_attributes'        => woogool_custom_feed(),
+                'woogool_manomano_attributes'              => woogool_manomano_attributes(),
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,
                 'feed_per_page'                            => WOOGOOL_FEED_PER_PAGE,

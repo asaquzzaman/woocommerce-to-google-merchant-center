@@ -142,7 +142,14 @@ function woogool_get_product_description( $wc_product ) {
 	if(!$wc_product) {
 		return '';
 	}
-	$description = $wc_product->get_description();
+
+	if ( empty( $description ) && ($wc_product->get_type() == 'variation' || $wc_product->get_type() == 'variable' ) ) {
+		$parent_id      = $wc_product->get_parent_id();
+		$parent_product = wc_get_product( $parent_id );
+		$description    = $parent_product->get_description();
+
+	}
+
 	$description = html_entity_decode( ( str_replace( "\r", "", $description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
 	$description = woogool_rip_tags( $description );
 	$description = preg_replace( '/\[(.*?)\]/', ' ', $description );

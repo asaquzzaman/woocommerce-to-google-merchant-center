@@ -9,7 +9,7 @@ function woogool_fruugous_feed() {
 		"feed_fields" => array(
 			'label' => 'Feed fields',
 			'attributes' => array(
-				"Product Id" => array(
+				"product_id" => array(
 					'label'       => 'Product Id',
 					"name"        => "ProductId",
 					"feed_name"   => "ProductId",

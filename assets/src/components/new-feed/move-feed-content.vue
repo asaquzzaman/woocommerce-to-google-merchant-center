@@ -55,13 +55,22 @@
 		</yandex-attributes>
 
 		<fruugo-attributes 
-			v-if="header.channel.id == 'fruugous'"
+			v-if="header.channel.id == 'fruugous' || header.channel.id == 'fruugouk'"
 			v-show="stage.step == 'second'" 
 			:extAttr="extAttr" 
 			:gAttrs="gAttrs"  
 			:stage="stage">
 				
 		</fruugo-attributes>
+
+		<manomano-attributes 
+			v-if="header.channel.id == 'manomano'"
+			v-show="stage.step == 'second'" 
+			:extAttr="extAttr" 
+			:gAttrs="gAttrs"  
+			:stage="stage">
+				
+		</manomano-attributes>
 
 		<custom-feed 
 			v-if="header.channel.id == 'custom_feed'"
@@ -83,6 +92,7 @@
 	import YandexAttributes from '@components/new-feed/yandex/form-yandex-attributes.vue'
 	import FruugoAttributes from '@components/new-feed/fruugous/form-fruugous-attributes.vue'
 	import CustomFeed from '@components/new-feed/custom-feed/form-custom-feed.vue'
+	import Manomano from '@components/new-feed/manomano/form-manomano-attributes.vue'
 
 	export default {
 		props: {
@@ -123,7 +133,8 @@
 			'google-local': GoogleLocal,
 			'custom-feed': CustomFeed,
 			'yandex-attributes': YandexAttributes,
-			'fruugo-attributes': FruugoAttributes 
+			'fruugo-attributes': FruugoAttributes,
+			'manomano-attributes': Manomano
 		},
 	}
 </script>
