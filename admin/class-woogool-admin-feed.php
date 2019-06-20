@@ -66,7 +66,7 @@ class WooGool_Admin_Feed {
         // Check if directory in uploads exists, if not create one  
         if ( ! file_exists( $file_path ) ) {
 
-            if ( $feed->post_content == 'fruugous' ) {
+            if ( $feed->post_content == 'fruugous' || $feed->post_content == 'fruugouk' ) {
 
                 $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><products></products>'); 
                 $xml->addAttribute('version', '1.0' ); 
@@ -226,7 +226,8 @@ class WooGool_Admin_Feed {
             'yandex',
             'fruugous',
             'custom_feed',
-            'manomano'
+            'manomano',
+            'fruugouk'
         ];
         
         if ( in_array( $post->post_content, $no_namespace ) ) {
@@ -349,7 +350,8 @@ class WooGool_Admin_Feed {
             'yandex',
             'fruugous',
             'custom_feed',
-            'manomano'
+            'manomano',
+            'fruugouk'
         ];
         
         if ( in_array( $post->post_content, $no_group_id ) ) {
@@ -418,9 +420,11 @@ class WooGool_Admin_Feed {
         
         if ( $feed->post_content == 'yandex' ) {
             $xml_parent = $xml->shop->offers->addChild('offer');
-        } else if( 
+        } else if ( 
             $feed->post_content == 'fruugous' 
                 || 
+            $feed->post_content == 'fruugouk'
+                ||
             $feed->post_content == 'manomano'
                 ||
             $feed->post_content == 'custom_feed'
