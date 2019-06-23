@@ -105,6 +105,20 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/yandex-attributes.php';
             require_once dirname(__FILE__) . '/includes/custom-feed.php';
             require_once dirname(__FILE__) . '/includes/manomano-attributes.php';
+            require_once dirname(__FILE__) . '/includes/vergelijkbe-attribute.php';
+            require_once dirname(__FILE__) . '/includes/beslist-attributes.php';
+            require_once dirname(__FILE__) . '/includes/billiger-attributes.php';
+            require_once dirname(__FILE__) . '/includes/bol-attributes.php';
+            require_once dirname(__FILE__) . '/includes/compari-ro-attributes.php';
+            require_once dirname(__FILE__) . '/includes/daisyconhuisentuin-attributes.php';
+            require_once dirname(__FILE__) . '/includes/guenstiger-attributes.php';
+            require_once dirname(__FILE__) . '/includes/heureka-attributes.php';
+            require_once dirname(__FILE__) . '/includes/katoni-attributes.php';
+            require_once dirname(__FILE__) . '/includes/kijiji-attributes.php';
+            require_once dirname(__FILE__) . '/includes/miinto-attributes.php';
+            require_once dirname(__FILE__) . '/includes/moebel-attributes.php';
+            require_once dirname(__FILE__) . '/includes/pinterest-attributes.php';
+
         }
 
         function autoload( $class ) {
@@ -274,6 +288,19 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogool_fruugous_attributes'              => woogool_fruugous_feed(),
                 'woogool_custom_product_attributes'        => woogool_custom_feed(),
                 'woogool_manomano_attributes'              => woogool_manomano_attributes(),
+                'woogool_vergelijkbe_attributes'           => woogool_vergelijkbe_attributes(),
+                'woogool_beslist_attributes'               => woogool_beslist_attributes(),
+                'woogool_billiger_attributes'              => woogool_billiger_attributes(),
+                'woogool_bol_attributes'                   => woogool_bol_attributes(),
+                'woogool_compari_ro_attributes'            => woogoo_compari_ro_attributes(),
+                'woogool_daisyconhuisentuin_attributes'    => woogool_daisyconhuisentuin_attributes(),
+                'woogool_guenstiger_attributes'            => woogool_guenstiger_attributes(),
+                'woogool_heureka_attributes'               => woogool_heureka_attributes(),
+                'woogool_katoni_attributes'                => woogool_katoni_attributes(),
+                'woogool_kijiji_attributes'                => woogool_kijiji_attributes(),
+                'woogool_miinto_attributes'                => woogool_miinto_attributes(),
+                'woogool_moebel_attributes'                => woogool_moebel_attributes(),
+                'woogool_pinterest_attributes'             => woogool_pinterest_attributes(),
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,
                 'feed_per_page'                            => WOOGOOL_FEED_PER_PAGE,
