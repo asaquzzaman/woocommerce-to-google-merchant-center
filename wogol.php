@@ -118,6 +118,9 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/miinto-attributes.php';
             require_once dirname(__FILE__) . '/includes/moebel-attributes.php';
             require_once dirname(__FILE__) . '/includes/pinterest-attributes.php';
+            require_once dirname(__FILE__) . '/includes/ricardo-attributes.php';
+            require_once dirname(__FILE__) . '/includes/salidzini-attributes.php';
+            require_once dirname(__FILE__) . '/includes/shopmania-ro-attributes.php';
 
         }
 
@@ -301,6 +304,10 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogool_miinto_attributes'                => woogool_miinto_attributes(),
                 'woogool_moebel_attributes'                => woogool_moebel_attributes(),
                 'woogool_pinterest_attributes'             => woogool_pinterest_attributes(),
+                'woogoo_ricardo_attributes'                => woogoo_ricardo_attributes(),
+                'woogool_salidzini_attributes'             => woogool_salidzini_attributes(),
+                'woogool_shopmania_attributes'             => woogool_shopmania_attributes(),
+
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,
                 'feed_per_page'                            => WOOGOOL_FEED_PER_PAGE,
