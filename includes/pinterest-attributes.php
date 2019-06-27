@@ -136,14 +136,14 @@ function woogool_pinterest_attributes() {
 			'label' => 'Product category',
 			'attributes' => array(
 				"google_product_category" => array(
-					'label' => 'Google product category'
+					'label' => 'Google product category',
 					"name" => "google_product_category",
 					"feed_name" => "g:google_product_category",
 					"format" => "required",
 					"woo_suggest" => "categories",
 				),
 				"product_type" => array(
-					'label' => 'Product type'
+					'label' => 'Product type',
 					"name" => "product_type",
 					"feed_name" => "g:product_type",
 					"format" => "optional",

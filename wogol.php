@@ -121,6 +121,12 @@ if ( ! class_exists('WP_WooGool') ) {
             require_once dirname(__FILE__) . '/includes/ricardo-attributes.php';
             require_once dirname(__FILE__) . '/includes/salidzini-attributes.php';
             require_once dirname(__FILE__) . '/includes/shopmania-ro-attributes.php';
+            require_once dirname(__FILE__) . '/includes/zbozi-attributes.php';
+            require_once dirname(__FILE__) . '/includes/zap-attributes.php';
+            require_once dirname(__FILE__) . '/includes/skroutz-attributes.php';
+            require_once dirname(__FILE__) . '/includes/trovaprezzi-attributes.php';
+            require_once dirname(__FILE__) . '/includes/vertaafi-attributes.php';
+            require_once dirname(__FILE__) . '/includes/glami-attributes.php';
 
         }
 
@@ -307,6 +313,12 @@ if ( ! class_exists('WP_WooGool') ) {
                 'woogoo_ricardo_attributes'                => woogoo_ricardo_attributes(),
                 'woogool_salidzini_attributes'             => woogool_salidzini_attributes(),
                 'woogool_shopmania_attributes'             => woogool_shopmania_attributes(),
+                'woogool_zbozi_attributes'                 => woogool_zbozi_attributes(),
+                'woogool_zap_attributes'                   => woogool_zap_attributes(),
+                'woogool_skroutz_attributes'               => woogool_skroutz_attributes(),
+                'woogool_trovaprezzi_attributes'           => woogool_trovaprezzi_attributes(),
+                'woogool_vertaafi_attributes'              => woogool_vertaafi_attributes(),
+                'woogool_glami_attributes'                 => woogool_glami_attributes(),
 
                 'google_extra_attr_fields'                 => [],
                 'request_amount'                           => WOOGOOL_REQUEST_AMOUNT,

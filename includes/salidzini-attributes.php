@@ -8,7 +8,7 @@ function woogool_salidzini_attributes() {
     $salidzini = array(
         "Feed_fields" => array(
             'label' => 'Feed fields',
-            'attributes' = array(
+            'attributes' => array(
                 "Manufacturer" => array(
                     'label' => 'Manufacturer',
                     "name" => "Manufacturer",
