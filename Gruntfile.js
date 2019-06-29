@@ -114,11 +114,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-run' );
 
 
-    grunt.registerTask( 'release', [
+    grunt.registerTask( 'refresh', [
         'run',
     ]);
 
-    grunt.registerTask( 'zip', [
+    grunt.registerTask( 'release', [
         'clean',
         'run',
         'replace',

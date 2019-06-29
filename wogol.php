@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/asaquzzaman/woocommerce-to-google-merchant-center
  * Description: Submit your product woocommerce to google merchant center.
  * Author: asaquzzaman
- * Version: 1.7.6
+ * Version: 1.7.7
  * Author URI: http://wpspear.com
  * License: GPL2
  * TextDomain: woogool
@@ -45,7 +45,7 @@ if ( ! class_exists('WP_WooGool') ) {
 
         private $merchant_account_id;
         public $individual;
-        public static $version = '1.7.5';
+        public static $version = '1.7.7';
         static $woocommerce;
         static $woogool_free;
 

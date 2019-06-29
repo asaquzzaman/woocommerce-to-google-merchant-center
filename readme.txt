@@ -3,9 +3,9 @@
 Contributors: asaquzzaman
 Tags: woocommerce google product feed, google product feed, merchant center, google merchant center, woocommerce shopping feed, product export, woocommerce product feed, woocommerce merchant
 Requires at least: 4.4
-Tested up to: 5.1.1
+Tested up to: 5.2.2
 Requires PHP: 5.6
-Stable tag: 1.7.5
+Stable tag: 1.7.7
 License: GPLv2 or later
 
 WooCommerce Google product feed provide you to generate product feed xml file. You can also upload product one by one to google merchant center.
@@ -114,6 +114,10 @@ Browser Compatibility
 8. Screenshot Delete button
 
 == Changelog ==
+
+= v1.7.7 - Jun 27, 2019 =
+
+* **New** Channel for United kingdom.
 
 = v1.7.6 - Jun 15, 2019 =
 
