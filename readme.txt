@@ -115,6 +115,10 @@ Browser Compatibility
 
 == Changelog ==
 
+= v1.7.8 - Jul 20, 2019 =
+
+* **Update** Set default custom field.
+
 = v1.7.7 - Jun 27, 2019 =
 
 * **New** Channel for United kingdom.

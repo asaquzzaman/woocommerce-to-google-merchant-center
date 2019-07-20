@@ -43,6 +43,18 @@ function woogool_product_attributes() {
 		"visibility"                => "Visibility",
 		"rating_total"              => "Total rating",
 		"rating_average"            => "Average rating",
+		'_woogool_brand'                     =>  'woogool brand (Custom attribute)',
+		'_woogool_condition'                 =>  'woogool condition (Custom attribute)',
+		'_woogool_ean'                       =>  'woogool ean (Custom attribute)',
+		'_woogool_exclude_product'           =>  'woogool exclude product (Custom attribute)',
+		'_woogool_gtin'                      =>  'woogool gtin (Custom attribute)',
+		'_woogool_installment_amount'        =>  'woogool installment amount (Custom attribute)',
+		'_woogool_installment_months'        =>  'woogool installment months (Custom attribute)',
+		'_woogool_mpn'                       =>  'woogool mpn (Custom attribute)',
+		'_woogool_optimized_title'           =>  'woogool optimized title (Custom attribute)',
+		'_woogool_unit_pricing_base_measure' =>  'woogool unit pricing base measure (Custom attribute)',
+		'_woogool_unit_pricing_measure'      =>  'woogool unit pricing measure (Custom attribute)',
+		'_woogool_upc'                       =>  'woogool upc (Custom attribute)'
 	);
 
 	$images = array(
@@ -64,10 +76,10 @@ function woogool_product_attributes() {
 
     if( is_array( woogool_get_custom_attributes() ) ) {
 		$custom_attributes = woogool_get_custom_attributes();
-		
 		array_walk (
 			$custom_attributes, 
 			function( &$value, $key ) { 
+
 				$value .= ' (Custom attribute)';
 			}
 		);
@@ -83,7 +95,7 @@ function woogool_product_attributes() {
 	);
 
 	$attributes = array_merge($attributes, $static);
-
+	
 	return $attributes;
 }
 
