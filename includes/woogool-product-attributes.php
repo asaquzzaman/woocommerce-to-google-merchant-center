@@ -1052,18 +1052,18 @@ function woogool_compare_with_logical_value( $wc_product, $settings, $key, $prod
 			$logic_attr['then'] == $key
 		) {
 			$call = empty( $value_map[$if_cond] ) ? '' : $value_map[$if_cond];
-
+			
 			if ( function_exists( $call ) ) {
-            	$product_val = $call( $wc_product );
+            	$if_product_val = $call( $wc_product );
         	} else if ( $key == 'static_value' ) {
-        		$product_val = $product_val;
+        		$if_product_val = $product_val;
         	} else {
-        		$product_val = woogool_get_product_dynamic_value( $wc_product, $key );
+        		$if_product_val = woogool_get_product_dynamic_value( $wc_product, $key );
         	}
 
 			$logic_val = $logic_attr['value'];
 			
-			if ( $sign[$logic_attr['condition']]( $product_val, $logic_val ) ) {
+			if ( $sign[$logic_attr['condition']]( $if_product_val, $logic_val ) ) {
 				$product_val = $logic_attr['is'];
 			}
 		}

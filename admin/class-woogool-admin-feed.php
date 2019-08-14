@@ -469,8 +469,8 @@ class WooGool_Admin_Feed {
                 
                 if ( function_exists( $cond_func[$cond_name] ) ) {
                     $is_exclude = $cond_func[$cond_name]( $product_value, $cond_value );
-                     
-                     if ( WOOGOOL_DEBUG && $is_exclude ) {
+                    
+                    if ( WOOGOOL_DEBUG && $is_exclude ) {
                         $woogool_debug[$wc_product->get_id()][] = [
                             'type' => 'Exclue',
                             'product_key'     => $name,
@@ -485,8 +485,8 @@ class WooGool_Admin_Feed {
                 }
             } 
         }
-        
-        return  in_array( false, $exclude ) ? true : false;
+
+        return  in_array( true, $exclude ) ? true : false;
     }
 
     public function get_value( $feed_content, $wc_product, $settings ) {
@@ -705,143 +705,6 @@ class WooGool_Admin_Feed {
         echo '</rss>';
 
         exit();
-    }
-
-    function get_xml_content( $feed_id ) {
-
-        $this->feed_settings = $feed_settings  = get_post_meta( $feed_id );
-        $xml_count       = empty( $feed_settings['_xml_count'] ) ? 0 : reset( $feed_settings['_xml_count'] );
-        $products_cat     = empty( $feed_settings['_products_cat'] ) ? array() : maybe_unserialize( reset( $feed_settings['_products_cat'] ) );
-        $xml_content      = '';
-        
-        $this->google_cat = get_option( 'woogool_google_product_type' );
-         
-        $products = $this->xml_get_products( $xml_count, $products_cat );
-     
-        
-        foreach ( $products as $product ) {
-            $this->generate_xml_content( $product, $feed_settings );
-        }
-        
-
-        //return true;
-    }
-
-
-    function generate_xml_content( $product, $feed_settings ) {
-        
-        $product_id        = $product->ID;
-        $wc_product        = wc_get_product( $product_id );
-        $product_type      = $wc_product->get_type();
-    
-        if ( $product_type == 'variable' ) {
-            $this->get_variable_products( $wc_product, $feed_settings );
-            return true;
-        }
-        
-        $description        = $this->get_description( $wc_product );
-        $size_attr          = $this->get_size_attr( $wc_product );
-        $color_attr         = $this->get_color_attr( $wc_product );
-        $price              = $this->get_product_regular_price( $wc_product );
-        $sale_price         = $this->get_product_sale_price( $wc_product );
-        $additional_images  = $this->get_additional_images( $wc_product );
-        $currency           = get_woocommerce_currency();
-        $post_title         = $wc_product->get_title();
-        $description        = strip_tags( html_entity_decode( stripslashes( nl2br( $description ) ) ) );
-        $link               = $wc_product->get_permalink();
-        $feed_image_url     = wp_get_attachment_url( $wc_product->get_image_id() );
-        $condition          = $this->get_condition();
-        $availability       = $this->get_availability();
-        $category           = $this->get_category( $wc_product );
-        //$type               = $this->get_type( $post, $product_id,  $product_cat );
-        $availability_date  = $this->get_availability_date();
-        $availability_value = $this->get_availability_value( $availability_date );
-        $sku_as_mpn         = $this->get_sku_as_mpn( $wc_product );
-        $gender             = $this->get_gender();
-        $age_group          = $this->get_age_group();
-        $size_type          = $this->get_size_type();
-        $size_system        = $this->get_size_system();
-        $custom_label_0     = $this->get_custom_label_0();
-        $custom_label_1     = $this->get_custom_label_1();
-        $custom_label_2     = $this->get_custom_label_2();
-        $custom_label_3     = $this->get_custom_label_3();
-        $custom_label_4     = $this->get_custom_label_4();
-        $promotion_id       = $this->get_promotion_id();
-        $brand              = $this->get_brand();
-        $identifier         = $this->get_identifier();
-        $expiration_date    = $this->get_expiration_date();
-        $gtin               = $this->set_gtin( $product_id, $product_id );
-        $adult              = $this->adult();
-        $is_bundle          = $this->is_bundle();
-        $multipack          = $this->multipack();
-        $material           = $this->material();
-        $pattern            = $this->pattern();
-
-
-        $description = preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $description );
-        $description = str_replace( ']]>', ']]]]><![CDATA[>', $description );
-        $description = substr( $description, 0, 5000 );
-        //$description = html_entity_decode( $description, ENT_HTML401 | ENT_QUOTES );
-        $description = iconv('UTF-8', 'ASCII//TRANSLIT', $description );
-        $description = trim( $description );
-        
-        $effective_date = $this->get_sale_price_effective_date( $product_id ); 
-        $content = '';
-        
-
-        echo "       <item>\n";
-        echo "           <g:id><![CDATA[$product_id]]></g:id>\n";
-        //echo ( $wc_product->product_type == 'variable' && $enable_variable_product ) ? "           <g:item_group_id>$product_id</g:item_group_id>\n" : '';
-        echo "           <title><![CDATA[$post_title]]></title>\n";
-        echo "           <description><![CDATA[$description]]></description>\n";
-        echo "           <link><![CDATA[$link]]></link>\n";
-        echo "           <g:image_link><![CDATA[$feed_image_url]]></g:image_link>\n";
-        echo "           <g:condition><![CDATA[$condition]]></g:condition>\n";
-        echo "           <g:availability><![CDATA[$availability]]></g:availability>\n";
-        echo $price ? "           <g:price><![CDATA[$price $currency]]></g:price>\n" : '';
-        echo $category ?  "          <g:google_product_category><![CDATA[$category]]></g:google_product_category>\n" : '';
-        //echo $type ? "           <g:product_type>$type</g:product_type>\n" : '';
-        echo $availability_date ? "          <g:availability_date><![CDATA[$availability_value]]></g:availability_date>\n" : '';
-        echo ! empty( $sale_price ) ? "          <g:sale_price><![CDATA[$sale_price $currency]]></g:sale_price>\n" : '';
-        echo $sku_as_mpn ? "         <g:mpn><![CDATA[$sku_as_mpn]]></g:mpn>\n" : '';
-        echo $gender ? "         <g:gender><![CDATA[$gender]]></g:gender>\n" : '';
-        echo $age_group ? "          <g:age_group><![CDATA[$age_group]]></g:age_group>\n" : '';
-        echo $brand ? "          <g:brand><![CDATA[$brand]]></g:brand>\n" : '';
-        echo $gtin ? "          <g:gtin><![CDATA[$gtin]]></g:gtin>\n" : '';
-        echo $expiration_date ? "          <g:expiration_date><![CDATA[$expiration_date]]></g:expiration_date>\n" : '';
-        echo $size_type ? "          <g:size_type><![CDATA[$size_type]]></g:size_type>\n" : '';
-        echo $size_system ? "            <g:size_system><![CDATA[$size_system]]></g:size_system>\n" : '';
-        echo $adult ? "                  <g:adult><![CDATA[$adult]]></g:adult>\n" : '';
-        echo $is_bundle ? "       <g:is_bundle><![CDATA[$is_bundle]]></g:is_bundle>\n" : '';
-        echo $multipack ? "       <g:multipack><![CDATA[$multipack]]></g:multipack>\n" : '';
-        echo $material ? "       <g:material><![CDATA[$material]]></g:material>\n" : '';
-        echo $pattern ? "       <g:pattern><![CDATA[$pattern]]></g:pattern>\n" : '';
-        echo $effective_date ? "         <g:sale_price_effective_date><![CDATA[$effective_date]]></g:sale_price_effective_date>\n" : ''; 
-        echo $custom_label_0 ? "         <g:custom_label_0><![CDATA[$custom_label_0]]></g:custom_label_0>\n" : '';
-        echo $custom_label_1 ? "         <g:custom_label_1><![CDATA[$custom_label_1]]></g:custom_label_1>\n" : '';
-        echo $custom_label_2 ? "         <g:custom_label_2><![CDATA[$custom_label_2]]></g:custom_label_2>\n" : '';
-        echo $custom_label_3 ? "         <g:custom_label_3><![CDATA[$custom_label_3]]></g:custom_label_3>\n" : '';
-        echo $custom_label_4 ? "         <g:custom_label_4><![CDATA[$custom_label_4]]></g:custom_label_4>\n" : '';
-        echo $promotion_id ? "           <g:promotion_id><![CDATA[$promotion_id]]></g:promotion_id>\n" : '';
-        echo $color_attr ? "         <g:color><![CDATA[$color_attr]]></g:color>\n" : '';
-        echo $size_attr ? "          <g:size><![CDATA[$size_attr]]></g:size>\n" : '';
-        echo $identifier ? "         <g:identifier_exists><![CDATA[$identifier]]></g:identifier_exists>\n" : '';
-        
-        $additional_img_count = 1;
-        
-        foreach ( $additional_images as $image_url ) {
-            // Google limit the number of additional images to 10
-            if ( $additional_img_count == 10 ) {
-                
-                break;
-            }
-
-            echo "           <g:additional_image_link><![CDATA[$image_url]]></g:additional_image_link>\n";
-            $additional_img_count++;
-        }
-
-        echo "       </item>\n";
-        return true;
     }
 
     function multipack() {
