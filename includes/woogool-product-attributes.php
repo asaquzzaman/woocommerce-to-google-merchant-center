@@ -1029,8 +1029,6 @@ function woogool_get_product_installment( $wc_product, $settings ) {
 	return $installment;
 }
 
-
-
 function woogool_compare_with_logical_value( $wc_product, $settings, $key, $product_val ) {
 	$logic     = maybe_unserialize( reset( $settings['logic'] ) );
 	$sign      = woogool_condition_maping_func();
@@ -1038,8 +1036,6 @@ function woogool_compare_with_logical_value( $wc_product, $settings, $key, $prod
 	
 	foreach ( $logic as $log_key => $logic_attr ) {
 		$if_cond = $logic_attr['if_cond'];
-
-		//if ( ! isset( $value_map[$if_cond] ) ) continue;
 
 		if ( 
 			isset( $logic_attr['type'] ) 
