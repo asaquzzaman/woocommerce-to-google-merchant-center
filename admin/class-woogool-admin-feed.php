@@ -497,7 +497,9 @@ class WooGool_Admin_Feed {
         $call = empty( $val_func[$name] ) ? '' : $val_func[$name];
         
         if ( function_exists( $call ) ) {
-            $value = $call( $wc_product, $settings );
+            $value = $call( $wc_product, $settings, $feed_content );
+        } else if( $name == 'static_value' ) {
+            $value = woogool_get_product_compare_static_value( $wc_product, $settings, $feed_content );
         } else {
             $value = woogool_get_product_compare_dynamic_value( $wc_product, $settings, $name );
         }
@@ -841,9 +843,6 @@ class WooGool_Admin_Feed {
         echo "       </item>\n";
         return true;
     }
-
-
-   
 
     function multipack() {
         $feed_settings = $this->feed_settings;
