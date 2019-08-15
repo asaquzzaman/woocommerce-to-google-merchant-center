@@ -115,6 +115,13 @@ Browser Compatibility
 
 == Changelog ==
 
+= v1.7.9 - Jul 20, 2019 =
+
+* **Fix** Custom product attribute does not appear in product attribute dropdown list.
+* **Fix** It showing nothing, after select static field.
+* **Fix** Feed generator filter, rule, value are showing wrong data.
+* **Fix** Description tag is not generating. 
+
 = v1.7.8 - Jul 20, 2019 =
 
 * **Update** Set default custom field.

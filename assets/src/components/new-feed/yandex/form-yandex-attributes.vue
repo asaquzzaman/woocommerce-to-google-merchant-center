@@ -34,15 +34,22 @@
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
-								<option value=""></option>
-								<option 
-									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
-									:value="proMetaKey"
-									:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
-									{{ woogoolAttribute }}
-								</option>
-							</select>
+							<div v-if="gAttrTr.woogool_suggest != 'static_value'">
+								<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+									<option value=""></option>
+									<option 
+										v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
+										:value="proMetaKey"
+										:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
+										{{ woogoolAttribute }}
+									</option>
+								</select>
+							</div>
+
+							<div class="static-field-wrap" v-if="gAttrTr.woogool_suggest == 'static_value'">
+								<input @keyup="setStaticValue(gAttrTr, $event)" :value="gAttrTr.static_value" class="static-field" type="text">
+								<span @click.prevent="removeStaticField(gAttrTr)" class="static-cross">&#10005;</span>
+							</div>
 						</td>
 
 						<td>
@@ -69,15 +76,22 @@
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
-								<option value=""></option>
-								<option 
-									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
-									:value="wpKey"
-									:selected="isProductAttrSelected(gAttrTr, wpKey)">
-									{{ woogoolAttribute }}
-								</option>
-							</select>
+							<div v-if="gAttrTr.woogool_suggest != 'static_value'">
+								<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+									<option value=""></option>
+									<option 
+										v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
+										:value="wpKey"
+										:selected="isProductAttrSelected(gAttrTr, wpKey)">
+										{{ woogoolAttribute }}
+									</option>
+								</select>
+							</div>
+
+							<div class="static-field-wrap" v-if="gAttrTr.woogool_suggest == 'static_value'">
+								<input @keyup="setStaticValue(gAttrTr, $event)" :value="gAttrTr.static_value" class="static-field" type="text">
+								<span @click.prevent="removeStaticField(gAttrTr)" class="static-cross">&#10005;</span>
+							</div>
 						</td>
 
 						<td>

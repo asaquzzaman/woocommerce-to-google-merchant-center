@@ -21,6 +21,16 @@ export default {
 		
 	},
 	methods: {
+        setStaticValue (gAttrTr, evt) {
+            gAttrTr.static_value = evt.target.value;
+
+        },
+        removeStaticField (gAttrTr) {
+            gAttrTr.woogool_suggest = ''; //'title';
+            if(typeof gAttrTr.static_value != 'undefined') {
+                delete gAttrTr.static_value;
+            }
+        },
         cancel () {
             this.$router.push({
                 name: 'feed_lists'

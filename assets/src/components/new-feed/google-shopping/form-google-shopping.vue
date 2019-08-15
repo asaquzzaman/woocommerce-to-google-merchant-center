@@ -1,6 +1,5 @@
 <template>
 	<div>
-
 		<table class="wp-list-table woogool-map-table widefat striped posts">
 			<thead>
 				<tr>
@@ -220,16 +219,6 @@
 		},
 
 		methods: {
-			setStaticValue (gAttrTr, evt) {
-				gAttrTr.static_value = evt.target.value;
-
-			},
-			removeStaticField (gAttrTr) {
-				gAttrTr.woogool_suggest = ''; //'title';
-				if(typeof gAttrTr.static_value != 'undefined') {
-					delete gAttrTr.static_value;
-				}
-			},
 			setCustomText (gAttrTr, gkey, elet) {
 				woogool.Vue.set(gAttrTr, 'name', elet.target.value);
 			},

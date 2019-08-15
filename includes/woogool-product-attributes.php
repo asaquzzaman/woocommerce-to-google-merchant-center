@@ -155,6 +155,8 @@ function woogool_get_product_description( $wc_product ) {
 		return '';
 	}
 
+	$description    = $wc_product->get_description();
+
 	if ( empty( $description ) && ($wc_product->get_type() == 'variation' || $wc_product->get_type() == 'variable' ) ) {
 		$parent_id      = $wc_product->get_parent_id();
 		$parent_product = wc_get_product( $parent_id );

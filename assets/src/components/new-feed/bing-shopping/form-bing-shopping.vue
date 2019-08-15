@@ -20,28 +20,35 @@
 						<td>
 							<select class="map-drop-down-left" @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<optgroup 
-									v-for="(bingAttributeTd, key) in bingAttributes"
-									:label="bingAttributeTd.label">
+									v-for="(googleAttributeTd, key) in googleAttributes"
+									:label="googleAttributeTd.label">
 									<option
-										v-for="(bingAttrTd, optKey) in bingAttributeTd.attributes"
-										:value="bingAttrTd.name" 
-										:selected="isBingAttrSelected(gAttrTr, bingAttrTd)">
-										{{ bingAttrTd.label }} {{ '('+bingAttrTd.feed_name+')' }}
+										v-for="(googleAttrTd, optKey) in googleAttributeTd.attributes"
+										:value="googleAttrTd.name" 
+										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
+										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
 								
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
-								<option value=""></option>
-								<option 
-									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
-									:value="proMetaKey"
-									:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
-									{{ woogoolAttribute }}
-								</option>
-							</select>
+							<div v-if="gAttrTr.woogool_suggest != 'static_value'">
+								<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+									<option value=""></option>
+									<option 
+										v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
+										:value="proMetaKey"
+										:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
+										{{ woogoolAttribute }}
+									</option>
+								</select>
+							</div>
+
+							<div class="static-field-wrap" v-if="gAttrTr.woogool_suggest == 'static_value'">
+								<input @keyup="setStaticValue(gAttrTr, $event)" :value="gAttrTr.static_value" class="static-field" type="text">
+								<span @click.prevent="removeStaticField(gAttrTr)" class="static-cross">&#10005;</span>
+							</div>
 						</td>
 
 						<td>
@@ -55,28 +62,35 @@
 							<select class="map-drop-down-left" @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<option value=""></option>
 								<optgroup 
-									v-for="(bingAttributeTd, key) in bingAttributes"
-									:label="bingAttributeTd.label">
+									v-for="(googleAttributeTd, key) in googleAttributes"
+									:label="googleAttributeTd.label">
 									<option 
-										v-for="(bingAttrTd, mKey) in bingAttributeTd.attributes"
-										:value="bingAttrTd.name"
-										:selected="isBingAttrSelected(gAttrTr, bingAttrTd)">
-										{{ bingAttrTd.label }} {{ '('+bingAttrTd.feed_name+')' }}
+										v-for="(googleAttrTd, mKey) in googleAttributeTd.attributes"
+										:value="googleAttrTd.name"
+										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
+										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
 								
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
-								<option value=""></option>
-								<option 
-									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
-									:value="wpKey"
-									:selected="isProductAttrSelected(gAttrTr, wpKey)">
-									{{ woogoolAttribute }}
-								</option>
-							</select>
+							<div v-if="gAttrTr.woogool_suggest != 'static_value'">
+								<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+									<option value=""></option>
+									<option 
+										v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
+										:value="wpKey"
+										:selected="isProductAttrSelected(gAttrTr, wpKey)">
+										{{ woogoolAttribute }}
+									</option>
+								</select>
+							</div>
+
+							<div class="static-field-wrap" v-if="gAttrTr.woogool_suggest == 'static_value'">
+								<input @keyup="setStaticValue(gAttrTr, $event)" :value="gAttrTr.static_value" class="static-field" type="text">
+								<span @click.prevent="removeStaticField(gAttrTr)" class="static-cross">&#10005;</span>
+							</div>
 						</td>
 
 						<td>
@@ -167,7 +181,7 @@
 		},
 		data () {
 			return {
-				bingAttributes: woogool_multi_product_var.woogool_bing_shopping_attributes,
+				googleAttributes: woogool_multi_product_var.woogool_bing_shopping_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
 				bingExtraAttrFields: woogool_multi_product_var.bing_extra_attr_fields,
 			}
@@ -181,6 +195,9 @@
 		},
 
 		methods: {
+			isGoogleAttrSelected (gAttributeTr, googleAttrTd) {
+				return gAttributeTr.name == googleAttrTd.name ? 'selected' : false;
+			},
 			setCustomText (gAttrTr, gkey, elet) {
 				woogool.Vue.set(gAttrTr, 'name', elet.target.value);
 			},
@@ -188,7 +205,7 @@
 				var self = this;
 				var value = evt.target.value;
 				
-				jQuery.each(this.bingAttributes, function(index, bingAttribute) {
+				jQuery.each(this.googleAttributes, function(index, bingAttribute) {
 					jQuery.each(bingAttribute.attributes, function(position, attr) {
 						
 						if(attr.name == value) {
@@ -213,7 +230,7 @@
 			setDefaultAttr () {
 				var self = this;
 
-				jQuery.each(this.bingAttributes, function(index, bingAttribute) {
+				jQuery.each(this.googleAttributes, function(index, bingAttribute) {
 					jQuery.each(bingAttribute.attributes, function(key, attr) {
 						if(attr.format == 'required') {
 							if(typeof attr.type == 'undefined') {
@@ -224,9 +241,6 @@
 						}
 					});
 				});
-			},
-			isBingAttrSelected (gAttributeTr, bingAttrTd) {
-				return gAttributeTr.name == bingAttrTd.name ? 'selected' : false;
 			},
 
 			isProductAttrSelected (gAttributeTr, wpKey) {

@@ -13,96 +13,110 @@
 
 			<tbody>
 				<template 
-					v-for="(fAttrTr, fkey) in gAttrs" 
-					v-if="fAttrTr.format == 'required'">
+					v-for="(gAttrTr, gkey) in gAttrs" 
+					v-if="gAttrTr.format == 'required'">
 				
-					<tr :key="fkey" v-if="fAttrTr.type == 'default'">
+					<tr :key="gkey" v-if="gAttrTr.type == 'default'">
 						<td>
-							<select class="map-drop-down-left" @change="setGooAttrReqVal(fAttrTr, fkey, fAttrTr.type, $event)">
+							<select class="map-drop-down-left" @change="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<optgroup 
-									v-for="(facebookAttributeTd, key) in facebookAttributes"
-									:label="facebookAttributeTd.label">
+									v-for="(googleAttributeTd, key) in googleAttributes"
+									:label="googleAttributeTd.label">
 									<option
-										v-for="(facebookAttrTd, optKey) in facebookAttributeTd.attributes"
-										:value="facebookAttrTd.name" 
-										:selected="isGoogleAttrSelected(fAttrTr, facebookAttrTd)">
-										{{ facebookAttrTd.label }} {{ '('+facebookAttrTd.feed_name+')' }}
+										v-for="(googleAttrTd, optKey) in googleAttributeTd.attributes"
+										:value="googleAttrTd.name" 
+										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
+										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
 								
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(fAttrTr, fkey, $event)">
-								<option value=""></option>
-								<option 
-									v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
-									:value="proMetaKey"
-									:selected="isProductAttrSelected(fAttrTr, proMetaKey)">
-									{{ woogoolAttribute }}
-								</option>
-							</select>
+							<div v-if="gAttrTr.woogool_suggest != 'static_value'">
+								<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+									<option value=""></option>
+									<option 
+										v-for="(woogoolAttribute, proMetaKey) in woogoolAttributes"
+										:value="proMetaKey"
+										:selected="isProductAttrSelected(gAttrTr, proMetaKey)">
+										{{ woogoolAttribute }}
+									</option>
+								</select>
+							</div>
+
+							<div class="static-field-wrap" v-if="gAttrTr.woogool_suggest == 'static_value'">
+								<input @keyup="setStaticValue(gAttrTr, $event)" :value="gAttrTr.static_value" class="static-field" type="text">
+								<span @click.prevent="removeStaticField(gAttrTr)" class="static-cross">&#10005;</span>
+							</div>
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 			
 					<!-- For extra map fields -->
-					<tr :key="fkey" v-if="fAttrTr.type == 'mapping'">
+					<tr :key="gkey" v-if="gAttrTr.type == 'mapping'">
 						<td>
-							<select class="map-drop-down-left" @change.self="setGooAttrReqVal(fAttrTr, fkey, fAttrTr.type, $event)">
+							<select class="map-drop-down-left" @change.self="setGooAttrReqVal(gAttrTr, gkey, gAttrTr.type, $event)">
 								<option value=""></option>
 								<optgroup 
-									v-for="(facebookAttributeTd, key) in facebookAttributes"
-									:label="facebookAttributeTd.label">
+									v-for="(googleAttributeTd, key) in googleAttributes"
+									:label="googleAttributeTd.label">
 									<option 
-										v-for="(facebookAttrTd, mKey) in facebookAttributeTd.attributes"
-										:value="facebookAttrTd.name"
-										:selected="isGoogleAttrSelected(fAttrTr, facebookAttrTd)">
-										{{ facebookAttrTd.label }} {{ '('+facebookAttrTd.feed_name+')' }}
+										v-for="(googleAttrTd, mKey) in googleAttributeTd.attributes"
+										:value="googleAttrTd.name"
+										:selected="isGoogleAttrSelected(gAttrTr, googleAttrTd)">
+										{{ googleAttrTd.label }} {{ '('+googleAttrTd.feed_name+')' }}
 									</option>
 								</optgroup>
 								
 							</select>
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(fAttrTr, fkey, $event)">
-								<option value=""></option>
-								<option 
-									v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
-									:value="wpKey"
-									:selected="isProductAttrSelected(fAttrTr, wpKey)">
-									{{ woogoolAttribute }}
-								</option>
-							</select>
+							<div v-if="gAttrTr.woogool_suggest != 'static_value'">
+								<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
+									<option value=""></option>
+									<option 
+										v-for="(woogoolAttribute, wpKey) in woogoolAttributes"
+										:value="wpKey"
+										:selected="isProductAttrSelected(gAttrTr, wpKey)">
+										{{ woogoolAttribute }}
+									</option>
+								</select>
+							</div>
+
+							<div class="static-field-wrap" v-if="gAttrTr.woogool_suggest == 'static_value'">
+								<input @keyup="setStaticValue(gAttrTr, $event)" :value="gAttrTr.static_value" class="static-field" type="text">
+								<span @click.prevent="removeStaticField(gAttrTr)" class="static-cross">&#10005;</span>
+							</div>
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 
 					<!-- For custom fields -->
-					<tr :key="fkey" v-if="fAttrTr.type == 'custom'">
+					<tr :key="gkey" v-if="gAttrTr.type == 'custom'">
 						<td>
-							<input class="custom-field-text" :value="fAttrTr.name" type="text" @input="setCustomText(fAttrTr, fkey, $event)">
+							<input class="custom-field-text" :value="gAttrTr.name" type="text" @input="setCustomText(gAttrTr, gkey, $event)">
 						</td>
 						<td>
-							<select class="map-drop-down" @change.self="setProAttrReqVal(fAttrTr, fkey, $event)">
+							<select class="map-drop-down" @change.self="setProAttrReqVal(gAttrTr, gkey, $event)">
 								<option value=""></option>
 								<option 
 									v-for="(woogoolAttribute, pmKey) in woogoolAttributes"
 									:value="pmKey"
-									:selected="isProductAttrSelected(fAttrTr, pmKey)">
+									:selected="isProductAttrSelected(gAttrTr, pmKey)">
 									{{ woogoolAttribute }}
 								</option>
 							</select>
 						</td>
 
 						<td>
-							<a href="#" @click.prevent="removeAttr(gAttrs, fkey)"><span class="icon-woogool-delete"></span></a>
+							<a href="#" @click.prevent="removeAttr(gAttrs, gkey)"><span class="icon-woogool-delete"></span></a>
 						</td>
 					</tr>
 
@@ -167,15 +181,15 @@
 		},
 		data () {
 			return {
-				facebookAttributes: woogool_multi_product_var.facebook_ad_attributes,
+				googleAttributes: woogool_multi_product_var.facebook_ad_attributes,
 				woogoolAttributes: woogool_multi_product_var.woogool_product_attributes,
 				//googleExtraAttrFields: woogool_multi_product_var.google_extra_attr_fields,
 			}
 		},
 
 		created () {
-			if(typeof this.facebookAttributes.remarketing_fields.attributes.identifier_exists != 'undefined') {
-				delete this.facebookAttributes.remarketing_fields.attributes['identifier_exists'];
+			if(typeof this.googleAttributes.remarketing_fields.attributes.identifier_exists != 'undefined') {
+				delete this.googleAttributes.remarketing_fields.attributes['identifier_exists'];
 			}
 			if(!this.extAttr.updateMode) {
 				this.gAttrs.length = 0;
@@ -191,7 +205,7 @@
 				var self = this;
 				var value = evt.target.value;
 				
-				jQuery.each(this.facebookAttributes, function(index, googleAttribute) {
+				jQuery.each(this.googleAttributes, function(index, googleAttribute) {
 					jQuery.each(googleAttribute.attributes, function(position, attr) {
 						
 						if(attr.name == value) {
@@ -216,7 +230,7 @@
 			setDefaultAttr () {
 				var self = this;
 
-				jQuery.each(this.facebookAttributes, function(index, googleAttribute) {
+				jQuery.each(this.googleAttributes, function(index, googleAttribute) {
 					jQuery.each(googleAttribute.attributes, function(key, attr) {
 						if(attr.format == 'required') {
 							if(typeof attr.type == 'undefined') {
