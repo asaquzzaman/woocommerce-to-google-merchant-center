@@ -5,7 +5,7 @@ Tags: woocommerce google product feed, google product feed, merchant center, goo
 Requires at least: 4.4
 Tested up to: 5.2.2
 Requires PHP: 5.6
-Stable tag: 1.7.8
+Stable tag: 1.7.9
 License: GPLv2 or later
 
 WooCommerce Google product feed provide you to generate product feed xml file. You can also upload product one by one to google merchant center.
@@ -115,7 +115,7 @@ Browser Compatibility
 
 == Changelog ==
 
-= v1.7.9 - Jul 20, 2019 =
+= v1.7.9 - Aug 15, 2019 =
 
 * **Fix** Custom product attribute does not appear in product attribute dropdown list.
 * **Fix** It showing nothing, after select static field.
