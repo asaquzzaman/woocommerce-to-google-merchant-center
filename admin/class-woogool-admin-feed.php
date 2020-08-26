@@ -269,8 +269,13 @@ class WooGool_Admin_Feed {
             }
 
             $product_type = $wc_product->get_type();
+            
+            if ( 
+                $active_variation != 'false'
+                    &&
 
-            if ( $product_type == 'variable' || $product_type == 'variation' ) {
+                ($product_type == 'variable' || $product_type == 'variation' ) 
+            ) {
                 $variable   = new WC_Product_Variable( $wc_product );
                 $variations = $variable->get_available_variations();
                 $attrs      = $variable->get_variation_attributes();

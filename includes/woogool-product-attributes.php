@@ -155,7 +155,7 @@ function woogool_get_product_description( $wc_product ) {
 		return '';
 	}
 
-	$description    = $wc_product->get_description();
+	$description  = $wc_product->get_description();
 
 	if ( empty( $description ) && ($wc_product->get_type() == 'variation' || $wc_product->get_type() == 'variable' ) ) {
 		$parent_id      = $wc_product->get_parent_id();
@@ -164,13 +164,40 @@ function woogool_get_product_description( $wc_product ) {
 
 	}
 
-	$description = html_entity_decode( ( str_replace( "\r", "", $description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
-	$description = woogool_rip_tags( $description );
-	$description = preg_replace( '/\[(.*?)\]/', ' ', $description );
-	$description = str_replace("&#xa0;", "", $description );
-	$description = trim( woogool_utf8_for_xml( $description ) );
+	// $description = html_entity_decode( ( str_replace( "\r", "", $description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
+	// $description = woogool_rip_tags( $description );
+	// $description = preg_replace( '/\[(.*?)\]/', ' ', $description );
+	// $description = str_replace("&#xa0;", "", $description );
+	// $description = trim( woogool_utf8_for_xml( $description ) );
 
-	return $description;
+
+	return woogool_filter_descriptin( $description );
+}
+
+function woogool_filter_descriptin( $description ) {
+
+    $description = html_entity_decode((str_replace("\r", "", $description)), ENT_QUOTES | ENT_XML1, 'UTF-8');
+    
+    // Strip HTML from (short) description
+    $description = woogool_rip_tags($description);
+    
+
+    // Strip out Visual Composer short codes, including the Visual Composer Raw HTML
+    $description = preg_replace('/\[vc_raw_html.*\[\/vc_raw_html\]/', '', $description);
+    $description = preg_replace( '/\[(.*?)\]/', ' ', $description );
+
+
+    // Strip out the non-line-brake character
+    $description = str_replace("&#xa0;", "", $description);
+    
+    // Strip strange UTF chars
+    $description = trim(woogool_utf8_for_xml($description));
+    
+    $description = str_replace("<", "&lt;", $description);
+    $description = str_replace(">", "&gt;", $description);
+    $description = str_replace("&", "&amp;", $description);
+
+    return $description;
 }
 
 function woogool_get_product_compare_description( $wc_product, $settings, $feed_content ) {
@@ -186,14 +213,39 @@ function woogool_get_product_short_description( $wc_product ) {
 	}
 
 	$short_description = $wc_product->get_short_description();
-	$short_description = html_entity_decode( ( str_replace( "\r", "", $short_description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
-	$short_description = woogool_rip_tags( $short_description );
+	// $short_description = html_entity_decode( ( str_replace( "\r", "", $short_description ) ), ENT_QUOTES | ENT_XML1, 'UTF-8');
+	// $short_description = woogool_rip_tags( $short_description );
+	// $short_description = preg_replace( '/\[(.*?)\]/', ' ', $short_description );
+	// $short_description = str_replace("&#xa0;", "", $short_description );
+	// $short_description = trim( woogool_utf8_for_xml( $short_description ) );
+
+	return woogool_filter_short_description( $short_description );
+}
+
+function woogool_filter_short_description( $short_description ) {
+
+	$short_description = html_entity_decode((str_replace("\r", "", $post->post_excerpt)), ENT_QUOTES | ENT_XML1, 'UTF-8');
+
+	// Strip HTML from (short) description
+	$short_description = woogool_rip_tags($short_description);
+
+	// Strip out Visual Composer short codes, including the Visual Composer Raw HTML
+	$short_description = preg_replace('/\[vc_raw_html.*\[\/vc_raw_html\]/', '', $short_description);
 	$short_description = preg_replace( '/\[(.*?)\]/', ' ', $short_description );
-	$short_description = str_replace("&#xa0;", "", $short_description );
-	$short_description = trim( woogool_utf8_for_xml( $short_description ) );
+
+	// Strip out the non-line-brake character
+	$short_description = str_replace("&#xa0;", "", $short_description);
+
+	// Strip strange UTF chars
+	$short_description = trim(woogool_utf8_for_xml($short_description));
+
+	$description = str_replace("<", "&lt;", $description);
+    $description = str_replace(">", "&gt;", $description);
+    $description = str_replace("&", "&amp;", $description);
 
 	return $short_description;
 }
+
 function woogool_get_product_compare_short_description( $wc_product, $settings, $feed_content ) {
 	$short_description = woogool_get_product_short_description( $wc_product, $settings );
 	$short_description = woogool_compare_with_logical_value( $wc_product, $settings, $feed_content['name'], $short_description );
@@ -1615,7 +1667,7 @@ function woogool_rip_tags( $string ) {
  */
 function woogool_utf8_for_xml( $string ){
 	$string = html_entity_decode($string);
-		return preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
+	return preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
 }
 
 

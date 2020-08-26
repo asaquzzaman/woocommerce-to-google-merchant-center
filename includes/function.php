@@ -459,5 +459,16 @@ function woogool_get_feed_file_url( $feed_id ) {
     return $dir_path . $file_name . '.xml';
 }
 
+if ( !function_exists( 'pmpr' ) ) {
+    function pmpr() {
+        $args = func_get_args();
+
+        foreach ( $args as $arg ) {
+            echo '<pre>'; print_r( $arg ); '</pre>';
+        }
+    }
+}
+
+
 
 

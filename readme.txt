@@ -1,20 +1,20 @@
-=== WooCommerce Google Product Feed ===
+=== WooCommerce Product Feed for Marketing Channels ===
 	
 Contributors: asaquzzaman
-Tags: woocommerce google product feed, google product feed, merchant center, google merchant center, woocommerce shopping feed, product export, woocommerce product feed, woocommerce merchant
+Tags: WooCommerce Product Feed, product feed, woocommerce google product feed, google product feed, merchant center, google merchant center, woocommerce shopping feed, woocommerce merchant
 Requires at least: 4.4
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Requires PHP: 5.6
 Stable tag: 1.7.9
 License: GPLv2 or later
 
-WooCommerce Google product feed provide you to generate product feed xml file. You can also upload product one by one to google merchant center.
+WooCommerce product feed marketing channels provide you to generate product feed xml file. You can also upload product one by one to google merchant center.
 
 == Description ==
 
 Looking for a way to upload your WooCommerce products (feeds) to world’s largest online product advertisement platform, Google Merchant Center?
 
-The WooCommerce Google Product Feed plugin allows you to do so!
+The WooCommerce product feed plugin allows you to do so!
 
 Now, you can easily upload your WC product feed XML file directly to your Google merchant account. It requires verification from Google to upload the file to your account. After verifying, you can see your product in the Google shop. 
 
