@@ -338,9 +338,9 @@ class WooGool_Admin_Feed {
         }
 
         $return = [
-            'has_product' => apply_filters( 'woogool_has_product', false, $products ),  //empty( $products ) ? false : true,
-            'offset'      => apply_filters( 'woogool_offset', 20, $offset ), //$offset,
-            'found_posts' => apply_filters( 'woogool_found_posts', 20, $this->found_posts ) //$this->found_posts
+            'has_product' => empty( $products ) ? false : true, //apply_filters( 'woogool_has_product', false, $products ), 
+            'offset'      => $offset, //apply_filters( 'woogool_offset', 20, $offset ), 
+            'found_posts' => $this->found_posts //apply_filters( 'woogool_found_posts', 20, $this->found_posts ) //$this->found_posts
         ];
 
         if ( $this->time_exceeded() || $this->memory_exceeded() ) {
@@ -640,6 +640,7 @@ class WooGool_Admin_Feed {
             $products_cats = wp_list_pluck( $products_cats, 'catId' );
 
             $tax_query['tax_query'] = array(
+                'relation' => 'OR',
                 array(
                     'taxonomy'         => 'product_cat',
                     'field'            => 'term_id',

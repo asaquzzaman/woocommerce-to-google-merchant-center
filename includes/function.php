@@ -250,9 +250,9 @@ function woogool_get_products( $count = '-1', $offset = 0, $args = array() ) {
         'offset'           => $offset,
     );
 
-    $args = wp_parse_args( $args, $defaults );
+    $args = wp_parse_args( $args, $defaults ); 
     $query = NEW WP_Query( $args );
-
+    
     return $query;
 }
 

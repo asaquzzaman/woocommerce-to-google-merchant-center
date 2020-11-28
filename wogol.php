@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/asaquzzaman/woocommerce-to-google-merchant-center
  * Description: Submit your product woocommerce to google merchant center.
  * Author: asaquzzaman
- * Version: 1.7.9
+ * Version: 1.8.2
  * Author URI: http://wpspear.com
  * License: GPL2
  * TextDomain: woogool
@@ -45,7 +45,7 @@ if ( ! class_exists('WP_WooGool') ) {
 
         private $merchant_account_id;
         public $individual;
-        public static $version = '1.7.9';
+        public static $version = '1.8.2';
         static $woocommerce;
         static $woogool_free;
 
@@ -358,9 +358,9 @@ if ( ! class_exists('WP_WooGool') ) {
          * @return void
          */
         function admin_menu() {
-            $woogool = add_menu_page( __( 'WooGool Feed', 'woogool' ), __( 'WooGool Feed', 'woogool' ), 'read', 'woogool', array( $this, 'woogool_page' ), 'dashicons-rss' );
-            $woogool_single = add_submenu_page( 'woogool', __( 'Individual Product', 'woogool' ), __( 'Individual Product', 'woogool' ), 'read', 'woogool' , array( $this, 'woogool_page' ) );
-            $woogool_multi = add_submenu_page( 'woogool', __( 'Multiple Products', 'woogool' ), __( 'Multiple Products', 'woogool' ), 'read', 'woogool_multiple', array( $this, 'woogool_page' ) );
+            $woogool = add_menu_page( __( 'WooGool Feed', 'woogool' ), __( 'WooGool Feed', 'woogool' ), 'manage_product_terms', 'woogool', array( $this, 'woogool_page' ), 'dashicons-rss' );
+            $woogool_single = add_submenu_page( 'woogool', __( 'Individual Product', 'woogool' ), __( 'Individual Product', 'woogool' ), 'manage_product_terms', 'woogool' , array( $this, 'woogool_page' ) );
+            $woogool_multi = add_submenu_page( 'woogool', __( 'Multiple Products', 'woogool' ), __( 'Multiple Products', 'woogool' ), 'manage_product_terms', 'woogool_multiple', array( $this, 'woogool_page' ) );
             //add_submenu_page( 'woogool', __( 'Discuss', 'woogool' ), __( 'Discuss', 'woogool' ), 'read', 'woogool_discuss', array( $this, 'woogool_discuss_page' ) );
             
             add_action( 'admin_print_styles-' . $woogool, array( $this, 'scripts' ) );
