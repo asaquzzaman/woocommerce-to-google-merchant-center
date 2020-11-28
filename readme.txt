@@ -12,17 +12,17 @@ WooCommerce product feed for marketing channels provide you to generate product 
 
 == Description ==
 
-Looking for a way to upload your WooCommerce product (feeds) to worldâ€™s largest online product advertisement platform, Google Merchant Center?
+Looking for a way to upload your WooCommerce product (feeds) to world largest online product advertisement platform, Google Merchant Center?
 
 The WooCommerce product feed plugin allows you to do so!
 
-ðŸ’ Now, you can easily upload your WC product feed XML file directly to your Google merchant account. It requires verification from Google to upload the file to your account. After verifying, you can see your product in the Google shop. 
+Now, you can easily upload your WC product feed XML file directly to your Google merchant account. It requires verification from Google to upload the file to your account. After verifying, you can see your product in the Google shop. 
 
 
 = Video Tutorial (Initial setup + single product submission) =
 [youtube https://www.youtube.com/watch?v=Fl9jqaKy6JY&t=1s]
 
-ðŸ‘‰ðŸ‘‰ = Multiple Product Submission (PRO) =
+= Multiple Product Submission (PRO) =
 [youtube https://www.youtube.com/watch?v=DOT_oMnOnr8&t=2s]
 
 
@@ -33,39 +33,39 @@ This powerful WooCommerce Product Feed plugin will help you to transfer all your
 
 == Exclusive Features (FREE) ==
 
-ðŸ‘‰ <strong>Allows to Submit Products Easily</strong>
+<strong>Allows to Submit Products Easily</strong>
 
 Using the Free version of WooCommerce to Google Merchant Center plugin, you can submit your products one by one as this version only supports uploading a single product at a time. You can submit the WooCommerce Product Feed XML file to do the job for you.
 
-ðŸ‘‰ <strong>Automatically Generates Merchant Product Forms</strong>
+<strong>Automatically Generates Merchant Product Forms</strong>
 
 Google Merchant Center has rules of submitting a lot of form fields while uploading a product. Using this plugin, you can upload products and automatically generate the form after submitting your WooCommerce product. You donâ€™t have to manually submit the form and fill it up.
 
-ðŸ‘‰ <strong>Compatible with WooCommerce 4.5.2 (Latest)</strong>
+<strong>Compatible with WooCommerce 4.5.2 (Latest)</strong>
 
 This plugin works with WooCommerce 3.0 and later versions. This means the versions less than 3.0 will not work with this plugin. For a flawless workflow and advanced WooCommerce features, always update your plugins to get the most out of it.
 
-ðŸ‘‰ <strong>In Short -</strong>
+<strong>In Short -</strong>
 
 The FREE version of WooCommerce Product Feed allows you to submit a limited number(40) of your WooCommerce products to Google Marchant Center. This plugin becomes a pathway between your WooCommerce powered eCommerce store and Google Marchant Center. Ultimately, you enable the opportunity of showing your products to millions of people using Google.
 
 
 == Premium Features (PRO) ==
 
-ðŸ‘‰ <strong>Allows to Submit Multiple Products Flawlessly</strong>
+<strong>Allows to Submit Multiple Products Flawlessly</strong>
 
 Using the Pro version of WooCommerce Google Product Feed, you can easily submit multiple products at the same time. This means you can flawlessly upload all your WooCommerce product feed with blink of an eye.
 
-ðŸ‘‰ <strong>Supports Variable Products</strong>
+<strong>Supports Variable Products</strong>
 
 Have a lot of variable products? Canâ€™t upload them to your Google Merchant Center Shop? 
 No need to worry. Using WooCommerce Google Product Feed, you can also upload all your variable products and they will be exactly same as they are on your WooCommerce store. 
 
-ðŸ‘‰ <strong>Category Wise Product Feed</strong>
+<strong>Category Wise Product Feed</strong>
 
 Using the Premium version of WooCommerce Google Product Feed, you can generate product feed XML file according to your product categories. This becomes very handy to specify product category to Google Merchant Center.
 
-ðŸ‘‰ðŸ‘‰ [Buy PRO](https://wpspear.com/product-feed/)
+ðŸ‘‰[Buy PRO](https://wpspear.com/product-feed/)
 
 == Unlimited Product Submission ==
 
@@ -86,7 +86,7 @@ It provides you to submit products one by one to Google merchant center. There i
 It provides you to generate all product feed XML file at once and it also supports product variation. It will also help you to generate product feed XML by product category wise. This feature is only available for pro version.
 
 == Purchase Link ==
-ðŸ‘‰ðŸ‘‰ [Buy PRO](https://wpspear.com/product-feed/)
+[Buy PRO](https://wpspear.com/product-feed/)
 
 
 -> WooCommerce Product Feed PRO plugin is fully compatible with the latest WooCommerce (4.7.1).
