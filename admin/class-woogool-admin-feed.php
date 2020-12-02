@@ -1392,8 +1392,13 @@ class WooGool_Admin_Feed {
         update_post_meta( $post_id, '_promotion_id', $_POST['promotion_id'] );
     }
 
+    function is_product_disabled( $product_id ) {
+        $disabled = get_post_meta( $product_id, '_woogool_exclude_product', true );
+        return $disabled == 'yes' ? true : false;
+    }
+
     function test() {
-        //$this->update_feed_file_by_product( 65, 59 );
+        //$this->update_feed_file_by_product( 63, 59 );
         //$this->delete_from_xml(65, 59);
     }
 
@@ -1472,6 +1477,12 @@ class WooGool_Admin_Feed {
 
         if ( $product->get_status() != 'publish' ) {
             $this->delete_from_xml( $product_id, $feed_id );
+            return;
+        }
+
+        if ( $this->is_product_disabled( $product_id ) ) {
+            $this->delete_from_xml( $product_id, $feed_id );
+            return;
         }
 
         $feed      = $this->get_feed( $feed_id );
@@ -1516,10 +1527,17 @@ class WooGool_Admin_Feed {
 
         if ( $product->get_status() != 'publish' ) {
             $this->delete_from_xml( $product_id, $feed_id );
+            return;
         }
 
-        $feed     = $this->get_feed( $feed_id );
-        $xml_file = woogool_get_feed_file_path( $feed_id );
+        if ( $this->is_product_disabled( $product_id ) ) {
+            $this->delete_from_xml( $product_id, $feed_id );
+            return;
+        }
+
+        $feed      = $this->get_feed( $feed_id );
+        
+        $xml_file  = woogool_get_feed_file_path( $feed_id );
         $store_xml = $this->get_xml_node( $feed_id );
         $store_xml->xpath( "parent::*" );
 
