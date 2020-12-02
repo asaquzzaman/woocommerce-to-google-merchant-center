@@ -238,7 +238,7 @@ class WooGool_Admin_Feed {
         return true;
     }
 
-    public function get_xml_file( $feed_id ) {
+    public function get_xml_node( $feed_id ) {
         $file = woogool_get_feed_file_path( $feed_id );
 
         if ( file_exists( $file ) ) {
@@ -285,7 +285,7 @@ class WooGool_Admin_Feed {
         $products         = $this->xml_get_products( $feed_id, $page=false, $offset );
         
         $file             = woogool_get_feed_file_path( $feed_id );
-        $xml              = $this->get_xml_file( $feed_id );
+        $xml              = $this->get_xml_node( $feed_id );
         $namespace        = $this->get_google_feed_name_space();
         $has_namespace    = $this->has_namespace( $feed_id );
         
@@ -1393,67 +1393,181 @@ class WooGool_Admin_Feed {
     }
 
     function test() {
-        $this->update_feed_file_by_product( 32, 59 );
+        //$this->update_feed_file_by_product( 65, 59 );
+        //$this->delete_from_xml(65, 59);
+    }
+
+    function dom_query( $channel, $product_id ) {
+        $query = array(
+            'google_shopping_feed' => "//g:id[.={$product_id}]"
+        );
+
+        return empty( $query[$channel] ) ? '' : $query[$channel];
+    }
+
+    function get_product_dom_items( $dom_xpath, $product_id ) {
+        $google_shopping_feed_query = $this->dom_query( 'google_shopping_feed', $product_id );
+        $google_shopping_feed = $dom_xpath->query( $google_shopping_feed_query );
+
+        if ( ! empty( $google_shopping_feed->length ) ) {
+            return array(
+                'channel' => 'google_shopping_feed',
+                'dom'    => $google_shopping_feed
+            );
+        } 
+
+        return false;
+    }
+
+    function get_product_xml_wrapper_tag( $feed ) {
+        $tag = '';
+        
+        if ( $feed->post_content == 'yandex' ) {
+            $tag = 'offer';
+        } else if ( 
+            $feed->post_content == 'fruugous' 
+                || 
+            $feed->post_content == 'fruugouk'
+                ||
+            $feed->post_content == 'manomano'
+                ||
+            $feed->post_content == 'custom_feed'
+        ) {
+            $tag = 'product';
+        } else {
+            $tag = 'item';
+        }
+
+        return $tag;
+    }
+
+    public function delete_from_xml( $product_id, $feed_id ) {
+        $xml_file = woogool_get_feed_file_path( $feed_id );
+        $store_xml = $this->get_xml_node( $feed_id );
+        $store_xml->xpath( "parent::*" );
+
+        $store_xml_dom = new DomDocument;
+        $store_xml_dom->loadXML( $store_xml->asXML() );
+        $store_xml_dom_xpath = new DOMXpath( $store_xml_dom );
+
+        $product_dom_items =  $this->get_product_dom_items( $store_xml_dom_xpath, $product_id );
+
+        if ( $product_dom_items !== false &&  ! empty( $product_dom_items['dom']->length ) ) {
+            $product_id_dom     = $product_dom_items['dom'];
+            
+            $product_dom = $product_id_dom->item(0)->parentNode;
+            $product_dom->parentNode->removeChild( $product_dom );
+
+            $store_xml_dom->saveXML(); 
+            $store_xml_dom->save( $xml_file );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    function add_product_item_in_xml( $product_id, $feed_id ) {
+        $product  = wc_get_product( $product_id );
+
+        if ( $product->get_status() != 'publish' ) {
+            $this->delete_from_xml( $product_id, $feed_id );
+        }
+
+        $feed      = $this->get_feed( $feed_id );
+        $tag       = $this->get_product_xml_wrapper_tag( $feed );
+        $xml_file  = woogool_get_feed_file_path( $feed_id );
+        $store_xml = $this->get_xml_node( $feed_id );
+        $store_xml->xpath( "parent::*" );
+
+        $store_xml_dom = new DomDocument;
+        $store_xml_dom->loadXML( $store_xml->asXML() );
+        $store_xml_dom_xpath = new DOMXpath( $store_xml_dom );
+
+        $product_dom     = $store_xml_dom_xpath->query( "//{$tag}" );
+        $current_product_wrap = $product_dom->item(0);
+        
+        $new_xml          = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
+        $new_product_wrap = $new_xml->addChild( $tag );
+
+        $settings = get_post_meta( $feed_id );
+
+        // product all items are set under $new_product_wrap
+        foreach ( $feed->feed_settings['content_attributes'] as $key => $feed_content ) {
+            $this->feed_tag_generate( $feed_content, $product, $settings, $feed, true, $new_product_wrap, $this->get_google_feed_name_space() );
+        }
+
+        $new_dom = new DomDocument;
+        $new_dom->loadXML( $new_xml->asXML() );
+        $new_dom_xpath = new DOMXpath( $new_dom );
+        $new_product_dom = $new_dom_xpath->query("//{$tag}")->item(0);
+
+        //set new product dom in main dom
+        $new_product = $store_xml_dom->importNode( $new_product_dom, true );
+        //pmpr($new_product, $current_product_wrap); die();
+        $current_product_wrap->parentNode->appendChild( $new_product );
+        
+        $store_xml_dom->saveXML(); 
+        $store_xml_dom->save( $xml_file );
     }
 
     function update_feed_file_by_product( $product_id, $feed_id ) {
-        $xml     = $this->get_xml_file( $feed_id );
-        $xml->xpath( "parent::*" );
+        $product  = wc_get_product( $product_id );
 
-        $dom = new DomDocument;
-        $dom->loadXML( $xml->asXML() );
-        $xpath = new DOMXpath( $dom );
+        if ( $product->get_status() != 'publish' ) {
+            $this->delete_from_xml( $product_id, $feed_id );
+        }
 
-        $product = wc_get_product( $product_id );
-        $feed    = $this->get_feed( $feed_id );
+        $feed     = $this->get_feed( $feed_id );
+        $xml_file = woogool_get_feed_file_path( $feed_id );
+        $store_xml = $this->get_xml_node( $feed_id );
+        $store_xml->xpath( "parent::*" );
+
+        $store_xml_dom = new DomDocument;
+        $store_xml_dom->loadXML( $store_xml->asXML() );
+        $store_xml_dom_xpath = new DOMXpath( $store_xml_dom );
+
+        $product_dom_items =  $this->get_product_dom_items( $store_xml_dom_xpath, $product_id );
         
-        $is_google_shopping_feed =  $xpath->query("//g:id[.={$product_id}]");
-
-        $parent = $is_google_shopping_feed->item(0)->parentNode;
-        //    /rss/channel/item[2]
-        $newelement = $dom->createTextNode('Some new node!');
-        pmpr($parent);
+        $settings = get_post_meta( $feed_id );
+        $product  = wc_get_product( $product_id );
+        $tag      = $this->get_product_xml_wrapper_tag( $feed );
+       
+        if ( $product_dom_items === false ) {
+            $this->add_product_item_in_xml( $product_id, $feed_id );
+        } 
         
-        //$dom->saveXML(); 
+        if ( $product_dom_items !== false &&  ! empty( $product_dom_items['dom']->length ) ) {
 
-        //$dom->save( WOOGOOL_PATH . '/tmp/test.xml' );
+            $channel         = $product_dom_items['channel'];
+            $product_dom     = $product_dom_items['dom'];
+            $current_product = $product_dom->item(0)->parentNode;
 
-        //die();
-        $settings         = get_post_meta( $feed_id );
-
-
-        if ( ! empty( $is_google_shopping_feed ) ) {
-            //$product_xml = new SimpleXMLElement('<item></item>'); 
-            $root_xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
-            $product_xml = $root_xml->addChild( 'item' );
+            $new_xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
+            $product_xml_wrap = $new_xml->addChild( $tag );
             
-
-
+            // product all items are set under $product_xml_wrap
             foreach ( $feed->feed_settings['content_attributes'] as $key => $feed_content ) {
-                $this->feed_tag_generate( $feed_content, $product, $settings, $feed, true, $product_xml, $this->get_google_feed_name_space() );
+                $this->feed_tag_generate( $feed_content, $product, $settings, $feed, true, $product_xml_wrap, $this->get_google_feed_name_space() );
             }
 
-
-
-            $newdom = new DomDocument;
-            $newdom->loadXML( $root_xml->asXML() );
-            $newxpath = new DOMXpath( $newdom );
-            $newnode = $newxpath->query("//item")->item(0);
-            pmpr($parent);
-            $parent->parentNode->replaceChild($newnode, $parent);
+            $new_dom = new DomDocument;
+            $new_dom->loadXML( $new_xml->asXML() );
+            $new_dom_xpath = new DOMXpath( $new_dom );
+            $updated_product_dom = $new_dom_xpath->query("//{$tag}")->item(0);
             
-            //$parent->replaceChild($newnode, $parent);
-
-
-            //$xml->addChild( 'channel', 'new-item' ); 
-
-            //var_dump( $is_google_shopping_feed->xpath("parent::*") ); die();
-
-             die();
+            //set new product dom in main dom
+            $updated_product = $store_xml_dom->importNode( $updated_product_dom, true );
+            
+            $current_product->parentNode->replaceChild( $updated_product, $current_product );
+            
+            $store_xml_dom->saveXML(); 
+            $store_xml_dom->save( $xml_file );
         }
-          
+
+        return true;
+
     }
-        
 }
 
 

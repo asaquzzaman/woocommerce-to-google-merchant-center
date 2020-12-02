@@ -79,8 +79,9 @@ class WooGool_Admin_Action extends Background_Process {
 		if ( empty( $product_id ) || empty( $feed_id ) ) {
 			return false;
 		}
-
-		pm_log('doen', $item);
+		
+		$admin_feed = WooGool_Admin_Feed::instance();
+		$admin_feed->update_feed_file_by_product( $product_id, $feed_id );
 
 		unset( $queue_records[$product_id][$feed_id] );
 
