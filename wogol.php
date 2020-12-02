@@ -40,8 +40,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-if ( ! class_exists('WP_WooGool') ) {
-    class WP_WooGool {
+if ( ! class_exists('WooGool') ) {
+    final class WooGool {
 
         private $merchant_account_id;
         public $individual;
@@ -87,10 +87,12 @@ if ( ! class_exists('WP_WooGool') ) {
         }
 
         function init() {
+
             $this->define_constants();
             spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
             require_once dirname(__FILE__) . '/includes/function.php';
+            require_once dirname(__FILE__) . '/vendor/autoload.php';
             require_once dirname(__FILE__) . '/includes/pages.php';
             require_once dirname(__FILE__) . '/includes/google-info.php';
             require_once dirname(__FILE__) . '/includes/google-shopping-attributes.php';
@@ -262,12 +264,13 @@ if ( ! class_exists('WP_WooGool') ) {
             WooGool_Admin_Feed::instance();
             new WooGool_Admin_ajax();
             new WooGool_Admin_Google_Shopping();
-            
+            new WooGool_Admin_Action();
             //version update
             new WooGool_Admin_Upgrade();
 
             //Test case
             new WooGool_Admin_Test();
+            //\WOOGOOL\Includes\Background_Process\Background::instance();
         }
 
         function scripts_multiple_products() {
@@ -488,19 +491,19 @@ if ( ! class_exists('WP_WooGool') ) {
         }
     }
 
-    register_activation_hook( __FILE__, array( 'WP_WooGool', 'install' ) );
+    register_activation_hook( __FILE__, array( 'WooGool', 'install' ) );
 
     add_action( 'plugins_loaded', 'WooGool', 10 );
 
     function WooGool() {
         if ( ! class_exists( 'WooCommerce' ) ) {
 
-            WP_WooGool::$woocommerce = true;
-            add_action( 'admin_notices', array( 'WP_WooGool', 'notice' ) );
+            WooGool::$woocommerce = true;
+            add_action( 'admin_notices', array( 'WooGool', 'notice' ) );
             return;
         }
 
-        return new WP_WooGool();
+        return new WooGool();
     }
 } else {
     add_action( 'admin_notices', 'woogool_notice' );

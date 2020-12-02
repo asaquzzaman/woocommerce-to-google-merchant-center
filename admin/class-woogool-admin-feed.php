@@ -44,6 +44,7 @@ class WooGool_Admin_Feed {
         //add_action( 'add_meta_boxes', array( $this, 'feed_meta_box' ) );
         add_action( 'save_post', array( $this, 'save_post_meta' ), 10, 3 );
         add_action( 'template_redirect', array( $this, 'xml_download' ) );
+        add_action( 'admin_init', array( $this, 'test' ) );
     }
 
 
@@ -237,6 +238,35 @@ class WooGool_Admin_Feed {
         return true;
     }
 
+    public function get_xml_file( $feed_id ) {
+        $file = woogool_get_feed_file_path( $feed_id );
+
+        if ( file_exists( $file ) ) {
+            return simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
+        }
+        
+        return false;
+    }
+
+    public function get_google_feed_name_space() {
+        return array( 'g' => 'http://base.google.com/ns/1.0' );
+    }
+
+    public function get_feed( $feed_id ) {
+        $feed                = get_post( $feed_id );
+        $feed->feed_settings = array();
+        $metas = get_post_meta( $feed_id );
+
+        foreach ( $metas as $meta_name => $meta ) {
+            $value = array_shift( $meta );
+            $value = is_serialized( $value ) ? maybe_unserialize( $value ) : $value;
+            
+            $feed->feed_settings[$meta_name] = $value;
+        }
+
+        return $feed;
+    }
+
     public function update_feed_file( $postdata ) {
         global $woogool_debug;
 
@@ -254,9 +284,9 @@ class WooGool_Admin_Feed {
   
         $products         = $this->xml_get_products( $feed_id, $page=false, $offset );
         
-        $file             = $this->get_file_path( $feed_id );
-        $namespace        = array( 'g' => 'http://base.google.com/ns/1.0' );
-        $xml              = simplexml_load_file( $file, 'SimpleXMLElement', LIBXML_NOCDATA );
+        $file             = woogool_get_feed_file_path( $feed_id );
+        $xml              = $this->get_xml_file( $feed_id );
+        $namespace        = $this->get_google_feed_name_space();
         $has_namespace    = $this->has_namespace( $feed_id );
         
         foreach ( $products as $key => $product ) {
@@ -1361,6 +1391,69 @@ class WooGool_Admin_Feed {
         update_post_meta( $post_id, '_promotion_id_default', $promotion_id_default );
         update_post_meta( $post_id, '_promotion_id', $_POST['promotion_id'] );
     }
+
+    function test() {
+        $this->update_feed_file_by_product( 32, 59 );
+    }
+
+    function update_feed_file_by_product( $product_id, $feed_id ) {
+        $xml     = $this->get_xml_file( $feed_id );
+        $xml->xpath( "parent::*" );
+
+        $dom = new DomDocument;
+        $dom->loadXML( $xml->asXML() );
+        $xpath = new DOMXpath( $dom );
+
+        $product = wc_get_product( $product_id );
+        $feed    = $this->get_feed( $feed_id );
+        
+        $is_google_shopping_feed =  $xpath->query("//g:id[.={$product_id}]");
+
+        $parent = $is_google_shopping_feed->item(0)->parentNode;
+        //    /rss/channel/item[2]
+        $newelement = $dom->createTextNode('Some new node!');
+        pmpr($parent);
+        
+        //$dom->saveXML(); 
+
+        //$dom->save( WOOGOOL_PATH . '/tmp/test.xml' );
+
+        //die();
+        $settings         = get_post_meta( $feed_id );
+
+
+        if ( ! empty( $is_google_shopping_feed ) ) {
+            //$product_xml = new SimpleXMLElement('<item></item>'); 
+            $root_xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><rss xmlns:g="http://base.google.com/ns/1.0"></rss>');
+            $product_xml = $root_xml->addChild( 'item' );
+            
+
+
+            foreach ( $feed->feed_settings['content_attributes'] as $key => $feed_content ) {
+                $this->feed_tag_generate( $feed_content, $product, $settings, $feed, true, $product_xml, $this->get_google_feed_name_space() );
+            }
+
+
+
+            $newdom = new DomDocument;
+            $newdom->loadXML( $root_xml->asXML() );
+            $newxpath = new DOMXpath( $newdom );
+            $newnode = $newxpath->query("//item")->item(0);
+            pmpr($parent);
+            $parent->parentNode->replaceChild($newnode, $parent);
+            
+            //$parent->replaceChild($newnode, $parent);
+
+
+            //$xml->addChild( 'channel', 'new-item' ); 
+
+            //var_dump( $is_google_shopping_feed->xpath("parent::*") ); die();
+
+             die();
+        }
+          
+    }
+        
 }
 
 

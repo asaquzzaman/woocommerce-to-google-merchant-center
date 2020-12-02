@@ -1,0 +1,21 @@
+{
+    "name": "woo/feed",
+    "description": "WooCommerce product feed for marketing channel",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Asaquzzaman",
+            "email": "joy.mishu@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WOOGOOL\\Includes\\": "includes/"
+        }
+    },
+    "require": {
+        "php": ">=5.6.37",
+        "deliciousbrains/wp-background-processing": "^1.0"
+    }
+}

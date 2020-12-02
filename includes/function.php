@@ -170,13 +170,21 @@ function woogool_get_google_product_type() {
 
 function woogool_get_feeds() {
 
-    $args = array(
-        'posts_per_page'   => -1,
-        'post_type'        => array( 'woogoo_feed', 'woogool_feed' ),
-        'post_status'      => 'publish',
+    $feeds = new WP_Query (
+        array (
+            'post_type'      => array( 'woogoo_feed', 'woogool_feed' ),
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'meta_key'       => '',
+            'meta_value'     => '',
+        ) 
     );
 
-    return get_posts( $args );
+    foreach ( $feeds->posts as $key => $post ) {
+        $post->feed_url = woogool_get_feed_file_url( $post->ID );
+    }
+
+    return $feeds;
 }
 
 function woogool_get_minute_diff( $current_time, $request_time ) {
@@ -426,24 +434,26 @@ function woogool_is_pro() {
     return apply_filters( 'woogool_filter_is_pro', false );
 }
 
-function woopr() {
-    $args = func_get_args();
+if ( ! function_exists( 'pmpr' ) ) {
+    function pmpr() {
+        $args = func_get_args();
 
-    foreach ( $args as $arg ) {
-        echo '<pre>'; print_r( $arg ); '</pre>';
-    }
+        foreach ( $args as $arg ) {
+            echo '<pre>'; print_r( $arg ); '</pre>';
+        }
+    }  
 }
 
-function woogool_log($type = '', $msg = '') {
-    //if ( WP_DEBUG == true ) {
+if ( ! function_exists( 'pm_log' ) ) {
+    function pm_log( $type = '', $msg = '' ) {
         $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, print_r($msg, true) );
         error_log( $msg, 3, WOOGOOL_PATH . '/tmp/woogool-debug.log' );
-    //}
+    } 
 }
 
 function woogool_get_feed_file_path( $feed_id ) {
     $upload_dir = wp_upload_dir();
-    $base       = $upload_dir['basedir'];
+    $base       = $upload_dir['basedir']; 
     $dir_path   = $base . '/woogool-product-feed/';
     $file_name  = md5( 'woogool' . $feed_id );
 

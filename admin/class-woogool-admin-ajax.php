@@ -118,19 +118,7 @@ class WooGool_Admin_ajax {
     function get_feeds() {
         check_ajax_referer( 'woogool_nonce' );
 
-        $feeds = new WP_Query (
-            [
-                'post_type'      => 'woogool_feed',
-                'posts_per_page' => -1,
-                'post_status'    => 'publish',
-                'meta_key'       => '',
-                'meta_value'     => '',
-            ]
-        );
-
-        foreach ( $feeds->posts as $key => $post ) {
-            $post->feed_url = woogool_get_feed_file_url( $post->ID );
-        }
+        $feeds = woogool_get_feeds();
 
         wp_send_json_success( 
             [
