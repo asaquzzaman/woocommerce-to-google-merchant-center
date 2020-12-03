@@ -1399,6 +1399,7 @@ class WooGool_Admin_Feed {
     }
 
     function test() {
+        //$this->variable_product_delete_from_xml(69, 59); die();
         $this->update_feed_file_by_variable_product( 12, 59 );
         //$this->delete_from_xml(65, 59);
     }
@@ -1469,14 +1470,14 @@ class WooGool_Admin_Feed {
         return false;
     }
 
-    public function variable_product_delete_from_xml( $product_id, $feed_id ) {
-        $xml_file = woogool_get_feed_file_path( $feed_id );
-        $store_xml = $this->get_xml_node( $feed_id );
-        $store_xml->xpath( "parent::*" );
+    public function variable_product_delete_from_xml( $product_id, $feed_id, $store_xml_dom_xpath ) {
+        // $xml_file = woogool_get_feed_file_path( $feed_id );
+        // $store_xml = $this->get_xml_node( $feed_id );
+        // $store_xml->xpath( "parent::*" );
 
-        $store_xml_dom = new DomDocument;
-        $store_xml_dom->loadXML( $store_xml->asXML() );
-        $store_xml_dom_xpath = new DOMXpath( $store_xml_dom );
+        // $store_xml_dom = new DomDocument;
+        // $store_xml_dom->loadXML( $store_xml->asXML() );
+        // $store_xml_dom_xpath = new DOMXpath( $store_xml_dom );
         $product_dom_items =  $this->get_variable_product_dom_items( $store_xml_dom_xpath, $product_id );
 
         if ( $product_dom_items !== false &&  ! empty( $product_dom_items['dom']->length ) ) {
@@ -1485,8 +1486,8 @@ class WooGool_Admin_Feed {
             $product_dom = $product_id_dom->item(0)->parentNode;
             $product_dom->parentNode->removeChild( $product_dom );
 
-            $store_xml_dom->saveXML(); 
-            $store_xml_dom->save( $xml_file );
+            //$store_xml_dom->saveXML(); 
+            //$store_xml_dom->save( $xml_file );
 
             return true;
         }
@@ -1511,7 +1512,7 @@ class WooGool_Admin_Feed {
             $product_dom = $product_id_dom->item(0)->parentNode;
             $product_dom->parentNode->removeChild( $product_dom );
 
-            $store_xml_dom->saveXML(); 
+            //$store_xml_dom->saveXML(); 
             $store_xml_dom->save( $xml_file );
 
             return true;
@@ -1520,7 +1521,8 @@ class WooGool_Admin_Feed {
         return false;
     }
 
-    function add_variable_product_item_in_xml( $parent_id, $product_id,, $feed_id ) {
+    function add_variable_product_item_in_xml( $parent_id, $product_id, $feed_id ) {
+
         $product = wc_get_product( $product_id );
         $feed    = $this->get_feed( $feed_id );
         $logic   = empty( $feed->feed_settings['logic'] ) ? array() : $feed->feed_settings['logic'];
@@ -1579,11 +1581,13 @@ class WooGool_Admin_Feed {
 
         //set new product dom in main dom
         $new_product = $store_xml_dom->importNode( $new_product_dom, true );
-        //pmpr($new_product, $current_product_wrap); die();
+
         $current_product_wrap->parentNode->appendChild( $new_product );
-        
-        $store_xml_dom->saveXML(); 
+
+        //$store_xml_dom->saveXML(); 
         $store_xml_dom->save( $xml_file );
+
+        return $new_product_dom;
     }
 
     function add_product_item_in_xml( $product_id, $feed_id ) {
@@ -1638,7 +1642,7 @@ class WooGool_Admin_Feed {
         //pmpr($new_product, $current_product_wrap); die();
         $current_product_wrap->parentNode->appendChild( $new_product );
         
-        $store_xml_dom->saveXML(); 
+        //$store_xml_dom->saveXML(); 
         $store_xml_dom->save( $xml_file );
     }
 
@@ -1714,7 +1718,7 @@ class WooGool_Admin_Feed {
             
             $current_product->parentNode->replaceChild( $updated_product, $current_product );
             
-            $store_xml_dom->saveXML(); 
+            //$store_xml_dom->saveXML(); 
             $store_xml_dom->save( $xml_file );
         }
 
@@ -1739,34 +1743,44 @@ class WooGool_Admin_Feed {
         $store_xml_dom->loadXML( $store_xml->asXML() );
         $store_xml_dom_xpath = new DOMXpath( $store_xml_dom );
 
-        $tag = $this->get_product_xml_wrapper_tag( $feed );
-        $settings = get_post_meta( $feed_id );
+        $tag           = $this->get_product_xml_wrapper_tag( $feed );
+        $settings      = get_post_meta( $feed_id );
         $has_namespace = $this->has_namespace( $feed_id );
-        $namespace = $this->get_google_feed_name_space();
+        $namespace     = $this->get_google_feed_name_space();
+
+        $this->delete_updated_variation( $wc_product, $store_xml_dom_xpath, $feed_id );
 
         foreach ( $variations as $key => $child ) {
             $variable_product    = wc_get_product( $child['variation_id'] );
             $variable_product_id = $variable_product->get_id();
 
             if ( $parent_product_status != 'publish' ) {
-                $this->variable_product_delete_from_xml( $variable_product_id, $feed_id );
+                $this->variable_product_delete_from_xml( $variable_product_id, $feed_id, $store_xml_dom_xpath );
                 continue;
             }
 
             if ( $this->is_product_disabled( $variable_product_id ) ) {
-                $this->variable_product_delete_from_xml( $variable_product_id, $feed_id );
+                $this->variable_product_delete_from_xml( $variable_product_id, $feed_id, $store_xml_dom_xpath );
                 continue;
             }
 
             if ( $this->is_exclude_from_filter( $variable_product, $logic ) ) {
-                $this->variable_product_delete_from_xml( $variable_product_id, $feed_id );
+                $this->variable_product_delete_from_xml( $variable_product_id, $feed_id, $store_xml_dom_xpath );
                 continue;
             }
 
             $product_dom_items =  $this->get_variable_product_dom_items( $store_xml_dom_xpath, $variable_product_id );
             
             if ( $product_dom_items === false ) {
-                $this->add_variable_product_item_in_xml( $product_id, $variable_product_id, $feed_id );
+                $new_var_pro_dom = $this->add_variable_product_item_in_xml( $product_id, $variable_product_id, $feed_id );
+                
+                //set new product dom in main dom
+                $new_product          = $store_xml_dom->importNode( $new_var_pro_dom, true );
+                $new_product_dom      = $store_xml_dom_xpath->query( "//{$tag}" );
+                $current_product_wrap = $new_product_dom->item(0);
+                $current_product_wrap->parentNode->appendChild( $new_product );
+
+                continue;
             } 
 
             if ( $product_dom_items !== false &&  ! empty( $product_dom_items['dom']->length ) ) {
@@ -1799,12 +1813,38 @@ class WooGool_Admin_Feed {
                 //set new product dom in main dom
                 $updated_product = $store_xml_dom->importNode( $updated_product_dom, true );
                
-                $current_product->parentNode->replaceChild( $updated_product, $current_product );
-                
+                $current_product->parentNode->replaceChild( $updated_product, $current_product );  
             }
 
-            $store_xml_dom->saveXML(); 
+            //$store_xml_dom->saveXML(); 
             $store_xml_dom->save( $xml_file );
+        }
+    }
+
+    private function delete_updated_variation( $wc_product, $store_xml_dom_xpath, $feed_id ) {
+        $variations    = $wc_product->get_available_variations();
+        $variations_id = wp_list_pluck( $variations, 'variation_id' );
+        $parent_id = $wc_product->get_id();
+        $xmls_id = array(); 
+
+        $childs = $store_xml_dom_xpath->query( ".//item" );
+
+        foreach ( $childs as $key => $child ) {
+          
+            $parent_node = $store_xml_dom_xpath->query( ".//g:item_group_id[.={$parent_id}]", $child );
+
+            if( $parent_node->length <= 0 ) {
+                continue;
+            }
+
+            $var_id = $store_xml_dom_xpath->query( ".//g:id", $child );
+            $xmls_id[] = $var_id->item(0)->nodeValue;
+        }
+
+        $delete_ids = array_diff( $xmls_id, $variations_id );
+
+        foreach ( $delete_ids as $key => $id ) {
+            $this->variable_product_delete_from_xml( $id, $feed_id, $store_xml_dom_xpath );
         }
     }
 }
