@@ -44,7 +44,7 @@ class WooGool_Admin_Feed {
         //add_action( 'add_meta_boxes', array( $this, 'feed_meta_box' ) );
         add_action( 'save_post', array( $this, 'save_post_meta' ), 10, 3 );
         add_action( 'template_redirect', array( $this, 'xml_download' ) );
-        add_action( 'admin_init', array( $this, 'test' ) );
+        //add_action( 'admin_init', array( $this, 'test' ) );
     }
 
 

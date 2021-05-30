@@ -118,6 +118,7 @@ module.exports = function(grunt) {
         'run',
     ]);
 
+
     grunt.registerTask( 'release', [
         'clean',
         'run',
