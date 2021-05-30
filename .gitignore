@@ -14,7 +14,6 @@ npm-debug.log
 phpcs.ruleset.xml
 phpunit.xml.dist
 composer.phar
-package-lock.json
 /tmp/woogool-debug.log
 /build/
 
