@@ -61,7 +61,7 @@
     "jed": "^1.1.1",
     "less": "^3.7.1",
     "less-loader": "^4.1.0",
-    "node-sass": "^4.9.2",
+    "node-sass": "^7.0.0",
     "npm": "^6.2.0",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "partialify": "^3.1.6",
